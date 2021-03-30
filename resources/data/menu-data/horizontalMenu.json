@@ -1,0 +1,199 @@
+{
+  "menu": [
+    {
+      "name": "Dashboard",
+      "icon": "home",
+      "url": "dashboard",
+      "slug": "dashboard"
+    },
+    {
+      "name": "AD Data",
+      "icon": "bars",
+      "dropdown": "1",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "ad-data/users",
+          "name": "Users",
+          "icon": "user",
+          "slug": "ad-data-users"
+        },
+        {
+          "url": "ad-data/computers",
+          "name": "Computers",
+          "icon": "laptop",
+          "slug": "ad-data-computers"
+        },
+        {
+          "url": "ad-data/subnet",
+          "name": "Subnet",
+          "icon": "network-wired",
+          "slug": "ad-data-subnet"
+        },
+        {
+          "url": "ad-data/tree-view",
+          "name": "AD Tree View",
+          "icon": "stream",
+          "slug": "ad-data-tree-view"
+        },
+        {
+          "url": "ad-data/groups",
+          "name": "Groups",
+          "icon": "users",
+          "slug": "ad-data-groups"
+        },
+        {
+          "url": "ad-data/containers",
+          "name": "Containers",
+          "icon": "folder",
+          "slug": "ad-data-containers"
+        },
+        {
+          "url": "ad-data/organizational-units",
+          "name": "Organizational Units",
+          "icon": "users-cog",
+          "slug": "ad-data-organizational-units"
+        }
+      ]
+    },
+    
+    {
+      "name": "Policy",
+      "icon": "file-powerpoint",
+      "dropdown": "1",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "policy/policies",
+          "name": "Policies",
+          "icon": "file-powerpoint",
+          "slug": "policy-policies"
+        },
+        {
+          "url": "policy/reports",
+          "name": "Reports",
+          "icon": "file-alt",
+          "slug": "policy-reports"
+        },
+        {
+          "url": "policy/rules",
+          "name": "Rules",
+          "icon": "file",
+          "slug": "policy-rules"
+        },
+        {
+          "url": "policy/url-lists",
+          "name": "URL-List",
+          "icon": "bars",
+          "slug": "policy-url-lists"
+        },
+        {
+          "url": "policy/block-pages",
+          "name": "Block Pages",
+          "icon": "ban",
+          "slug": "policy-block-pages"
+        },
+        {
+          "url": "policy/settings",
+          "name": "Settings",
+          "icon": "cogs",
+          "slug": "policy-settings"
+        }
+      ]
+    },
+
+    {
+      "name": "Proxy",
+      "icon": "lock",
+      "dropdown": "1",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "proxy/listeners",
+          "name": "Listeners",
+          "icon": "user",
+          "slug": "proxy-listeners"
+        },
+        {
+          "url": "proxy/CA",
+          "name": "CA",
+          "icon": "file",
+          "slug": "proxy-CA"
+        },
+        {
+          "url": "proxy/Generate-CA",
+          "name": "Generate CA",
+          "icon": "cog",
+          "slug": "proxy-Generate-CA"
+        },
+        {
+          "url": "proxy/upload-CA",
+          "name": "Upload CA",
+          "icon": "upload",
+          "slug": "proxy-upload-CA"
+        }
+      ]
+    },
+
+    {
+      "name": "Network",
+      "icon": "network-wired",
+      "dropdown": "1",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "network/interface",
+          "name": "Interface",
+          "icon": "project-diagram",
+          "slug": "network-interface"
+        },
+        {
+          "url": "network/firewall",
+          "name": "Firewall",
+          "icon": "user-shield",
+          "slug": "network-firewall"
+        }
+      ]
+    },
+
+    {
+      "name": "System",
+      "icon": "cog",
+      "dropdown": "1",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "system/maintenance",
+          "name": "Maintenance",
+          "icon": "cog",
+          "slug": "system-maintenance"
+        },
+        {
+          "url": "system/dashboard",
+          "name": "Dashboard",
+          "icon": "home",
+          "slug": "system-dashboard"
+        },
+        {
+          "url": "system/logs",
+          "name": "System Logs",
+          "icon": "file",
+          "slug": "system-logs"
+        },
+        {
+          "url": "system/system-clock",
+          "name": "System Clock",
+          "icon": "clock",
+          "slug": "system-system-clock"
+        },
+        {
+          "url": "system/LDAP-configurations",
+          "name": "LDAP Configurations",
+          "icon": "cog",
+          "slug": "system-LDAP-configurations"
+        }
+      ]
+    }
+
+  ]
+}

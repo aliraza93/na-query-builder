@@ -115,7 +115,7 @@ $configData = Helper::applClasses();
                 </form>
                 <p class="text-center mt-2">
                     <span>Already have an account?</span>
-                    <a href="{{url('auth/login-v2')}}"><span>&nbsp;Sign in instead</span></a>
+                    <a href="{{url('login')}}"><span>&nbsp;Sign in instead</span></a>
                 </p>
                 <div class="divider my-2">
                     <div class="divider-text">or</div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class AdDataController extends Controller
 {
@@ -17,11 +18,27 @@ class AdDataController extends Controller
     }
 
     // User List Page
-  public function user_list()
-  {
-    $pageConfigs = ['pageHeader' => false];
-    return view('/content/ad-data/users/ad-data-users', ['pageConfigs' => $pageConfigs]);
-  }
+    public function users()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/users/ad-data-users', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // User List
+    public function user_list()
+    {
+        // $date = $request->date;
+        // $email = $request->email;
+        $user = User::orderBy('created_at','desc');
+        // if($date != ''){
+        //     $user->where('date','LIKE','%'.$date.'%');
+        // }
+        // if($email != ''){       
+        //     $user->where('email','LIKE','%'.$email.'%');
+        // }
+        $user = $user->paginate(5);
+        return $user;
+    }
 
     /**
      * Show the form for creating a new resource.

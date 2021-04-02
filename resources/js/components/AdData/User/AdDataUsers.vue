@@ -9,7 +9,7 @@
                     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="card-header border-bottom p-1">
                             <div class="head-label">
-                                <h6 class="mb-0">Proxy Users</h6>
+                                <h6 class="mb-0">AD Data Users</h6>
                             </div>
                             <div class="dt-action-buttons text-right">
                                 <div class="dt-buttons flex-wrap d-inline-flex">
@@ -21,7 +21,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="dataTables_filter">
                                     <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" aria-controls="DataTables_Table_0">
+                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
                                     </label>
                                 </div>
                             </div>
@@ -81,39 +81,39 @@
                         <div class="loading" v-if="isLoading">
                             <h2 style="text-align:center">Loading.......</h2>
                         </div>
-                        <table class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                        <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
                                 <tr role="row">
-                                    <th class="dt-checkboxes-cell dt-checkboxes-select-all">
+                                    <th class="dt-checkboxes-cell dt-checkboxes-select-all text-center">
                                         <div class="custom-control custom-checkbox"> 
                                             <input class="custom-control-input" v-model="allSelected" @click="selectAll" type="checkbox" value="" id="checkboxSelectAll">
                                             <label class="custom-control-label" for="checkboxSelectAll"></label>
                                         </div>
                                     </th>
-                                    <th v-if="display_name">Display Name</th>
-                                    <th v-if="distinguished_name">Distinguish Name</th>
-                                    <th v-if="name">Name</th>
-                                    <th v-if="email">Email</th>
-                                    <th v-if="when_created">When Created</th>
-                                    <th v-if="when_changed">When Changed</th>
-                                    <th>Action</th>
+                                    <th class="text-center" v-if="display_name">Display Name</th>
+                                    <th class="text-center" v-if="distinguished_name">Distinguish Name</th>
+                                    <th class="text-center" v-if="name">Name</th>
+                                    <th class="text-center" v-if="email">Email</th>
+                                    <th class="text-center" v-if="when_created">When Created</th>
+                                    <th class="text-center" v-if="when_changed">When Changed</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in ad_data_users.data" v-bind:key="index">
-                                    <td class=" dt-checkboxes-cell">
+                                    <td class=" dt-checkboxes-cell text-center">
                                         <div class="custom-control custom-checkbox"> 
                                             <input v-model="ad_data_users_ids" class="custom-control-input dt-checkboxes" type="checkbox" @click="select" :value="value.id" :id="`checkbox` + value.id">
                                             <label class="custom-control-label" :for="`checkbox` + value.id"></label>
                                         </div>
                                     </td>
-                                    <td v-if="display_name">AD {{ value.name }}</td>
-                                    <td v-if="distinguished_name">Distinguish Name {{ value.name }}</td>
-                                    <td v-if="name">{{ value.name }}</td>
-                                    <td v-if="email">{{ value.email }}</td>
-                                    <td v-if="when_created">{{ value.created_at }}</td>
-                                    <td v-if="when_changed">{{ value.updated_at }}</td>
-                                    <td class="d-flex">
+                                    <td class="text-center" v-if="display_name">AD {{ value.name }}</td>
+                                    <td class="text-center" v-if="distinguished_name">Distinguish Name {{ value.name }}</td>
+                                    <td class="text-center" v-if="name">{{ value.name }}</td>
+                                    <td class="text-center" v-if="email">{{ value.email }}</td>
+                                    <td class="text-center" v-if="when_created">{{ value.created_at }}</td>
+                                    <td class="text-center" v-if="when_changed">{{ value.updated_at }}</td>
+                                    <td class="text-center d-flex">
                                         <a :href="`user/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To User" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>
@@ -128,9 +128,6 @@
                             <h4>Oops! No Users Found</h4>
                         </div>
                         <pagination :pageData="ad_data_users"></pagination>
-                        <!-- <div class="row">
-                            <ad-data-user-info></ad-data-user-info>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -138,10 +135,10 @@
     </div>
 </template>
 <script>
-import Pagination  from '../pagination/pagination.vue';
+import Pagination  from '../../pagination/pagination.vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
 import Close from 'vue-material-design-icons/Close.vue';
-import { EventBus } from "../../vue-asset";
+import { EventBus } from "../../../vue-asset";
 import AdDataUserInfo from './AdDataUserInfo.vue';
 
 export default {
@@ -149,7 +146,6 @@ export default {
         Pagination,
         MenuIcon,
         Close,
-        AdDataUserInfo,
         AdDataUserInfo
     },
     data() {
@@ -163,6 +159,7 @@ export default {
             when_created: true,
             when_changed: true,
 
+            name: '',
             allSelected: false,
             selected: [],
             isLoading: false,
@@ -226,7 +223,14 @@ export default {
         //Get All Users
         get_users(page = 1) {
             this.isLoading = true;
-            axios.get(base_url + "ad-data/users-list?page=" + page)
+            axios
+                .get(
+                base_url +
+                    "ad-data/users-list?page="+
+                    page+
+                    "&name=" +
+                    this.name
+                )
                 .then(response => {
                     this.ad_data_users = response.data
                     this.isLoading = false;

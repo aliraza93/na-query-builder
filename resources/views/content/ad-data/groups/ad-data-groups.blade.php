@@ -13,7 +13,7 @@
 
 <!-- Basic table -->
 <section id="ad-data">
-  <ad-data-user-list></ad-data-user-list>
+  <ad-data-groups-list></ad-data-groups-list>
 </section>
 @endsection
 

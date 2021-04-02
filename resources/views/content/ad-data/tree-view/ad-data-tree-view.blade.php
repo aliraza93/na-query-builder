@@ -1,15 +1,16 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'User View')
+@section('title', 'Tree')
 
-@section('page-style')
-{{-- Page Css files --}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+@section('vendor-style')
+<!-- vendor css files -->
+<link rel="stylesheet" href="{{ asset('fonts/font-awesome/css/font-awesome.min.css')}}">
 @endsection
 
 @section('content')
-<section id="ad-data">
-    <ad-data-user-view :user="{{ $user }}"></ad-data-user-view>
+<!-- Tree section -->
+<section class="basic-custom-icons-tree" id="ad-data">
+    <ad-data-tree-view></ad-data-tree-view>
 </section>
 @endsection
 

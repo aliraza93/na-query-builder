@@ -35,35 +35,35 @@
                                     </div>
                                     <div class="d-flex flex-wrap my-50">
                                         <div class="user-info-title">
-                                            <i data-feather="check" class="mr-1"></i>
+                                            <i data-feather="user" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">Distinguished Name</span>
                                         </div>
                                         <p style="margin-left: auto;" class="card-text mb-0">{{ user.name }}</p>
                                     </div>
                                     <div class="d-flex flex-wrap my-50">
                                         <div class="user-info-title">
-                                            <i data-feather="star" class="mr-1"></i>
+                                            <i data-feather="user" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">Name</span>
                                         </div>
                                         <p style="margin-left: auto;" class="card-text mb-0">{{ user.name }}</p>
                                     </div>
                                     <div class="d-flex flex-wrap my-50">
                                         <div class="user-info-title">
-                                            <i data-feather="flag" class="mr-1"></i>
+                                            <i data-feather="mail" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">Email</span>
                                         </div>
                                         <p style="margin-left: auto;" class="card-text mb-0">{{ user.email }}</p>
                                     </div>
                                     <div class="d-flex flex-wrap my-50">
                                         <div class="user-info-title">
-                                            <i data-feather="phone" class="mr-1"></i>
+                                            <i data-feather="calendar" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">When Created</span>
                                         </div>
                                         <p style="margin-left: auto;" class="card-text mb-0">{{ user.created_at }}</p>
                                     </div>
                                     <div class="d-flex flex-wrap">
                                         <div class="user-info-title">
-                                            <i data-feather="phone" class="mr-1"></i>
+                                            <i data-feather="calendar" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">When Changed</span>
                                         </div>
                                         <p style="margin-left: auto;" class="card-text mb-0">{{ user.updated_at }}</p>
@@ -86,61 +86,27 @@
                     <div class="card-body">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="homeIcon-tab" data-toggle="tab" href="#homeIcon" aria-controls="home" role="tab" aria-selected="true"><i data-feather="home"></i> Containers</a>
+                                <a class="nav-link active" id="containers-tab" data-toggle="tab" href="#containers" aria-controls="containers" role="tab" aria-selected="true"><i data-feather="folder"></i> Containers</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profileIcon-tab" data-toggle="tab" href="#profileIcon" aria-controls="profile" role="tab" aria-selected="false"><i data-feather="tool"></i> OUS</a>
+                                <a class="nav-link" id="ous-tab" data-toggle="tab" href="#ous" aria-controls="ous" role="tab" aria-selected="false"><i data-feather="tool"></i> OUS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="aboutIcon-tab" data-toggle="tab" href="#aboutIcon" aria-controls="about" role="tab" aria-selected="false"><i data-feather="user"></i> Groups</a>
+                                <a class="nav-link" id="groups-tab" data-toggle="tab" href="#groups" aria-controls="groups" role="tab" aria-selected="false"><i data-feather="users"></i> Groups</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profileIcon-tab" data-toggle="tab" href="#profileIcon" aria-controls="profile" role="tab" aria-selected="false"><i data-feather="tool"></i> IPS Observed</a>
+                                <a class="nav-link" id="ips-observed-tab" data-toggle="tab" href="#ips-observed" aria-controls="ips-observed" role="tab" aria-selected="false"><i data-feather="tool"></i> IPS Observed</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="aboutIcon-tab" data-toggle="tab" href="#aboutIcon" aria-controls="about" role="tab" aria-selected="false"><i data-feather="user"></i> Policy</a>
+                                <a class="nav-link" id="policy-tab" data-toggle="tab" href="#policy" aria-controls="policy" role="tab" aria-selected="false"><i class="fas fa-file-powerpoint"></i> Policy</a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="homeIcon" aria-labelledby="homeIcon-tab" role="tabpanel">
-                                <p>
-                                    Candy canes donut chupa chups candy canes lemon drops oat cake wafer. Cotton candy candy canes marzipan
-                                    carrot cake. Sesame snaps lemon drops candy marzipan donut brownie tootsie roll. Icing croissant bonbon
-                                    biscuit gummi bears. Pudding candy canes sugar plum cookie chocolate cake powder croissant.
-                                </p>
-                                <p>
-                                    Carrot cake tiramisu danish candy cake muffin croissant tart dessert. Tiramisu caramels candy canes
-                                    chocolate cake sweet roll liquorice icing cupcake. Candy cookie sweet roll bear claw sweet roll.
-                                </p>
-                            </div>
-                            <div class="tab-pane" id="profileIcon" aria-labelledby="profileIcon-tab" role="tabpanel">
-                                <p>
-                                    Dragée jujubes caramels tootsie roll gummies gummies icing bonbon. Candy jujubes cake cotton candy.
-                                    Jelly-o lollipop oat cake marshmallow fruitcake candy canes toffee. Jelly oat cake pudding jelly beans
-                                    brownie lemon drops ice cream halvah muffin. Brownie candy tiramisu macaroon tootsie roll danish.
-                                </p>
-                                <p>
-                                    Croissant pie cheesecake sweet roll. Gummi bears cotton candy tart jelly-o caramels apple pie jelly
-                                    danish marshmallow. Icing caramels lollipop topping. Bear claw powder sesame snaps.
-                                </p>
-                            </div>
-                            <div class="tab-pane" id="disabledIcon" aria-labelledby="disabledIcon-tab" role="tabpanel">
-                                <p>
-                                    Chocolate croissant cupcake croissant jelly donut. Cheesecake toffee apple pie chocolate bar biscuit
-                                    tart croissant. Lemon drops danish cookie. Oat cake macaroon icing tart lollipop cookie sweet bear claw.
-                                </p>
-                            </div>
-                            <div class="tab-pane" id="aboutIcon" aria-labelledby="aboutIcon-tab" role="tabpanel">
-                                <p>
-                                    Gingerbread cake cheesecake lollipop topping bonbon chocolate sesame snaps. Dessert macaroon bonbon
-                                    carrot cake biscuit. Lollipop lemon drops cake gingerbread liquorice. Sweet gummies dragée. Donut bear
-                                    claw pie halvah oat cake cotton candy sweet roll. Cotton candy sweet roll donut ice cream.
-                                </p>
-                                <p>
-                                    Halvah bonbon topping halvah ice cream cake candy. Wafer gummi bears chocolate cake topping powder.
-                                    Sweet marzipan cheesecake jelly-o powder wafer lemon drops lollipop cotton candy.
-                                </p>
-                            </div>
+                            <containers-tab></containers-tab>
+                            <ous-tab></ous-tab>
+                            <groups-tab></groups-tab>
+                            <ips-observed></ips-observed>
+                            <policy-tab></policy-tab>
                         </div>
                     </div>
                 </div>
@@ -151,7 +117,14 @@
 </template>
 
 <script>
+import ContainersTab from './Tabs/ContainersTab.vue'
+import GroupsTab from './Tabs/GroupsTab.vue'
+import OusTab from './Tabs/OusTab.vue'
+import IpsObserved from './Tabs/IpsObserved'
+import PolicyTab from './Tabs/PolicyTab'
+
 export default {
+    components: { ContainersTab, OusTab, GroupsTab, IpsObserved, PolicyTab },
     props: ['user']
 }
 </script>

@@ -24,18 +24,79 @@ class AdDataController extends Controller
         return view('/content/ad-data/users/ad-data-users', ['pageConfigs' => $pageConfigs]);
     }
 
-    // User List
-    public function user_list()
+    //Computer List Page
+    public function computers() {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/computers/ad-data-computers', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // User List Page
+    public function subnet()
     {
-        // $date = $request->date;
-        // $email = $request->email;
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/subnet/ad-data-subnet', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Tree View Page
+    public function tree_view()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/tree-view/ad-data-tree-view', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Groups List Page
+    public function groups()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/groups/ad-data-groups', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Organizational units List Page
+    public function containers()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/containers/ad-data-containers', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Organizational units List Page
+    public function organizational_units()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/organizational-units/ad-data-organizational-units', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // User List
+    public function user_list(Request $request)
+    {
+        $name = $request->name;
         $user = User::orderBy('created_at','desc');
-        // if($date != ''){
-        //     $user->where('date','LIKE','%'.$date.'%');
-        // }
-        // if($email != ''){       
-        //     $user->where('email','LIKE','%'.$email.'%');
-        // }
+        if($name != ''){
+            $user->where('name','LIKE','%'.$name.'%');
+        }
+        $user = $user->paginate(5);
+        return $user;
+    }
+
+    // Computer List
+    public function computer_list(Request $request)
+    {
+        $name = $request->name;
+        $user = User::orderBy('created_at','desc');
+        if($name != ''){
+            $user->where('name','LIKE','%'.$name.'%');
+        }
+        $user = $user->paginate(5);
+        return $user;
+    }
+
+    // Subnet List
+    public function subnet_list(Request $request)
+    {
+        $name = $request->name;
+        $user = User::orderBy('created_at','desc');
+        if($name != ''){
+            $user->where('name','LIKE','%'.$name.'%');
+        }
         $user = $user->paginate(5);
         return $user;
     }
@@ -93,6 +154,30 @@ class AdDataController extends Controller
     {
         $pageConfigs = ['pageHeader' => false];
         return view('/content/ad-data/users/show-ad-data-user', ['pageConfigs' => $pageConfigs], compact('user'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showComputer(User $user)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/computers/show-ad-data-computer', ['pageConfigs' => $pageConfigs], compact('user'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showSubnet(User $user)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/subnet/show-ad-data-subnet', ['pageConfigs' => $pageConfigs], compact('user'));
     }
 
     /**

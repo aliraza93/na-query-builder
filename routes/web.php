@@ -24,14 +24,25 @@ Route::middleware('auth')->group(function () {
 
   /* Route AD Data */
   Route::group(['prefix' => 'ad-data'], function () {
+      
       Route::get('users', 'AdDataController@users')->name('ad-data-users');
       Route::get('users-list', 'AdDataController@user_list')->name('user_list');
       Route::get('user/{user}', 'AdDataController@showUser');
+
       Route::get('computers', 'AdDataController@computers')->name('ad-data-computers');
+      Route::get('computers-list', 'AdDataController@computer_list')->name('computer_list');
+      Route::get('computer/{user}', 'AdDataController@showComputer');
+
       Route::get('subnet', 'AdDataController@subnet')->name('ad-data-subnet');
+      Route::get('subnet-list', 'AdDataController@subnet_list')->name('computer_list');
+      Route::get('subnet/{user}', 'AdDataController@showSubnet');
+
       Route::get('tree-view', 'AdDataController@tree_view')->name('ad-data-tree-view');
+      
       Route::get('groups', 'AdDataController@groups')->name('ad-data-groups');
+      
       Route::get('containers', 'AdDataController@containers')->name('ad-data-containers');
+      
       Route::get('organizational-units', 'AdDataController@organizational_units')->name('ad-data-organizational-units');
   });
   /* Route AD Data */

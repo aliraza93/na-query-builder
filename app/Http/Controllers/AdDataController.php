@@ -84,6 +84,18 @@ class AdDataController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showUser(User $user)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/users/show-ad-data-user', ['pageConfigs' => $pageConfigs], compact('user'));
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

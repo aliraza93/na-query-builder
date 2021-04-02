@@ -1,99 +1,137 @@
 <template>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                    <div class="card-header border-bottom p-1">
-                        <div class="head-label">
-                            <h6 class="mb-0">Proxy Users</h6>
-                        </div>
-                        <div class="dt-action-buttons text-right">
-                            <div class="dt-buttons flex-wrap d-inline-flex">
-                                
+    <div class="container">
+        <div class="row">
+            <ad-data-user-info></ad-data-user-info>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="card-header border-bottom p-1">
+                            <div class="head-label">
+                                <h6 class="mb-0">Proxy Users</h6>
+                            </div>
+                            <div class="dt-action-buttons text-right">
+                                <div class="dt-buttons flex-wrap d-inline-flex">
+                                    
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mx-0 row">
-                        <div class="col-sm-12 col-md-6">
-                            <!-- <div class="dataTables_length" id="DataTables_Table_0_length"><label>Show <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="custom-select form-control">
-                                        <option value="7">7</option>
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="75">75</option>
-                                        <option value="100">100</option>
-                                    </select> entries</label></div> -->
-                            <div class="dataTables_filter">
-                                <label style="float: left;">Search:
-                                    <input type="search" class="form-control" placeholder="" aria-controls="DataTables_Table_0">
-                                </label>
+                        <div class="d-flex justify-content-between align-items-center mx-0 row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dataTables_filter">
+                                    <label style="float: left;">Search:
+                                        <input type="search" class="form-control" placeholder="" aria-controls="DataTables_Table_0">
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <a @click="showMenu" type="button" style="float: right;">
-                                <menu-icon />
-                            </a>
-                            <div v-if="menu" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                                <a class="dropdown-item" href="#">
-                                    <i class="mr-50" data-feather="user"></i> Profile
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">
-                                    <i class="mr-50" data-feather="settings"></i> Settings
-                                </a>
-                                <a class="dropdown-item" href="#" onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                                    <i class="mr-50" data-feather="power"></i> Logout
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="loading" v-if="isLoading">
-                        <h2 style="text-align:center">Loading.......</h2>
-                    </div>
-                    <table class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
-                        <thead>
-                            <tr role="row">
-                                <th class="dt-checkboxes-cell dt-checkboxes-select-all">
-                                    <div class="custom-control custom-checkbox"> 
-                                        <input class="custom-control-input" v-model="allSelected" @click="selectAll" type="checkbox" value="" id="checkboxSelectAll">
-                                        <label class="custom-control-label" for="checkboxSelectAll"></label>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="row d-flex" style="float: right;">
+                                    <div class="col-md-8">
+                                        <button v-if="ad_data_users_ids != ''" style="margin-top: 7px;" type="button" class="btn btn-primary">Add proxy User</button>
                                     </div>
-                                </th>
-                                <th>Display Name</th>
-                                <th>Distinguish Name</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>When Created</th>
-                                <th>When Changed</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody v-if="show">
-                            <tr v-for="(value,index) in ad_data_users.data" v-bind:key="index">
-                                <td class=" dt-checkboxes-cell">
-                                    <div class="custom-control custom-checkbox"> 
-                                        <input v-model="ad_data_users_ids" class="custom-control-input dt-checkboxes" type="checkbox" @click="select" :value="value.id" :id="`checkbox` + value.id">
-                                        <label class="custom-control-label" :for="`checkbox` + value.id"></label>
+                                    <div class="col-md-4">
+                                        <div class="ropdown dropdown-user" style="float: right;">
+                                            <button class="btn dropdown-toggle dropdown-user-link" id="dropdown-user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-bars" style="font-size: 20px;"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right" id="showMenu" aria-labelledby="dropdown-user">
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="display_name" type="checkbox" id="display_name">
+                                                        <label class="custom-control-label" for="display_name">Display Name</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="distinguished_name" type="checkbox" id="distinguished_name">
+                                                        <label class="custom-control-label" for="distinguished_name">Distinguished Name</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="name" type="checkbox" id="name">
+                                                        <label class="custom-control-label" for="name">Name</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="email" type="checkbox" id="email">
+                                                        <label class="custom-control-label" for="email">Email</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="when_created" type="checkbox" id="when_created">
+                                                        <label class="custom-control-label" for="when_created">When Crated</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="when_changed" type="checkbox" id="when_changed">
+                                                        <label class="custom-control-label" for="when_changed">When Changed</label>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                                <td>AD {{ value.name }}</td>
-                                <td>Distinguish Name {{ value.name }}</td>
-                                <td>{{ value.name }}</td>
-                                <td>{{ value.email }}</td>
-                                <td>{{ value.created_at }}</td>
-                                <td>{{ value.updated_at }}</td>
-                                <td class="d-flex">
-                                    <a data-toggle="tooltip" title="Go To User" href="#" class="mr-1"><i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i></a>
-                                    <a href="#" data-toggle="tooltip" title="View Info"><i class="fa fa-info-circle"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="text-center" style="margin-top: 15px;" v-if="!show">
-                        <h4>Oops! No Users Found</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="loading" v-if="isLoading">
+                            <h2 style="text-align:center">Loading.......</h2>
+                        </div>
+                        <table class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class="dt-checkboxes-cell dt-checkboxes-select-all">
+                                        <div class="custom-control custom-checkbox"> 
+                                            <input class="custom-control-input" v-model="allSelected" @click="selectAll" type="checkbox" value="" id="checkboxSelectAll">
+                                            <label class="custom-control-label" for="checkboxSelectAll"></label>
+                                        </div>
+                                    </th>
+                                    <th v-if="display_name">Display Name</th>
+                                    <th v-if="distinguished_name">Distinguish Name</th>
+                                    <th v-if="name">Name</th>
+                                    <th v-if="email">Email</th>
+                                    <th v-if="when_created">When Created</th>
+                                    <th v-if="when_changed">When Changed</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody v-if="show">
+                                <tr v-for="(value,index) in ad_data_users.data" v-bind:key="index">
+                                    <td class=" dt-checkboxes-cell">
+                                        <div class="custom-control custom-checkbox"> 
+                                            <input v-model="ad_data_users_ids" class="custom-control-input dt-checkboxes" type="checkbox" @click="select" :value="value.id" :id="`checkbox` + value.id">
+                                            <label class="custom-control-label" :for="`checkbox` + value.id"></label>
+                                        </div>
+                                    </td>
+                                    <td v-if="display_name">AD {{ value.name }}</td>
+                                    <td v-if="distinguished_name">Distinguish Name {{ value.name }}</td>
+                                    <td v-if="name">{{ value.name }}</td>
+                                    <td v-if="email">{{ value.email }}</td>
+                                    <td v-if="when_created">{{ value.created_at }}</td>
+                                    <td v-if="when_changed">{{ value.updated_at }}</td>
+                                    <td class="d-flex">
+                                        <a :href="`user/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To User" class="btn">
+                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
+                                        </a>
+                                        <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
+                                            <i class="fa fa-info-circle"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center" style="margin-top: 15px;" v-if="!show">
+                            <h4>Oops! No Users Found</h4>
+                        </div>
+                        <pagination :pageData="ad_data_users"></pagination>
+                        <!-- <div class="row">
+                            <ad-data-user-info></ad-data-user-info>
+                        </div> -->
                     </div>
-                    <pagination :pageData="ad_data_users"></pagination>
                 </div>
             </div>
         </div>
@@ -102,19 +140,32 @@
 <script>
 import Pagination  from '../pagination/pagination.vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
+import Close from 'vue-material-design-icons/Close.vue';
+import { EventBus } from "../../vue-asset";
+import AdDataUserInfo from './AdDataUserInfo.vue';
 
 export default {
     components: {
         Pagination,
-        MenuIcon
+        MenuIcon,
+        Close,
+        AdDataUserInfo,
+        AdDataUserInfo
     },
     data() {
         return {
             ad_data_users: [],
+
+            display_name: true,
+            distinguished_name: true,
+            name: true,
+            email: true,
+            when_created: true,
+            when_changed: true,
+
             allSelected: false,
             selected: [],
             isLoading: false,
-            menu: false,
             ad_data_users_ids: [],
             errors: null,
             notificationSystem: {
@@ -146,7 +197,11 @@ export default {
         };
     },
     created() {
+        var _this = this;
         this.get_users();
+        EventBus.$on("ad-data-users", function() {
+            _this.get_users();
+        });
     },
 
     mounted() {
@@ -183,10 +238,10 @@ export default {
             });
         },
 
-        //Show Filter Menu
-        showMenu() {
-            this.menu = !this.menu;
-        },
+        //Show User Page
+        // showUser(id) {
+        //     axios.get(base_url + 'ad-data/user/' + id).then(response => {})
+        // },
 
         pageClicked(pageNo) {
             var vm = this;
@@ -200,13 +255,37 @@ export default {
                 this.$toast.error(data.message, "Error Alert", this.notificationSystem.options.error);
             }
         },
+
+        //View User Info
+        view(id) {
+            // $('#basic-modals').modal('show');
+            EventBus.$emit("show-user-info", id);
+        },
             
     },
 
     computed: {
         show() {
             return this.ad_data_users.data.length >= 1 ? true: false
+        },
+
+        showMenu() {
+            if ($(".ropdown").hasClass("show")) {
+                console.log('has class')
+                return false
+            }
+            else{
+                console.log('has no class')
+                return true
+            }
         }
     }
 }
 </script>
+
+<style scoped>
+    .feather-25{
+        width: 25px;
+        height: 25px;
+    }
+</style>

@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
   Route::group(['prefix' => 'ad-data'], function () {
       Route::get('users', 'AdDataController@users')->name('ad-data-users');
       Route::get('users-list', 'AdDataController@user_list')->name('user_list');
+      Route::get('user/{user}', 'AdDataController@showUser');
       Route::get('computers', 'AdDataController@computers')->name('ad-data-computers');
       Route::get('subnet', 'AdDataController@subnet')->name('ad-data-subnet');
       Route::get('tree-view', 'AdDataController@tree_view')->name('ad-data-tree-view');

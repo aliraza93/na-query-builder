@@ -1,7 +1,7 @@
 
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Users')
+@section('title', 'Policies')
 
 @section('vendor-style')
   {{-- vendor css files --}}
@@ -12,8 +12,8 @@
 @section('content')
 
 <!-- Basic table -->
-<section id="ad-data">
-  <ad-data-user-list></ad-data-user-list>
+<section id="policy">
+  <reports-query></reports-query>
 </section>
 @endsection
 
@@ -23,5 +23,5 @@
   <script type="text/javascript">
     var base_url = "{{ url('/').'/' }}";
 </script>
-<script type="text/javascript" src="{{ url('js/ad-data.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/policy.js') }}"></script>
 @endsection

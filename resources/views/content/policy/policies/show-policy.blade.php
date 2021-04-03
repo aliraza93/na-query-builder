@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Subnet View')
+@section('title', 'User View')
 
 @section('page-style')
 {{-- Page Css files --}}
@@ -8,8 +8,8 @@
 @endsection
 
 @section('content')
-<section id="ad-data">
-    <ad-data-subnet-view :user="{{ $user }}"></ad-data-subnet-view>
+<section id="policy">
+    <policy-view :user="{{ $user }}"></policy-view>
 </section>
 @endsection
 
@@ -17,5 +17,5 @@
 <script type="text/javascript">
     var base_url = "{{ url('/').'/' }}";
 </script>
-<script type="text/javascript" src="{{ url('js/ad-data.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/policy.js') }}"></script>
 @endsection

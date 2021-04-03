@@ -113,7 +113,7 @@
                                     <td class="text-center" v-if="email">{{ value.email }}</td>
                                     <td class="text-center" v-if="when_created">{{ value.created_at }}</td>
                                     <td class="text-center" v-if="when_changed">{{ value.updated_at }}</td>
-                                    <td class="text-center d-flex">
+                                    <td class="text-center">
                                         <a :href="`user/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To User" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>

@@ -26,6 +26,7 @@ Vue.component('ad-data-groups-list', require('./components/AdData/Groups/AdDataG
 
 //Ad Data Containers Component
 Vue.component('ad-data-containers-list', require('./components/AdData/Containers/AdDataContainers.vue').default)
+Vue.component('ad-data-container-view', require('./components/AdData/Containers/AdDataContainerView').default)
 
 //Ad Data Organizational Units Components
 Vue.component('ad-data-organizational-units-list', require('./components/AdData/OrganizationalUnits/AdDataOrganizationalUnits.vue').default)

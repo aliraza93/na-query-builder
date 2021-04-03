@@ -3,9 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class PolicyController extends Controller
 {
+
+    // Policy List Page
+    public function policies()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/policies/policies', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Reports List Page
+    public function reports()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/reports/reports', ['pageConfigs' => $pageConfigs]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showPolicy(User $user)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/policies/show-policy', ['pageConfigs' => $pageConfigs], compact('user'));
+    }
+
     /**
      * Display a listing of the resource.
      *

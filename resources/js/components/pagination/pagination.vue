@@ -8,12 +8,11 @@
 			<nav aria-label="Page navigation example">
 				<ul class="pagination justify-content-center">
 					<li class="page-item">
-					<a class="page-link" href="#" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-						<span class="sr-only">Previous</span>
-					</a>
+						<a class="page-link" href="#" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+							<span class="sr-only">Previous</span>
+						</a>
 					</li>
-					
 					<li
 						v-for="pageNo in range(paginateLoop, numberOfPage)" :key="pageNo"
 						class="page-item"
@@ -23,10 +22,10 @@
 					</li>
 					
 					<li class="page-item">
-					<a class="page-link" href="#" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-						<span class="sr-only">Next</span>
-					</a>
+						<a class="page-link" href="#" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+							<span class="sr-only">Next</span>
+						</a>
 					</li>
 				</ul>
 			</nav>
@@ -36,35 +35,25 @@
 </template>
 
 <script type="text/javascript">
-
 	export default{
-
 		props : ['pageData'],
-
 		data(){
-
 			return {
-
-
 			}
 		},
-
 		methods : {
-       
 			range(start, count) {
 				return Array.apply(0, Array(count)).map(function(element, index) {
 					return index + start;
 				});
 			},
 
-			pageClicked(page){
-                
+			pageClicked(page){                
                 this.$parent.pageClicked(page);
-
 			}
 		},
 
-			computed: {
+		computed: {
 			paginateLoop() {
 				let pageData = this.pageData;
 				if (pageData.last_page > 11) {
@@ -85,11 +74,5 @@
 				}
 			}
 		}
-
-
-
-
 	}
-
-
 </script>

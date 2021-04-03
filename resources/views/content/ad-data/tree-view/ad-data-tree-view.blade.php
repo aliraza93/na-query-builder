@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Tree')
+@section('title', 'Tree View')
 
 @section('vendor-style')
 <!-- vendor css files -->

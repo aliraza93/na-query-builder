@@ -1,6 +1,7 @@
 @php
 $configData = Helper::applClasses();
 @endphp
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <div class="main-menu menu-fixed {{($configData['theme'] === 'dark') ? 'menu-dark' : 'menu-light'}} menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
@@ -63,7 +64,7 @@ $configData = Helper::applClasses();
             @endphp
             <li class="nav-item {{ Route::currentRouteName() === $menu->slug ? 'active' : '' }} {{ $custom_classes }}">
                 <a href="{{isset($menu->url)? url($menu->url):'javascript:void(0)'}}" class="d-flex align-items-center" target="{{isset($menu->newTab) ? '_blank':'_self'}}">
-                    <i data-feather="{{ $menu->icon }}"></i>
+                    <i class="fas fa-{{ $menu->icon }}"></i>
                     <span class="menu-title text-truncate">{{ __('locale.'.$menu->name) }}</span>
                     @if (isset($menu->badge))
                     <?php $badgeClasses = "badge badge-pill badge-light-primary ml-auto mr-1" ?>

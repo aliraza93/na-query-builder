@@ -50,7 +50,10 @@ Route::middleware('auth')->group(function () {
   /* Route Policy */
   Route::group(['prefix' => 'policy'], function () {
     Route::get('policies', 'PolicyController@policies')->name('policy-policies');
+    Route::get('policy/{user}', 'PolicyController@showPolicy');
+
     Route::get('reports', 'PolicyController@reports')->name('policy-reports');
+    
     Route::get('rules', 'PolicyController@rules')->name('policy-rules');
     Route::get('url-lists', 'PolicyController@url_lists')->name('policy-url-lists');
     Route::get('block-pages', 'PolicyController@block_pages')->name('policy-block-pages');

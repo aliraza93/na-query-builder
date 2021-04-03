@@ -2,6 +2,7 @@
     <div class="container">
         <div class="row">
             <ad-data-computer-info></ad-data-computer-info>
+            <ad-data-add-subnet></ad-data-add-subnet>
         </div>
         <div class="row">
             <div class="col-12">
@@ -28,7 +29,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
                                     <div class="col-md-8">
-                                        <button style="margin-top: 7px;" type="button" class="btn btn-primary">Add Subnet</button>
+                                        <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-subnet">Add Subnet</button>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="ropdown dropdown-user" style="float: right;">
@@ -101,7 +102,7 @@
                                     <td class="text-center" v-if="ip_address_from">192.155.15.1</td>
                                     <td class="text-center" v-if="ip_address_to">192.155.451.1</td>
                                     <td class="text-center" v-if="ip_address_points"></td>
-                                    <td class="text-center d-flex">
+                                    <td class="text-center">
                                         <a :href="`subnet/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To Subnet" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>
@@ -130,14 +131,16 @@ import Pagination  from '../../pagination/pagination.vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
 import Close from 'vue-material-design-icons/Close.vue';
 import { EventBus } from "../../../vue-asset";
-import AdDataSubnetInfo from './AdDataSubnetInfo.vue';
+import AdDataComputerInfo from '../Computer/AdDataComputerInfo.vue';
+import AdDataAddSubnet from './AdDataAddSubnet.vue';
 
 export default {
     components: {
         Pagination,
         MenuIcon,
         Close,
-        AdDataSubnetInfo
+        AdDataComputerInfo,
+        AdDataAddSubnet
     },
     data() {
         return {

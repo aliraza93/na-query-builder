@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="row">
-            <ad-data-computer-info></ad-data-computer-info>
-            <ad-data-add-container></ad-data-add-container>
+            <add-policy></add-policy>
+            <edit-policy></edit-policy>
         </div>
         <div class="row">
             <div class="col-12">
@@ -10,7 +10,7 @@
                     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="card-header border-bottom p-1">
                             <div class="head-label">
-                                <h6 class="mb-0">Ad Data Containers</h6>
+                                <h6 class="mb-0">Policies</h6>
                             </div>
                             <div class="dt-action-buttons text-right">
                                 <div class="dt-buttons flex-wrap d-inline-flex">
@@ -29,7 +29,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
                                     <div class="col-md-8">
-                                        <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-container">Add Container</button>
+                                        <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-policy">Add Policy</button>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="ropdown dropdown-user" style="float: right;">
@@ -39,8 +39,20 @@
                                             <div class="dropdown-menu dropdown-menu-right" id="showMenu" aria-labelledby="dropdown-user">
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="container_name" type="checkbox" id="container_name">
-                                                        <label class="custom-control-label" for="container_name">Container Name</label>
+                                                        <input class="custom-control-input" v-model="priority" type="checkbox" id="priority">
+                                                        <label class="custom-control-label" for="priority">Priority</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="policy_name" type="checkbox" id="policy_name">
+                                                        <label class="custom-control-label" for="policy_name">Policy Name</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="block_page" type="checkbox" id="block_page">
+                                                        <label class="custom-control-label" for="block_page">Block Page</label>
                                                     </div>
                                                 </a>
                                             </div>
@@ -55,28 +67,32 @@
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
                                 <tr role="row">
-                                    <th v-if="container_name">Container Name</th>
-                                    <th>Action</th>
+                                    <th class="text-center" v-if="priority">Priority</th>
+                                    <th class="text-center" v-if="policy_name">Policy Name</th>
+                                    <th class="text-center" v-if="block_page">Block Page</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody v-if="show">
-                                <tr v-for="(value,index) in ad_data_container.data" v-bind:key="index">
-                                    <td v-if="container_name">AD {{ value.name }}</td>
-                                    <td class="d-flex">
-                                        <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To Computer" class="btn">
-                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
-                                        </a>
-                                        <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
-                                            <i class="fa fa-info-circle"></i>
+                                <tr v-for="(value,index) in policies.data" v-bind:key="index">
+                                    <td class="text-center" v-if="priority"> {{ index+1 }}</td>
+                                    <td class="text-center" v-if="policy_name">{{ value.name }}</td>
+                                    <td class="text-center" v-if="block_page">{{ value.name }}</td>
+                                    <td class="text-center">
+                                        <button data-toggle="tooltip" @click="editPolicy(value.id)" title="Go To Computer" class="btn">
+                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
+                                        <a :href="`policy/` + value.id" title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
+                                            <i class="fa fa-info-circle"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="text-center" style="margin-top: 15px;" v-if="!show">
-                            <h4>Oops! No Containers Found</h4>
+                            <h4>Oops! No Policies Found</h4>
                         </div>
-                        <pagination :pageData="ad_data_container"></pagination>
+                        <pagination :pageData="policies"></pagination>
                     </div>
                 </div>
             </div>
@@ -88,31 +104,33 @@ import Pagination  from '../../pagination/pagination.vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
 import Close from 'vue-material-design-icons/Close.vue';
 import { EventBus } from "../../../vue-asset";
-import AdDataComputerInfo from './AdDataContainerInfo.vue';
-import AdDataAddContainer from './AdDataAddContainer.vue';
+import AddPolicy from './AddPolicy.vue';
+import EditPolicy from './EditPolicy.vue';
+// import AdDataComputerInfo from './AdDataComputerInfo.vue';
 
 export default {
     components: {
         Pagination,
         MenuIcon,
         Close,
-        AdDataComputerInfo,
-        AdDataAddContainer
+        AddPolicy,
+        EditPolicy,
+        // AdDataComputerInfo
     },
     data() {
         return {
-            ad_data_container: [],
+            policies: [],
 
-            container_name: true,
-            distinguished_name: true,
-            when_created: true,
+            policy_name: true,
+            priority: true,
+            block_page: true,
             when_changed: true,
 
             allSelected: false,
             selected: [],
             name: '',
             isLoading: false,
-            ad_data_container_ids: [],
+            policies_ids: [],
             errors: null,
             notificationSystem: {
             options: {
@@ -158,10 +176,10 @@ export default {
 
         //Select all checkboxes
         selectAll() {
-            this.ad_data_container_ids = [];
+            this.policies_ids = [];
             if (!this.allSelected) {
-                for (var user in this.ad_data_container.data) {
-                    this.ad_data_container_ids.push(this.ad_data_container.data[user].id);
+                for (var user in this.policies.data) {
+                    this.policies_ids.push(this.policies.data[user].id);
                 }
             }
         },
@@ -181,7 +199,7 @@ export default {
                     this.name
                 )
                 .then(response => {
-                    this.ad_data_container = response.data
+                    this.policies = response.data
                     this.isLoading = false;
                 })
                 .catch(err => {
@@ -210,16 +228,15 @@ export default {
         },
 
         //View User Info
-        view(id) {
-            // $('#basic-modals').modal('show');
-            EventBus.$emit("show-user-info", id);
+        editPolicy(id) {
+            EventBus.$emit("edit-policy", id);
         },
             
     },
 
     computed: {
         show() {
-            return this.ad_data_container.data.length >= 1 ? true: false
+            return this.policies.data.length >= 1 ? true: false
         },
 
         showMenu() {

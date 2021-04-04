@@ -1,7 +1,7 @@
 
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Subnet')
+@section('title', 'Containers')
 
 @section('vendor-style')
   {{-- vendor css files --}}
@@ -13,7 +13,7 @@
 
 <!-- Basic table -->
 <section id="ad-data">
-  <ad-data-subnet-list></ad-data-subnet-list>
+  <containers-list></containers-list>
 </section>
 @endsection
 
@@ -22,6 +22,6 @@
   {{-- <script src="{{ asset('js/scripts/tables/table-datatables-basic.js') }}"></script> --}}
   <script type="text/javascript">
     var base_url = "{{ url('/').'/' }}";
-  </script>
-  <script type="text/javascript" src="{{ url('js/ad-data.js') }}"></script>
+</script>
+<script type="text/javascript" src="{{ url('js/ad-data.js') }}"></script>
 @endsection

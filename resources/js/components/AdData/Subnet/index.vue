@@ -1,7 +1,8 @@
 <template>
     <div class="container">
         <div class="row">
-            <ad-data-user-info></ad-data-user-info>
+            <ad-data-computer-info></ad-data-computer-info>
+            <ad-data-add-subnet></ad-data-add-subnet>
         </div>
         <div class="row">
             <div class="col-12">
@@ -9,7 +10,7 @@
                     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="card-header border-bottom p-1">
                             <div class="head-label">
-                                <h6 class="mb-0">AD Data Users</h6>
+                                <h6 class="mb-0">Ad Data Subnets</h6>
                             </div>
                             <div class="dt-action-buttons text-right">
                                 <div class="dt-buttons flex-wrap d-inline-flex">
@@ -28,7 +29,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
                                     <div class="col-md-8">
-                                        <button v-if="ad_data_users_ids != ''" style="margin-top: 7px;" type="button" class="btn btn-primary">Add proxy User</button>
+                                        <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-subnet">Add Subnet</button>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="ropdown dropdown-user" style="float: right;">
@@ -38,38 +39,38 @@
                                             <div class="dropdown-menu dropdown-menu-right" id="showMenu" aria-labelledby="dropdown-user">
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="display_name" type="checkbox" id="display_name">
-                                                        <label class="custom-control-label" for="display_name">Display Name</label>
+                                                        <input class="custom-control-input" v-model="enable" type="checkbox" id="enable">
+                                                        <label class="custom-control-label" for="enable">Enable</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="distinguished_name" type="checkbox" id="distinguished_name">
-                                                        <label class="custom-control-label" for="distinguished_name">Distinguished Name</label>
+                                                        <input class="custom-control-input" v-model="subnet_name" type="checkbox" id="subnet_name">
+                                                        <label class="custom-control-label" for="subnet_name">Subnet Name</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="name" type="checkbox" id="name">
-                                                        <label class="custom-control-label" for="name">Name</label>
+                                                        <input class="custom-control-input" v-model="description" type="checkbox" id="description">
+                                                        <label class="custom-control-label" for="description">Description</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="email" type="checkbox" id="email">
-                                                        <label class="custom-control-label" for="email">Email</label>
+                                                        <input class="custom-control-input" v-model="ip_address_from" type="checkbox" id="ip_address_from">
+                                                        <label class="custom-control-label" for="ip_address_from">IP Address From</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="when_created" type="checkbox" id="when_created">
-                                                        <label class="custom-control-label" for="when_created">When Crated</label>
+                                                        <input class="custom-control-input" v-model="ip_address_to" type="checkbox" id="ip_address_to">
+                                                        <label class="custom-control-label" for="ip_address_to">IP Address To</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="when_changed" type="checkbox" id="when_changed">
-                                                        <label class="custom-control-label" for="when_changed">When Changed</label>
+                                                        <input class="custom-control-input" v-model="ip_address_points" type="checkbox" id="ip_address_points">
+                                                        <label class="custom-control-label" for="ip_address_points">IP Address Points</label>
                                                     </div>
                                                 </a>
                                             </div>
@@ -84,50 +85,41 @@
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
                                 <tr role="row">
-                                    <th class="dt-checkboxes-cell dt-checkboxes-select-all text-center">
-                                        <div class="custom-control custom-checkbox"> 
-                                            <input class="custom-control-input" v-model="allSelected" @click="selectAll" type="checkbox" value="" id="checkboxSelectAll">
-                                            <label class="custom-control-label" for="checkboxSelectAll"></label>
-                                        </div>
-                                    </th>
-                                    <th class="text-center" v-if="display_name">Display Name</th>
-                                    <th class="text-center" v-if="distinguished_name">Distinguish Name</th>
-                                    <th class="text-center" v-if="name">Name</th>
-                                    <th class="text-center" v-if="email">Email</th>
-                                    <th class="text-center" v-if="when_created">When Created</th>
-                                    <th class="text-center" v-if="when_changed">When Changed</th>
+                                    <th class="text-center" v-if="enable">Enable</th>
+                                    <th class="text-center" v-if="subnet_name">Subnet Name</th>
+                                    <th class="text-center" v-if="description">Description</th>
+                                    <th class="text-center" v-if="ip_address_from">IP Address From</th>
+                                    <th class="text-center" v-if="ip_address_to">IP Address To</th>
+                                    <th class="text-center" v-if="ip_address_points">IP Address Points</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody v-if="show">
-                                <tr v-for="(value,index) in ad_data_users.data" v-bind:key="index">
-                                    <td class=" dt-checkboxes-cell text-center">
-                                        <div class="custom-control custom-checkbox"> 
-                                            <input v-model="ad_data_users_ids" class="custom-control-input dt-checkboxes" type="checkbox" @click="select" :value="value.id" :id="`checkbox` + value.id">
-                                            <label class="custom-control-label" :for="`checkbox` + value.id"></label>
-                                        </div>
-                                    </td>
-                                    <td class="text-center" v-if="display_name">AD {{ value.name }}</td>
-                                    <td class="text-center" v-if="distinguished_name">Distinguish Name {{ value.name }}</td>
-                                    <td class="text-center" v-if="name">{{ value.name }}</td>
-                                    <td class="text-center" v-if="email">{{ value.email }}</td>
-                                    <td class="text-center" v-if="when_created">{{ value.created_at }}</td>
-                                    <td class="text-center" v-if="when_changed">{{ value.updated_at }}</td>
+                                <tr v-for="(value,index) in ad_data_subnet.data" v-bind:key="index">
+                                    <td class="text-center" v-if="enable">True</td>
+                                    <td class="text-center" v-if="subnet_name">{{ value.name }}</td>
+                                    <td class="text-center" v-if="description"></td>
+                                    <td class="text-center" v-if="ip_address_from">192.155.15.1</td>
+                                    <td class="text-center" v-if="ip_address_to">192.155.451.1</td>
+                                    <td class="text-center" v-if="ip_address_points"></td>
                                     <td class="text-center">
-                                        <a :href="`user/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To User" class="btn">
+                                        <a :href="`subnet/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To Subnet" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>
                                         <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
                                             <i class="fa fa-info-circle"></i>
+                                        </button>
+                                        <button title="Delete Subnet" data-toggle="tooltip" class="btn" @click="view(value.id)">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="text-center" style="margin-top: 15px;" v-if="!show">
-                            <h4>Oops! No Users Found</h4>
+                            <h4>Oops! No Subnets Found</h4>
                         </div>
-                        <pagination :pageData="ad_data_users"></pagination>
+                        <pagination :pageData="ad_data_subnet"></pagination>
                     </div>
                 </div>
             </div>
@@ -139,31 +131,33 @@ import Pagination  from '../../pagination/pagination.vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
 import Close from 'vue-material-design-icons/Close.vue';
 import { EventBus } from "../../../vue-asset";
-import AdDataUserInfo from './AdDataUserInfo.vue';
+import AdDataComputerInfo from '../Computer/AdDataComputerInfo.vue';
+import AdDataAddSubnet from './AdDataAddSubnet.vue';
 
 export default {
     components: {
         Pagination,
         MenuIcon,
         Close,
-        AdDataUserInfo
+        AdDataComputerInfo,
+        AdDataAddSubnet
     },
     data() {
         return {
-            ad_data_users: [],
+            ad_data_subnet: [],
 
-            display_name: true,
-            distinguished_name: true,
-            name: true,
-            email: true,
-            when_created: true,
-            when_changed: true,
+            enable: true,
+            subnet_name: true,
+            ip_address_from: true,
+            ip_address_to: true,
+            ip_address_points: true,
+            description: true,
 
-            name: '',
             allSelected: false,
+            name: '',
             selected: [],
             isLoading: false,
-            ad_data_users_ids: [],
+            ad_data_subnet_ids: [],
             errors: null,
             notificationSystem: {
             options: {
@@ -209,10 +203,10 @@ export default {
 
         //Select all checkboxes
         selectAll() {
-            this.ad_data_users_ids = [];
+            this.ad_data_subnet_ids = [];
             if (!this.allSelected) {
-                for (var user in this.ad_data_users.data) {
-                    this.ad_data_users_ids.push(this.ad_data_users.data[user].id);
+                for (var user in this.ad_data_subnet.data) {
+                    this.ad_data_subnet_ids.push(this.ad_data_subnet.data[user].id);
                 }
             }
         },
@@ -232,7 +226,7 @@ export default {
                     this.name
                 )
                 .then(response => {
-                    this.ad_data_users = response.data
+                    this.ad_data_subnet = response.data
                     this.isLoading = false;
                 })
                 .catch(err => {
@@ -270,7 +264,7 @@ export default {
 
     computed: {
         show() {
-            return this.ad_data_users.data.length >= 1 ? true: false
+            return this.ad_data_subnet.data ? (this.ad_data_subnet.data.length >= 1 ? true: false) : null
         },
 
         showMenu() {

@@ -1,8 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <ad-data-computer-info></ad-data-computer-info>
-            <ad-data-add-container></ad-data-add-container>
+            <ad-data-user-info></ad-data-user-info>
         </div>
         <div class="row">
             <div class="col-12">
@@ -10,7 +9,7 @@
                     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="card-header border-bottom p-1">
                             <div class="head-label">
-                                <h6 class="mb-0">Ad Data Containers</h6>
+                                <h6 class="mb-0">AD Data Users</h6>
                             </div>
                             <div class="dt-action-buttons text-right">
                                 <div class="dt-buttons flex-wrap d-inline-flex">
@@ -29,7 +28,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
                                     <div class="col-md-8">
-                                        <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-container">Add Container</button>
+                                        <button v-if="ad_data_users_ids != ''" style="margin-top: 7px;" type="button" class="btn btn-primary">Add proxy User</button>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="ropdown dropdown-user" style="float: right;">
@@ -39,8 +38,38 @@
                                             <div class="dropdown-menu dropdown-menu-right" id="showMenu" aria-labelledby="dropdown-user">
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="container_name" type="checkbox" id="container_name">
-                                                        <label class="custom-control-label" for="container_name">Container Name</label>
+                                                        <input class="custom-control-input" v-model="display_name" type="checkbox" id="display_name">
+                                                        <label class="custom-control-label" for="display_name">Display Name</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="distinguished_name" type="checkbox" id="distinguished_name">
+                                                        <label class="custom-control-label" for="distinguished_name">Distinguished Name</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="name" type="checkbox" id="name">
+                                                        <label class="custom-control-label" for="name">Name</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="email" type="checkbox" id="email">
+                                                        <label class="custom-control-label" for="email">Email</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="when_created" type="checkbox" id="when_created">
+                                                        <label class="custom-control-label" for="when_created">When Crated</label>
+                                                    </div>
+                                                </a>
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="custom-control custom-checkbox"> 
+                                                        <input class="custom-control-input" v-model="when_changed" type="checkbox" id="when_changed">
+                                                        <label class="custom-control-label" for="when_changed">When Changed</label>
                                                     </div>
                                                 </a>
                                             </div>
@@ -55,15 +84,37 @@
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
                                 <tr role="row">
-                                    <th v-if="container_name">Container Name</th>
-                                    <th>Action</th>
+                                    <th class="dt-checkboxes-cell dt-checkboxes-select-all text-center">
+                                        <div class="custom-control custom-checkbox"> 
+                                            <input class="custom-control-input" v-model="allSelected" @click="selectAll" type="checkbox" value="" id="checkboxSelectAll">
+                                            <label class="custom-control-label" for="checkboxSelectAll"></label>
+                                        </div>
+                                    </th>
+                                    <th class="text-center" v-if="display_name">Display Name</th>
+                                    <th class="text-center" v-if="distinguished_name">Distinguish Name</th>
+                                    <th class="text-center" v-if="name">Name</th>
+                                    <th class="text-center" v-if="email">Email</th>
+                                    <th class="text-center" v-if="when_created">When Created</th>
+                                    <th class="text-center" v-if="when_changed">When Changed</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody v-if="show">
-                                <tr v-for="(value,index) in ad_data_container.data" v-bind:key="index">
-                                    <td v-if="container_name">AD {{ value.name }}</td>
-                                    <td class="d-flex">
-                                        <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To Computer" class="btn">
+                                <tr v-for="(value,index) in ad_data_users.data" v-bind:key="index">
+                                    <td class=" dt-checkboxes-cell text-center">
+                                        <div class="custom-control custom-checkbox"> 
+                                            <input v-model="ad_data_users_ids" class="custom-control-input dt-checkboxes" type="checkbox" @click="select" :value="value.id" :id="`checkbox` + value.id">
+                                            <label class="custom-control-label" :for="`checkbox` + value.id"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" v-if="display_name">AD {{ value.name }}</td>
+                                    <td class="text-center" v-if="distinguished_name">Distinguish Name {{ value.name }}</td>
+                                    <td class="text-center" v-if="name">{{ value.name }}</td>
+                                    <td class="text-center" v-if="email">{{ value.email }}</td>
+                                    <td class="text-center" v-if="when_created">{{ value.created_at }}</td>
+                                    <td class="text-center" v-if="when_changed">{{ value.updated_at }}</td>
+                                    <td class="text-center">
+                                        <a :href="`user/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To User" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>
                                         <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
@@ -74,9 +125,9 @@
                             </tbody>
                         </table>
                         <div class="text-center" style="margin-top: 15px;" v-if="!show">
-                            <h4>Oops! No Containers Found</h4>
+                            <h4>Oops! No Users Found</h4>
                         </div>
-                        <pagination :pageData="ad_data_container"></pagination>
+                        <pagination :pageData="ad_data_users"></pagination>
                     </div>
                 </div>
             </div>
@@ -88,31 +139,31 @@ import Pagination  from '../../pagination/pagination.vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
 import Close from 'vue-material-design-icons/Close.vue';
 import { EventBus } from "../../../vue-asset";
-import AdDataComputerInfo from './AdDataContainerInfo.vue';
-import AdDataAddContainer from './AdDataAddContainer.vue';
+import AdDataUserInfo from './AdDataUserInfo.vue';
 
 export default {
     components: {
         Pagination,
         MenuIcon,
         Close,
-        AdDataComputerInfo,
-        AdDataAddContainer
+        AdDataUserInfo
     },
     data() {
         return {
-            ad_data_container: [],
+            ad_data_users: [],
 
-            container_name: true,
+            display_name: true,
             distinguished_name: true,
+            name: true,
+            email: true,
             when_created: true,
             when_changed: true,
 
+            name: '',
             allSelected: false,
             selected: [],
-            name: '',
             isLoading: false,
-            ad_data_container_ids: [],
+            ad_data_users_ids: [],
             errors: null,
             notificationSystem: {
             options: {
@@ -158,10 +209,10 @@ export default {
 
         //Select all checkboxes
         selectAll() {
-            this.ad_data_container_ids = [];
+            this.ad_data_users_ids = [];
             if (!this.allSelected) {
-                for (var user in this.ad_data_container.data) {
-                    this.ad_data_container_ids.push(this.ad_data_container.data[user].id);
+                for (var user in this.ad_data_users.data) {
+                    this.ad_data_users_ids.push(this.ad_data_users.data[user].id);
                 }
             }
         },
@@ -181,7 +232,7 @@ export default {
                     this.name
                 )
                 .then(response => {
-                    this.ad_data_container = response.data
+                    this.ad_data_users = response.data
                     this.isLoading = false;
                 })
                 .catch(err => {
@@ -219,7 +270,7 @@ export default {
 
     computed: {
         show() {
-            return this.ad_data_container.data.length >= 1 ? true: false
+            return this.ad_data_users.data ? (this.ad_data_users.data.length >= 1 ? true: false) : null
         },
 
         showMenu() {

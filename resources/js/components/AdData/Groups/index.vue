@@ -9,7 +9,7 @@
                     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="card-header border-bottom p-1">
                             <div class="head-label">
-                                <h6 class="mb-0">Ad Data Organizational Units</h6>
+                                <h6 class="mb-0">Ad Data Groups</h6>
                             </div>
                             <div class="dt-action-buttons text-right">
                                 <div class="dt-buttons flex-wrap d-inline-flex">
@@ -38,8 +38,8 @@
                                             <div class="dropdown-menu dropdown-menu-right" id="showMenu" aria-labelledby="dropdown-user">
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="ou_name" type="checkbox" id="ou_name">
-                                                        <label class="custom-control-label" for="ou_name">OU Name</label>
+                                                        <input class="custom-control-input" v-model="display_name" type="checkbox" id="display_name">
+                                                        <label class="custom-control-label" for="display_name">Display Name</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
@@ -72,7 +72,7 @@
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
                                 <tr role="row">
-                                    <th class="text-center" v-if="ou_name">OU Name</th>
+                                    <th class="text-center" v-if="display_name">Display Name</th>
                                     <th class="text-center" v-if="distinguished_name">Distinguish Name</th>
                                     <th class="text-center" v-if="when_created">When Created</th>
                                     <th class="text-center" v-if="when_changed">When Changed</th>
@@ -81,7 +81,7 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in ad_data_computer.data" v-bind:key="index">
-                                    <td class="text-center" v-if="ou_name">OU {{ value.name }}</td>
+                                    <td class="text-center" v-if="display_name">AD {{ value.name }}</td>
                                     <td class="text-center" v-if="distinguished_name">Distinguish Name {{ value.name }}</td>
                                     <td class="text-center" v-if="when_created">{{ value.created_at }}</td>
                                     <td class="text-center" v-if="when_changed">{{ value.updated_at }}</td>
@@ -97,7 +97,7 @@
                             </tbody>
                         </table>
                         <div class="text-center" style="margin-top: 15px;" v-if="!show">
-                            <h4>Oops! No Organizational Units Found</h4>
+                            <h4>Oops! No Computers Found</h4>
                         </div>
                         <pagination :pageData="ad_data_computer"></pagination>
                     </div>
@@ -124,7 +124,7 @@ export default {
         return {
             ad_data_computer: [],
 
-            ou_name: true,
+            display_name: true,
             distinguished_name: true,
             when_created: true,
             when_changed: true,
@@ -240,7 +240,7 @@ export default {
 
     computed: {
         show() {
-            return this.ad_data_computer.data.length >= 1 ? true: false
+            return this.ad_data_computer.data ? (this.ad_data_computer.data.length >= 1 ? true: false) : null
         },
 
         showMenu() {

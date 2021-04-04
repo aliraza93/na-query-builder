@@ -23,7 +23,7 @@
         <div class="sidebar">
           {{-- Include Sidebar Content --}}
           @yield('content-sidebar')
-        </div>
+        </div> 
       </div>
       <div class="{{ $configData['contentsidebarClass'] }}">
         <div class="content-wrapper">

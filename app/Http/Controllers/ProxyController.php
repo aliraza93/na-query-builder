@@ -6,6 +6,20 @@ use Illuminate\Http\Request;
 
 class ProxyController extends Controller
 {
+    // Listeners List Page
+    public function listeners()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/proxy/listeners/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // CA List Page
+    public function ca()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/proxy/CA/index', ['pageConfigs' => $pageConfigs]);
+    }
+    
     /**
      * Display a listing of the resource.
      *

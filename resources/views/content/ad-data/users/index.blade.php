@@ -1,7 +1,7 @@
 
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Containers')
+@section('title', 'Users')
 
 @section('vendor-style')
   {{-- vendor css files --}}
@@ -13,7 +13,7 @@
 
 <!-- Basic table -->
 <section id="ad-data">
-  <ad-data-containers-list></ad-data-containers-list>
+  <user-list></user-list>
 </section>
 @endsection
 

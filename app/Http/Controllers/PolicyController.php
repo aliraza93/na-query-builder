@@ -12,14 +12,42 @@ class PolicyController extends Controller
     public function policies()
     {
         $pageConfigs = ['pageHeader' => false];
-        return view('/content/policy/policies/policies', ['pageConfigs' => $pageConfigs]);
+        return view('/content/policy/policies/index', ['pageConfigs' => $pageConfigs]);
     }
 
     // Reports List Page
     public function reports()
     {
         $pageConfigs = ['pageHeader' => false];
-        return view('/content/policy/reports/reports', ['pageConfigs' => $pageConfigs]);
+        return view('/content/policy/reports/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Reports List Page
+    public function rules()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/rules/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // URL List Page
+    public function url_list()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/url-list/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Block Pages List Page
+    public function block_pages()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/block-pages/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Settings List Page
+    public function settings()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/settings/index', ['pageConfigs' => $pageConfigs]);
     }
 
     /**

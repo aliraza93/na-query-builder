@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="row">
-            <ad-data-computer-info></ad-data-computer-info>
-            <ad-data-add-subnet></ad-data-add-subnet>
+            <add-url></add-url>
+            <edit-url></edit-url>
         </div>
         <div class="row">
             <div class="col-12">
@@ -10,7 +10,7 @@
                     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="card-header border-bottom p-1">
                             <div class="head-label">
-                                <h6 class="mb-0">Ad Data Subnets</h6>
+                                <h6 class="mb-0">URL List</h6>
                             </div>
                             <div class="dt-action-buttons text-right">
                                 <div class="dt-buttons flex-wrap d-inline-flex">
@@ -29,7 +29,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
                                     <div class="col-md-8">
-                                        <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-subnet">Add Subnet</button>
+                                        <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-url">Add Url</button>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="ropdown dropdown-user" style="float: right;">
@@ -39,38 +39,8 @@
                                             <div class="dropdown-menu dropdown-menu-right" id="showMenu" aria-labelledby="dropdown-user">
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="enable" type="checkbox" id="enable">
-                                                        <label class="custom-control-label" for="enable">Enable</label>
-                                                    </div>
-                                                </a>
-                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                    <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="subnet_name" type="checkbox" id="subnet_name">
-                                                        <label class="custom-control-label" for="subnet_name">Subnet Name</label>
-                                                    </div>
-                                                </a>
-                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                    <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="description" type="checkbox" id="description">
-                                                        <label class="custom-control-label" for="description">Description</label>
-                                                    </div>
-                                                </a>
-                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                    <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="ip_address_from" type="checkbox" id="ip_address_from">
-                                                        <label class="custom-control-label" for="ip_address_from">IP Address From</label>
-                                                    </div>
-                                                </a>
-                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                    <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="ip_address_to" type="checkbox" id="ip_address_to">
-                                                        <label class="custom-control-label" for="ip_address_to">IP Address To</label>
-                                                    </div>
-                                                </a>
-                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                    <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="ip_address_points" type="checkbox" id="ip_address_points">
-                                                        <label class="custom-control-label" for="ip_address_points">IP Address Points</label>
+                                                        <input class="custom-control-input" v-model="list_name" type="checkbox" id="list_name">
+                                                        <label class="custom-control-label" for="list_name">List Name</label>
                                                     </div>
                                                 </a>
                                             </div>
@@ -85,41 +55,28 @@
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
                                 <tr role="row">
-                                    <th class="text-center" v-if="enable">Enable</th>
-                                    <th class="text-center" v-if="subnet_name">Subnet Name</th>
-                                    <th class="text-center" v-if="description">Description</th>
-                                    <th class="text-center" v-if="ip_address_from">IP Address From</th>
-                                    <th class="text-center" v-if="ip_address_to">IP Address To</th>
-                                    <th class="text-center" v-if="ip_address_points">IP Address Points</th>
+                                    <th v-if="list_name">List Name</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody v-if="show">
-                                <tr v-for="(value,index) in ad_data_subnet.data" v-bind:key="index">
-                                    <td class="text-center" v-if="enable">True</td>
-                                    <td class="text-center" v-if="subnet_name">{{ value.name }}</td>
-                                    <td class="text-center" v-if="description"></td>
-                                    <td class="text-center" v-if="ip_address_from">192.155.15.1</td>
-                                    <td class="text-center" v-if="ip_address_to">192.155.451.1</td>
-                                    <td class="text-center" v-if="ip_address_points"></td>
+                                <tr v-for="(value,index) in policies.data" v-bind:key="index">
+                                    <td v-if="list_name">{{ value.name }}</td>
                                     <td class="text-center">
-                                        <a :href="`subnet/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To Subnet" class="btn">
-                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
-                                        </a>
-                                        <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
+                                        <button data-toggle="tooltip" @click="editURL(value.id)" title="Go To Computer" class="btn">
+                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
+                                        </button>
+                                        <a :href="`policy/` + value.id" title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
                                             <i class="fa fa-info-circle"></i>
-                                        </button>
-                                        <button title="Delete Subnet" data-toggle="tooltip" class="btn" @click="view(value.id)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="text-center" style="margin-top: 15px;" v-if="!show">
-                            <h4>Oops! No Subnets Found</h4>
+                            <h4>Oops! No URL Found</h4>
                         </div>
-                        <pagination :pageData="ad_data_subnet"></pagination>
+                        <pagination :pageData="policies"></pagination>
                     </div>
                 </div>
             </div>
@@ -128,36 +85,30 @@
 </template>
 <script>
 import Pagination  from '../../pagination/pagination.vue';
-import MenuIcon from 'vue-material-design-icons/Menu.vue';
-import Close from 'vue-material-design-icons/Close.vue';
 import { EventBus } from "../../../vue-asset";
-import AdDataComputerInfo from '../Computer/AdDataComputerInfo.vue';
-import AdDataAddSubnet from './AdDataAddSubnet.vue';
+import AddUrl from './AddUrl.vue';
+import EditUrl from './EditUrl.vue';
 
 export default {
     components: {
         Pagination,
-        MenuIcon,
-        Close,
-        AdDataComputerInfo,
-        AdDataAddSubnet
+        AddUrl,
+        EditUrl
     },
     data() {
         return {
-            ad_data_subnet: [],
+            policies: [],
 
-            enable: true,
-            subnet_name: true,
-            ip_address_from: true,
-            ip_address_to: true,
-            ip_address_points: true,
-            description: true,
+            list_name: true,
+            priority: true,
+            block_page: true,
+            when_changed: true,
 
             allSelected: false,
-            name: '',
             selected: [],
+            name: '',
             isLoading: false,
-            ad_data_subnet_ids: [],
+            policies_ids: [],
             errors: null,
             notificationSystem: {
             options: {
@@ -203,10 +154,10 @@ export default {
 
         //Select all checkboxes
         selectAll() {
-            this.ad_data_subnet_ids = [];
+            this.policies_ids = [];
             if (!this.allSelected) {
-                for (var user in this.ad_data_subnet.data) {
-                    this.ad_data_subnet_ids.push(this.ad_data_subnet.data[user].id);
+                for (var user in this.policies.data) {
+                    this.policies_ids.push(this.policies.data[user].id);
                 }
             }
         },
@@ -226,7 +177,7 @@ export default {
                     this.name
                 )
                 .then(response => {
-                    this.ad_data_subnet = response.data
+                    this.policies = response.data
                     this.isLoading = false;
                 })
                 .catch(err => {
@@ -255,16 +206,15 @@ export default {
         },
 
         //View User Info
-        view(id) {
-            // $('#basic-modals').modal('show');
-            EventBus.$emit("show-user-info", id);
+        editURL(id) {
+            EventBus.$emit("edit-url", id);
         },
             
     },
 
     computed: {
         show() {
-            return this.ad_data_subnet.data.length >= 1 ? true: false
+            return this.policies.data ? (this.policies.data.length >= 1 ? true: false) : null
         },
 
         showMenu() {

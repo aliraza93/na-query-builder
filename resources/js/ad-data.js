@@ -7,29 +7,29 @@ window.Vue = require('vue');
 Vue.use(VueIziToast);
 
 //Ad Data User Components
-Vue.component('ad-data-user-list', require('./components/AdData/User/AdDataUsers.vue').default)
-Vue.component('ad-data-user-view', require('./components/AdData/User/AdDataUserView').default)
+Vue.component('user-list', require('./components/AdData/User/index.vue').default)
+Vue.component('user-view', require('./components/AdData/User/view').default)
 
 //Ad Data Computer Components
-Vue.component('ad-data-computers-list', require('./components/AdData/Computer/AdDataComputers.vue').default)
-Vue.component('ad-data-computer-view', require('./components/AdData/Computer/AdDataComputerView').default)
+Vue.component('computers-list', require('./components/AdData/Computer/index.vue').default)
+Vue.component('computer-view', require('./components/AdData/Computer/view').default)
 
 //Ad Data Subnet Components
-Vue.component('ad-data-subnet-list', require('./components/AdData/Subnet/AdDataSubnets.vue').default)
-Vue.component('ad-data-subnet-view', require('./components/AdData/Subnet/AdDataSubnetView').default)
+Vue.component('subnet-list', require('./components/AdData/Subnet/index.vue').default)
+Vue.component('subnet-view', require('./components/AdData/Subnet/view').default)
 
 //Ad Data Tree Component
-Vue.component('ad-data-tree-view', require('./components/AdData/TreeView/AdDataTreeView.vue').default)
+Vue.component('tree-view', require('./components/AdData/TreeView/index.vue').default)
 
 //Ad Data Groups Component
-Vue.component('ad-data-groups-list', require('./components/AdData/Groups/AdDataGroups.vue').default)
+Vue.component('groups-list', require('./components/AdData/Groups/index.vue').default)
 
 //Ad Data Containers Component
-Vue.component('ad-data-containers-list', require('./components/AdData/Containers/AdDataContainers.vue').default)
-Vue.component('ad-data-container-view', require('./components/AdData/Containers/AdDataContainerView').default)
+Vue.component('containers-list', require('./components/AdData/Containers/index.vue').default)
+Vue.component('container-view', require('./components/AdData/Containers/view').default)
 
 //Ad Data Organizational Units Components
-Vue.component('ad-data-organizational-units-list', require('./components/AdData/OrganizationalUnits/AdDataOrganizationalUnits.vue').default)
+Vue.component('organizational-units-list', require('./components/AdData/OrganizationalUnits/index.vue').default)
 
 var app = new Vue({
 

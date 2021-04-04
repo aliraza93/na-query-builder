@@ -55,8 +55,11 @@ Route::middleware('auth')->group(function () {
     Route::get('reports', 'PolicyController@reports')->name('policy-reports');
     
     Route::get('rules', 'PolicyController@rules')->name('policy-rules');
-    Route::get('url-lists', 'PolicyController@url_lists')->name('policy-url-lists');
+    
+    Route::get('url-lists', 'PolicyController@url_list')->name('policy-url-lists');
+
     Route::get('block-pages', 'PolicyController@block_pages')->name('policy-block-pages');
+    
     Route::get('settings', 'PolicyController@settings')->name('policy-settings');
   });
   /* Route Policy */
@@ -64,7 +67,9 @@ Route::middleware('auth')->group(function () {
   /* Route Proxy */
   Route::group(['prefix' => 'proxy'], function () {
     Route::get('listeners', 'ProxyController@listeners')->name('proxy-listeners');
+    
     Route::get('CA', 'ProxyController@ca')->name('proxy-CA');
+    
     Route::get('Generate-CA', 'ProxyController@GenerateCA')->name('proxy-Generate-CA');
     Route::get('upload-CA', 'ProxyController@upload_ca')->name('proxy-upload-CA');
   });

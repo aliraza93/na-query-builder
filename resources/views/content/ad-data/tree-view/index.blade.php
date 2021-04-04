@@ -10,7 +10,7 @@
 @section('content')
 <!-- Tree section -->
 <section class="basic-custom-icons-tree" id="ad-data">
-    <ad-data-tree-view></ad-data-tree-view>
+    <tree-view></tree-view>
 </section>
 @endsection
 

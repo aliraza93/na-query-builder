@@ -9,7 +9,7 @@
 
 @section('content')
 <section id="ad-data">
-    <ad-data-subnet-view :user="{{ $user }}"></ad-data-subnet-view>
+    <subnet-view :user="{{ $user }}"></subnet-view>
 </section>
 @endsection
 

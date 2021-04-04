@@ -1,7 +1,7 @@
 
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Organizational Units')
+@section('title', 'Subnet')
 
 @section('vendor-style')
   {{-- vendor css files --}}
@@ -13,7 +13,7 @@
 
 <!-- Basic table -->
 <section id="ad-data">
-  <ad-data-organizational-units-list></ad-data-organizational-units-list>
+  <subnet-list></subnet-list>
 </section>
 @endsection
 
@@ -22,6 +22,6 @@
   {{-- <script src="{{ asset('js/scripts/tables/table-datatables-basic.js') }}"></script> --}}
   <script type="text/javascript">
     var base_url = "{{ url('/').'/' }}";
-</script>
-<script type="text/javascript" src="{{ url('js/ad-data.js') }}"></script>
+  </script>
+  <script type="text/javascript" src="{{ url('js/ad-data.js') }}"></script>
 @endsection

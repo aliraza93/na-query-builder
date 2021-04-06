@@ -19,7 +19,32 @@ class ProxyController extends Controller
         $pageConfigs = ['pageHeader' => false];
         return view('/content/proxy/CA/index', ['pageConfigs' => $pageConfigs]);
     }
+
+    // Generate CA List Page
+    public function GenerateCA()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/proxy/GenerateCA/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Upload CA List Page
+    public function upload_ca_page()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/proxy/UploadCA/index', ['pageConfigs' => $pageConfigs]);
+    }
     
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload_ca(Request $request)
+    {
+        dd($request->all());
+    }
+
     /**
      * Display a listing of the resource.
      *

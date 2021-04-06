@@ -71,13 +71,16 @@ Route::middleware('auth')->group(function () {
     Route::get('CA', 'ProxyController@ca')->name('proxy-CA');
     
     Route::get('Generate-CA', 'ProxyController@GenerateCA')->name('proxy-Generate-CA');
-    Route::get('upload-CA', 'ProxyController@upload_ca')->name('proxy-upload-CA');
+    
+    Route::get('upload-CA', 'ProxyController@upload_ca_page')->name('proxy-upload-CA');
+    Route::post('ca/upload', 'ProxyController@upload_ca');
   });
   /* Route Proxy */
 
   /* Route Network */
   Route::group(['prefix' => 'network'], function () {
     Route::get('interface', 'NetworkController@interface')->name('network-interface');
+    
     Route::get('firewall', 'NetworkController@firewall')->name('network-firewall');
   });
   /* Route Network */
@@ -85,9 +88,13 @@ Route::middleware('auth')->group(function () {
   /* Route System */
   Route::group(['prefix' => 'system'], function () {
     Route::get('maintenance', 'SystemController@maintenance')->name('system-maintenance');
-    Route::get('dashboard', 'SystemController@dashboard')->name('system-dashboard');
+    
+    Route::get('dashboard', 'DashboardController@dashboardAnalytics')->name('dashboard');
+
     Route::get('logs', 'SystemController@logs')->name('system-logs');
+
     Route::get('system-clock', 'SystemController@system_clocks')->name('system-system-clock');
+    
     Route::get('LDAP-configurations', 'SystemController@ldap_configurations')->name('system-LDAP-configurations');
   });
   /* Route System */

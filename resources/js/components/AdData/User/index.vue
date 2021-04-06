@@ -107,8 +107,8 @@
                                             <label class="custom-control-label" :for="`checkbox` + value.id"></label>
                                         </div>
                                     </td>
-                                    <td class="text-center" v-if="display_name">AD {{ value.name }}</td>
-                                    <td class="text-center" v-if="distinguished_name">Distinguish Name {{ value.name }}</td>
+                                    <td class="text-center" v-if="display_name">{{ value.name }}</td>
+                                    <td class="text-center" v-if="distinguished_name">{{ value.name }}</td>
                                     <td class="text-center" v-if="name">{{ value.name }}</td>
                                     <td class="text-center" v-if="email">{{ value.email }}</td>
                                     <td class="text-center" v-if="when_created">{{ value.created_at }}</td>

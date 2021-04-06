@@ -12,6 +12,11 @@ Vue.component('listeners', require('./components/Proxy/Listeners/index.vue').def
 //Proxy CA Components
 Vue.component('proxy-ca', require('./components/Proxy/CA/index').default)
 
+//Generate CA Components
+Vue.component('generate-ca', require('./components/Proxy/GenerateCA/index').default)
+
+//Upload CA Components
+Vue.component('upload-ca', require('./components/Proxy/UploadCA/index.vue').default)
 var app = new Vue({
 
     el: '#proxy'

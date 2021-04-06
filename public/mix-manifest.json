@@ -3,5 +3,7 @@
     "/js/ad-data.js": "/js/ad-data.js",
     "/js/policy.js": "/js/policy.js",
     "/js/proxy.js": "/js/proxy.js",
+    "/js/network.js": "/js/network.js",
+    "/js/system.js": "/js/system.js",
     "/css/app.css": "/css/app.css"
 }

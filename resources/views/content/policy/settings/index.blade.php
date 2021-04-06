@@ -1,7 +1,7 @@
 
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Policies')
+@section('title', 'Settings')
 
 @section('vendor-style')
   {{-- vendor css files --}}
@@ -19,7 +19,7 @@
 
 @section('page-script')
   {{-- Page js files --}}
-  {{-- <script src="{{ asset('js/scripts/tables/table-datatables-basic.js') }}"></script> --}}
+  
   <script type="text/javascript">
     var base_url = "{{ url('/').'/' }}";
 </script>

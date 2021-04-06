@@ -73,7 +73,7 @@ class AdDataController extends Controller
         if($name != ''){
             $user->where('name','LIKE','%'.$name.'%');
         }
-        $user = $user->paginate(5);
+        $user = $user->paginate(10);
         return $user;
     }
 
@@ -85,7 +85,7 @@ class AdDataController extends Controller
         if($name != ''){
             $user->where('name','LIKE','%'.$name.'%');
         }
-        $user = $user->paginate(5);
+        $user = $user->paginate(10);
         return $user;
     }
 
@@ -97,7 +97,7 @@ class AdDataController extends Controller
         if($name != ''){
             $user->where('name','LIKE','%'.$name.'%');
         }
-        $user = $user->paginate(5);
+        $user = $user->paginate(10);
         return $user;
     }
 

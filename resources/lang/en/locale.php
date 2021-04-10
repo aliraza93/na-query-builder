@@ -39,6 +39,12 @@ return [
   "System Clock" => "System Clock",
   "LDAP Configurations" => "LDAP Configurations",
 
+  "Query Builder" => "Query Builder",
+  "Operators" => "Operators",
+  "Triggers" => "Triggers",
+  "Operands" => "Operands",
+  "LDAP Configurations" => "LDAP Configurations",
+
   "eCommerce" => "eCommerce",
   "Apps" => "Apps",
   "UI Elements" => "UI Elements",

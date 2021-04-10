@@ -141,7 +141,7 @@
       var menuType = $body.data('menu');
 
       if (currentBreakpoint) {
-        switch (currentBreakpoint.name) {
+        switch (currentBreakpoint.user_name) {
           case 'xl':
             if (menuType === 'vertical-overlay-menu') {
               this.hide();
@@ -173,18 +173,18 @@
 
       // On the small and extra small screen make them overlay menu
       if (menuType === 'vertical-menu' || menuType === 'vertical-menu-modern') {
-        this.toOverlayMenu(currentBreakpoint.name, menuType);
+        this.toOverlayMenu(currentBreakpoint.user_name, menuType);
       }
 
       if ($body.is('.horizontal-layout') && !$body.hasClass('.horizontal-menu-demo')) {
-        this.changeMenu(currentBreakpoint.name);
+        this.changeMenu(currentBreakpoint.user_name);
 
         $('.menu-toggle').removeClass('is-active');
       }
 
       // Dropdown submenu on large screen on hover For Large screen only
       // ---------------------------------------------------------------
-      if (currentBreakpoint.name == 'xl') {
+      if (currentBreakpoint.user_name == 'xl') {
         $('body[data-open="hover"] .main-menu-content .dropdown') // Use selector $('body[data-open="hover"] .header-navbar .dropdown') for menu and navbar DD open on hover
           .on('mouseenter', function () {
             if (!$(this).hasClass('show')) {
@@ -210,17 +210,17 @@
 
       // Added data attribute brand-center for navbar-brand-center
 
-      if (currentBreakpoint.name == 'sm' || currentBreakpoint.name == 'xs') {
+      if (currentBreakpoint.user_name == 'sm' || currentBreakpoint.user_name == 'xs') {
         $('.header-navbar[data-nav=brand-center]').removeClass('navbar-brand-center');
       } else {
         $('.header-navbar[data-nav=brand-center]').addClass('navbar-brand-center');
       }
       // On screen width change, current active menu in horizontal
-      if (currentBreakpoint.name == 'xl' && menuType == 'horizontal-menu') {
+      if (currentBreakpoint.user_name == 'xl' && menuType == 'horizontal-menu') {
         $('.main-menu-content').find('li.active').parents('li').addClass('sidebar-group-active active');
       }
 
-      if (currentBreakpoint.name !== 'xl' && menuType == 'horizontal-menu') {
+      if (currentBreakpoint.user_name !== 'xl' && menuType == 'horizontal-menu') {
         $('#navbar-type').toggleClass('d-none d-xl-block');
       }
 
@@ -273,7 +273,7 @@
 
       // Horizontal Fixed Nav Sticky hight issue on small screens
       // if (menuType == 'horizontal-menu') {
-      //   if (currentBreakpoint.name == 'sm' || currentBreakpoint.name == 'xs') {
+      //   if (currentBreakpoint.user_name == 'sm' || currentBreakpoint.user_name == 'xs') {
       //     if ($(".menu-fixed").length) {
       //       $(".menu-fixed").unstick();
       //     }
@@ -568,7 +568,7 @@
       var hidden = this.hidden;
       var menu = $body.data('menu');
 
-      switch (currentBreakpoint.name) {
+      switch (currentBreakpoint.user_name) {
         case 'xl':
           if (expanded === true) {
             if (menu == 'vertical-overlay-menu') {

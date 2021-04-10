@@ -193,6 +193,33 @@
           "slug": "system-LDAP-configurations"
         }
       ]
+    },
+
+    {
+      "name": "Query Builder",
+      "icon": "align-center",
+      "dropdown": "1",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "query-builder/operators",
+          "name": "Operators",
+          "icon": "cog",
+          "slug": "query-builder-operators"
+        },
+        {
+          "url": "query-builder/triggers",
+          "name": "Triggers",
+          "icon": "cog",
+          "slug": "query-builder-triggers"
+        },
+        {
+          "url": "query-builder/operands",
+          "name": "Operands",
+          "icon": "cog",
+          "slug": "query-builder-operands"
+        }
+      ]
     }
 
   ]

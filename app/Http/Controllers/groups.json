@@ -1,0 +1,168 @@
+{
+    "0": "objectclass",
+    "1": "cn",
+    "2": "sn",
+    "3": "title",
+    "4": "description",
+    "5": "telephonenumber",
+    "6": "givenname",
+    "7": "distinguishedname",
+    "8": "instancetype",
+    "9": "whencreated",
+    "10": "whenchanged",
+    "11": "displayname",
+    "12": "usncreated",
+    "13": "memberof",
+    "14": "usnchanged",
+    "15": "department",
+    "16": "company",
+    "17": "name",
+    "18": "objectguid",
+    "19": "useraccountcontrol",
+    "20": "badpwdcount",
+    "21": "codepage",
+    "22": "countrycode",
+    "23": "badpasswordtime",
+    "24": "lastlogoff",
+    "25": "lastlogon",
+    "26": "pwdlastset",
+    "27": "primarygroupid",
+    "28": "objectsid",
+    "29": "admincount",
+    "30": "accountexpires",
+    "31": "logoncount",
+    "32": "samaccountname",
+    "33": "samaccounttype",
+    "34": "objectcategory",
+    "35": "iscriticalsystemobject",
+    "36": "dscorepropagationdata",
+    "37": "lastlogontimestamp",
+    "38": "mail",
+    "39": "homephone",
+    "objectclass": [
+        "top",
+        "person",
+        "organizationalPerson",
+        "user"
+    ],
+    "cn": [
+        "Administrator"
+    ],
+    "sn": [
+        "farag"
+    ],
+    "title": [
+        "Eng"
+    ],
+    "description": [
+        "Built-in account for administering the computer/domain"
+    ],
+    "telephonenumber": [
+        "012888888"
+    ],
+    "givenname": [
+        "haitham"
+    ],
+    "distinguishedname": [
+        "CN=Administrator,CN=Users,DC=egirna,DC=local"
+    ],
+    "instancetype": [
+        "4"
+    ],
+    "whencreated": [
+        "20200809074251.0Z"
+    ],
+    "whenchanged": [
+        "20200902214456.0Z"
+    ],
+    "displayname": [
+        "admin"
+    ],
+    "usncreated": [
+        "8196"
+    ],
+    "memberof": [
+        "CN=Group Policy Creator Owners,CN=Users,DC=egirna,DC=local",
+        "CN=Domain Admins,CN=Users,DC=egirna,DC=local",
+        "CN=Enterprise Admins,CN=Users,DC=egirna,DC=local",
+        "CN=Schema Admins,CN=Users,DC=egirna,DC=local",
+        "CN=Administrators,CN=Builtin,DC=egirna,DC=local"
+    ],
+    "usnchanged": [
+        "16545"
+    ],
+    "department": [
+        "enginner"
+    ],
+    "company": [
+        "IT"
+    ],
+    "name": [
+        "Administrator"
+    ],
+    "objectguid": "ab6792ea-edf6-4826-a749-e27a7fb928ee",
+    "useraccountcontrol": [
+        "66048"
+    ],
+    "badpwdcount": [
+        "0"
+    ],
+    "codepage": [
+        "0"
+    ],
+    "countrycode": [
+        "0"
+    ],
+    "badpasswordtime": [
+        "132435491192872796"
+    ],
+    "lastlogoff": [
+        "0"
+    ],
+    "lastlogon": [
+        "132435562951099042"
+    ],
+    "pwdlastset": [
+        "132412111979831076"
+    ],
+    "primarygroupid": [
+        "513"
+    ],
+    "objectsid": "S-1-5-21-2886082814-3353985293-1178532940-500",
+    "admincount": [
+        "1"
+    ],
+    "accountexpires": [
+        "9223372036854775807"
+    ],
+    "logoncount": [
+        "36"
+    ],
+    "samaccountname": [
+        "Administrator"
+    ],
+    "samaccounttype": [
+        "805306368"
+    ],
+    "objectcategory": [
+        "CN=Person,CN=Schema,CN=Configuration,DC=egirna,DC=local"
+    ],
+    "iscriticalsystemobject": [
+        "TRUE"
+    ],
+    "dscorepropagationdata": [
+        "20200809075914.0Z",
+        "20200809075914.0Z",
+        "20200809074406.0Z",
+        "16010101181216.0Z"
+    ],
+    "lastlogontimestamp": [
+        "132428157840964938"
+    ],
+    "mail": [
+        "haitham911eg@gmail.com"
+    ],
+    "homephone": [
+        "0238845555"
+    ]
+}

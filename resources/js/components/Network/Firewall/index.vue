@@ -29,8 +29,8 @@
                                 <button style="margin-top: 7px; float: right;" class="btn btn-primary" data-toggle="modal" data-target="#create-rule">Create rule</button>
                             </div>
                         </div>
-                        <div class="loading" v-if="isLoading">
-                            <h2 style="text-align:center">Loading.......</h2>
+                        <div class="loading text-center" v-if="isLoading">
+                            <b-spinner variant="primary" label="Text Centered"></b-spinner>
                         </div>
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
@@ -58,7 +58,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-center" style="margin-top: 15px;" v-if="!show">
+                        <div class="text-center" style="margin-top: 15px;" v-if="!isLoading && !show">
                             <h4>Oops! No Network Firewall Found</h4>
                         </div>
                         <pagination :pageData="policies"></pagination>

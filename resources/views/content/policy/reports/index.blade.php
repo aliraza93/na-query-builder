@@ -1,512 +1,235 @@
+@isset($pageConfigs)
+    {!! Helper::updatePageConfig($pageConfigs) !!}
+@endisset
 
-@extends('layouts/contentLayoutMaster')
+<!DOCTYPE html>
+{{-- {!! Helper::applClasses() !!} --}}
+@php
+    $configData = Helper::applClasses();
+@endphp
 
-@section('title', 'Reports')
+<html lang="@if(session()->has('locale')){{session()->get('locale')}}@else{{$configData['defaultLanguage']}}@endif" data-textdirection="{{ env('MIX_CONTENT_DIRECTION') === 'rtl' ? 'rtl' : 'ltr' }}" class="{{ ($configData['theme'] === 'light') ? '' : $configData['layoutTheme'] }}">
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sasoft - Software Landing Page">
+    
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- ========== Page Title ========== -->
+    <title>Reports - NA Query Builder</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('images/logo/favicon.ico')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+    {{-- {!! Helper::applClasses() !!} --}}
+    @php $configData = Helper::applClasses(); @endphp
 
-@section('vendor-style')
-  {{-- vendor css files --}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/css/query-builder.default.min.css">
-  {{-- <link rel="stylesheet" href="{{ asset('vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}"> --}}
-@endsection
+    {{-- Page Styles --}}
+    @if($configData['mainLayoutType'] === 'horizontal')
+    <link rel="stylesheet" href="{{ asset('css/base/core/menu/menu-types/horizontal-menu.css') }}" />
+    @endif
+    <link rel="stylesheet" href="{{ asset('css/base/core/menu/menu-types/vertical-menu.css') }}" />
+    {{-- vendor css files --}}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"yy>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/1.0.2/awesome-bootstrap-checkbox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap3.css">
+    <link rel="stylesheet" href="{{ asset('vendors/css/forms/select/select2.min.css') }}">
+    <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/css/query-builder.default.min.css">
 
-@section('content')
-
-<!-- Basic table -->
-<section>
-  <div class="row">
-    <!-- Tabs with Icon starts -->
-    <div class="col-xl-12 col-lg-12 col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Reports</h4>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div id="builder"></div>
+</head>
+<html>
+<body class="horizontal-layout horizontal-menu {{$configData['horizontalMenuType']}} {{ $configData['showMenu'] === true ? '' : '1-column' }}
+{{ $configData['blankPageClass'] }} {{ $configData['bodyClass'] }}
+{{ $configData['footerType'] }}" data-menu="horizontal-menu" data-col="{{ $configData['showMenu'] === true ? '' : '1-column' }}" data-open="hover" data-layout="{{ ($configData['theme'] === 'light') ? '' : $configData['layoutTheme'] }}" style="{{ $configData['bodyStyle'] }}" data-framework="laravel" data-asset-path="{{ asset('/')}}">
+    <!-- BEGIN: Content-->
+    <div style="margin-top: 10px;">
+        @if(($configData['contentLayout']!=='default') && isset($configData['contentLayout']))
+        <div class="content-area-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container p-0' : '' }}">
+            <div class="{{ $configData['sidebarPositionClass'] }}">
+                <div class="sidebar">
+                    {{-- Include Sidebar Content --}}
+                    @yield('content-sidebar')
                 </div>
-              </div>
+            </div>
+            <div class="{{ $configData['contentsidebarClass'] }}">
+                <div class="content-wrapper">
+                    <div class="content-body">
+                        {{-- Include Page Content --}}
+                        @include('content.policy.reports._content')
+                    </div>
+                </div>
             </div>
         </div>
+        @else
+        <div class="content-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container p-0' : '' }}">
+            {{-- Include Breadcrumb --}}
+            @if($configData['pageHeader'] == true)
+                @include('panels.breadcrumb')
+            @endif
+
+            <div class="content-body">
+
+                {{-- Include Page Content --}}
+                @include('content.policy.reports._content')
+
+            </div>
+        </div>
+        @endif
+
     </div>
-    <!-- Tabs with Icon ends -->
-</div>
-</section>
+    <!-- End: Content-->
 
-@endsection
+    {{-- Page js files --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microplugin/0.0.3/microplugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-extendext@1.0.0/jquery-extendext.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.3/doT.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/js/query-builder.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-extendext@1.0.0/jquery-extendext.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-sql-parser@1.4.1/dist/parser/sqlParser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.3/doT.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
+    
+    <script src="{{ asset('js/scripts/forms/form-select2.js') }}"></script>
+    <!-- injector:js -->
+    <script src="{{ asset('css/querybuilder/main.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/defaults.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/core.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/public.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/data.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/template.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/utils.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/model.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/jquery.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/bt-checkbox/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/bt-selectpicker/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/bt-tooltip-errors/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/change-filters/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/chosen-selectpicker/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/filter-description/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/invert/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/mongodb-support/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/not-group/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/sortable/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/sql-support/plugin.js') }}"></script>
+    <script src="{{ asset('css/querybuilder/plugins/unique-filter/plugin.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder@2.6.0/dist/i18n/query-builder.en.js"></script>
+    <!-- endinjector -->
 
-@section('page-script')
-  {{-- Page js files --}}
-  
-  <script>
-      $(document).ready(function(){
-        var $b = $('#builder');
-
-        var options = {
-            allow_empty: true,
-
-            //default_filter: 'name',
-            sort_filters: true,
-
-            optgroups: {
-                core: {
-                    en: 'Core',
-                    fr: 'Coeur'
-                }
-            },
-
-            // plugins: {
-            //     'bt-tooltip-errors': {
-            //         delay: 100
-            //     },
-            //     'sortable': null,
-            //     'filter-description': {
-            //         mode: 'bootbox'
-            //     },
-            //     'bt-selectpicker': null,
-            //     //      'chosen-selectpicker': null,
-            //     'unique-filter': null,
-            //     'bt-checkbox': {
-            //         color: 'primary'
-            //     },
-            //     'invert': null,
-            //     'not-group': null
-            // },
-
-            // standard operators in custom optgroups
-            operators: [{
-                    type: 'equal',
-                    optgroup: 'basic'
-                },
-                {
-                    type: 'not_equal',
-                    optgroup: 'basic'
-                },
-                {
-                    type: 'in',
-                    optgroup: 'basic'
-                },
-                {
-                    type: 'not_in',
-                    optgroup: 'basic'
-                },
-                {
-                    type: 'less',
-                    optgroup: 'numbers'
-                },
-                {
-                    type: 'less_or_equal',
-                    optgroup: 'numbers'
-                },
-                {
-                    type: 'greater',
-                    optgroup: 'numbers'
-                },
-                {
-                    type: 'greater_or_equal',
-                    optgroup: 'numbers'
-                },
-                {
-                    type: 'between',
-                    optgroup: 'numbers'
-                },
-                {
-                    type: 'not_between',
-                    optgroup: 'numbers'
-                },
-                {
-                    type: 'begins_with',
-                    optgroup: 'strings'
-                },
-                {
-                    type: 'not_begins_with',
-                    optgroup: 'strings'
-                },
-                {
-                    type: 'contains',
-                    optgroup: 'strings'
-                },
-                {
-                    type: 'not_contains',
-                    optgroup: 'strings'
-                },
-                {
-                    type: 'ends_with',
-                    optgroup: 'strings'
-                },
-                {
-                    type: 'not_ends_with',
-                    optgroup: 'strings'
-                },
-                {
-                    type: 'is_empty'
-                },
-                {
-                    type: 'is_not_empty'
-                },
-                {
-                    type: 'is_null'
-                },
-                {
-                    type: 'is_not_null'
-                }
-            ],
-
-            filters: [
-                /*
-                 * string with separator
-                 */
-                {
+    <script>
+        $(document).ready(function(){
+            var rules_plugins = {
+                condition: 'AND',
+                rules: [{
                     id: 'name',
-                    field: 'username',
-                    label: {
-                        en: 'Name',
-                        fr: 'Nom'
-                    },
-                    icon: 'glyphicon glyphicon-user',
-                    value_separator: ',',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }, {
+                    condition: 'OR',
+                    rules: [{
+                    id: 'category',
+                    operator: 'in',
+                    value: [1, 2]
+                    }, {
+                    id: 'in_stock',
+                    operator: 'equal',
+                    value: 0
+                    }]
+                }]
+                };
+
+                $('#builder').queryBuilder({
+                plugins: [
+                    'sortable',
+                    // 'filter-description',
+                    'unique-filter',
+                    'bt-tooltip-errors',
+                    'bt-selectpicker',
+                    'bt-checkbox'
+                    // 'invert',
+                    // 'not-group'
+                ],
+
+                filters: [{
+                    id: 'name',
+                    label: 'Name',
                     type: 'string',
-                    optgroup: 'core',
-                    default_value: 'Mistic',
-                    size: 30,
-                    validation: {
-                        allow_empty_value: true
-                    },
-                    unique: true
-                },
-                /*
-                 * integer with separator for 'in' and 'not_in'
-                 */
-                {
-                    id: 'age',
-                    label: 'Age',
-                    icon: 'glyphicon glyphicon-calendar',
-                    type: 'integer',
-                    input: 'text',
-                    value_separator: '|',
-                    optgroup: 'core',
-                    description: function(rule) {
-                        if (rule.operator && ['in', 'not_in'].indexOf(rule.operator.type) !== -1) {
-                            return 'Use a pipe (|) to separate multiple values with "in" and "not in" operators';
-                        }
-                    }
-                },
-                /*
-                 * textarea
-                 */
-                {
-                    id: 'bson',
-                    label: 'BSON',
-                    icon: 'glyphicon glyphicon-qrcode',
-                    type: 'string',
-                    input: 'textarea',
-                    operators: ['equal'],
-                    size: 30,
-                    rows: 3
-                },
-                /*
-                 * checkbox
-                 */
-                {
+                    unique: true,
+                    description: 'This filter is "unique", it can be used only once'
+                }, {
                     id: 'category',
                     label: 'Category',
-                    icon: 'glyphicon glyphicon-th-list',
                     type: 'integer',
                     input: 'checkbox',
-                    optgroup: 'core',
                     values: {
-                        1: 'Books',
-                        2: 'Movies',
-                        3: 'Music',
-                        4: 'Tools',
-                        5: 'Goodies',
-                        6: 'Clothes'
+                    1: 'Books',
+                    2: 'Movies',
+                    3: 'Music',
+                    4: 'Goodies'
                     },
-                    colors: {
-                        1: 'foo',
-                        2: 'warning',
-                        5: 'success'
-                    },
-                    operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null'],
-                    default_operator: 'in'
-                },
-                /*
-                 * select
-                 */
-                {
-                    id: 'continent',
-                    label: 'Continent',
-                    icon: 'glyphicon glyphicon-globe',
-                    type: 'string',
-                    input: 'select',
-                    optgroup: 'core',
-                    placeholder: 'Select something',
-                    values: [{
-                            label: 'Europe',
-                            value: 'eur',
-                            optgroup: 'North'
-                        },
-                        {
-                            label: 'Asia',
-                            value: 'asia',
-                            optgroup: 'North'
-                        },
-                        {
-                            label: 'Oceania',
-                            value: 'oce',
-                            optgroup: 'South'
-                        },
-                        {
-                            label: 'Africa',
-                            value: 'afr',
-                            optgroup: 'South'
-                        },
-                        {
-                            label: 'North America',
-                            value: 'na',
-                            optgroup: 'North'
-                        },
-                        {
-                            label: 'South America',
-                            value: 'sa',
-                            optgroup: 'South'
-                        },
-                        {
-                            label: 'Mordor',
-                            value: 'mrd'
-                        }
-                    ],
-                    operators: ['equal', 'not_equal', 'is_null', 'is_not_null']
-                },
-                /*
-                 * Selectize
-                 */
-                {
-                    id: 'state',
-                    label: 'State',
-                    icon: 'glyphicon glyphicon-globe',
-                    type: 'string',
-                    input: 'select',
-                    multiple: true,
-                    plugin: 'selectize',
-                    plugin_config: {
-                        valueField: 'id',
-                        labelField: 'name',
-                        searchField: 'name',
-                        sortField: 'name',
-                        options: [{
-                                id: "AL",
-                                name: "Alabama"
-                            },
-                            {
-                                id: "AK",
-                                name: "Alaska"
-                            },
-                            {
-                                id: "AZ",
-                                name: "Arizona"
-                            },
-                            {
-                                id: "AR",
-                                name: "Arkansas"
-                            },
-                            {
-                                id: "CA",
-                                name: "California"
-                            },
-                            {
-                                id: "CO",
-                                name: "Colorado"
-                            },
-                            {
-                                id: "CT",
-                                name: "Connecticut"
-                            },
-                            {
-                                id: "DE",
-                                name: "Delaware"
-                            },
-                            {
-                                id: "DC",
-                                name: "District of Columbia"
-                            },
-                            {
-                                id: "FL",
-                                name: "Florida"
-                            },
-                            {
-                                id: "GA",
-                                name: "Georgia"
-                            },
-                            {
-                                id: "HI",
-                                name: "Hawaii"
-                            },
-                            {
-                                id: "ID",
-                                name: "Idaho"
-                            }
-                        ]
-                    },
-                    valueSetter: function(rule, value) {
-                        rule.$el.find('.rule-value-container select')[0].selectize.setValue(value);
-                    }
-                },
-                /*
-                 * radio
-                 */
-                {
+                    color: 'primary',
+                    description: 'This filter uses Awesome Bootstrap Checkboxes',
+                    operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+                }, {
                     id: 'in_stock',
                     label: 'In stock',
-                    icon: 'glyphicon glyphicon-log-in',
                     type: 'integer',
                     input: 'radio',
-                    optgroup: 'plugin',
                     values: {
-                        1: 'Yes',
-                        0: 'No'
+                    1: 'Yes',
+                    0: 'No'
                     },
+                    colors: {
+                    1: 'success',
+                    0: 'danger'
+                    },
+                    description: 'This filter also uses Awesome Bootstrap Checkboxes',
                     operators: ['equal']
-                },
-                /*
-                 * double
-                 */
-                {
+                }, {
                     id: 'price',
                     label: 'Price',
-                    icon: 'glyphicon glyphicon-usd',
                     type: 'double',
-                    size: 5,
                     validation: {
-                        min: 0,
-                        step: 0.01
-                    },
-                    data: {
-                        class: 'com.example.PriceTag'
+                    min: 0,
+                    step: 0.01
                     }
-                },
-                /*
-                 * slider
-                 */
-                {
-                    id: 'rate',
-                    label: 'Rate',
-                    icon: 'glyphicon glyphicon-flash',
-                    type: 'integer',
-                    validation: {
-                        min: 0,
-                        max: 100
-                    },
-                    plugin: 'slider',
-                    plugin_config: {
-                        min: 0,
-                        max: 100,
-                        value: 0
-                    },
-                    onAfterSetValue: function(rule, value) {
-                        var input = rule.$el.find('.rule-value-container input');
-                        input.slider('setValue', value);
-                        input.val(value); // don't know why I need it
-                    }
-                },
-                /*
-                 * placeholder and regex validation
-                 */
-                {
-                    id: 'id',
-                    label: 'Identifier',
-                    icon: 'glyphicon glyphicon-sunglasses',
-                    type: 'string',
-                    optgroup: 'plugin',
-                    placeholder: '____-____-____',
-                    size: 14,
-                    operators: ['equal', 'not_equal'],
-                    validation: {
-                        format: /^.{4}-.{4}-.{4}$/,
-                        messages: {
-                            format: 'Invalid format, expected: AAAA-AAAA-AAAA'
-                        }
-                    }
-                },
-                /*
-                 * custom input
-                 */
-                {
-                    id: 'coord',
-                    label: 'Coordinates',
-                    icon: 'glyphicon glyphicon-star-empty',
-                    type: 'string',
-                    default_value: 'C.5',
-                    description: 'The letter is the cadran identifier:\
-                    <ul>\
-                      <li><b>A</b>: alpha</li>\
-                      <li><b>B</b>: beta</li>\
-                      <li><b>C</b>: gamma</li>\
-                    </ul>',
-                    validation: {
-                        format: /^[A-C]{1}.[1-6]{1}$/
-                    },
-                    input: function(rule, name) {
-                        var $container = rule.$el.find('.rule-value-container');
+                }],
 
-                        $container.on('change', '[name=' + name + '_1]', function() {
-                            var h = '';
+                rules: rules_plugins
+                });
 
-                            switch ($(this).val()) {
-                                case 'A':
-                                    h = '<option value="-1">-</option> <option value="1">1</option> <option value="2">2</option>';
-                                    break;
-                                case 'B':
-                                    h = '<option value="-1">-</option> <option value="3">3</option> <option value="4">4</option>';
-                                    break;
-                                case 'C':
-                                    h = '<option value="-1">-</option> <option value="5">5</option> <option value="6">6</option>';
-                                    break;
-                            }
+                $('#btn-reset').on('click', function() {
+                $('#builder-plugins').queryBuilder('reset');
+                });
 
-                            $container.find('[name$=_2]')
-                                .html(h).toggle(!!h)
-                                .val('-1').trigger('change');
-                        });
+                $('#btn-set').on('click', function() {
+                $('#builder-plugins').queryBuilder('setRules', rules_plugins);
+                });
 
-                        return '\
-                        <select name="' + name + '_1"> \
-                          <option value="-1">-</option> \
-                          <option value="A">A</option> \
-                          <option value="B">B</option> \
-                          <option value="C">C</option> \
-                        </select> \
-                        <select name="' + name + '_2" style="display:none;"></select>';
-                    },
-                    valueGetter: function(rule) {
-                        return rule.$el.find('.rule-value-container [name$=_1]').val() +
-                            '.' + rule.$el.find('.rule-value-container [name$=_2]').val();
-                    },
-                    valueSetter: function(rule, value) {
-                        if (rule.operator.nb_inputs > 0) {
-                            var val = value.split('.');
+                $('#btn-get').on('click', function() {
+                var result = $('#builder-plugins').queryBuilder('getRules');
 
-                            rule.$el.find('.rule-value-container [name$=_1]').val(val[0]).trigger('change');
-                            rule.$el.find('.rule-value-container [name$=_2]').val(val[1]).trigger('change');
-                        }
-                    }
+                if (!$.isEmptyObject(result)) {
+                    alert(JSON.stringify(result, null, 2));
                 }
-            ]
-        };
-
-        // init
-        $('#builder').queryBuilder(options);
-      })
-
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/microplugin/0.0.3/microplugin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery-extendext@1.0.0/jquery-extendext.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.3/doT.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/js/query-builder.min.js"></script>
-  {{-- <script type="text/javascript">
-    var base_url = "{{ url('/').'/' }}";
-</script>
-<script type="text/javascript" src="{{ url('js/policy.js') }}"></script> --}}
-@endsection
+                });
+            
+        })
+    </script>
+</body>
+</html>

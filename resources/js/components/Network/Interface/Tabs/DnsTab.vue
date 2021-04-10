@@ -12,7 +12,7 @@
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <label for="dns">DNS</label>
-                                    <input class="form-control" type="text" id="dns" v-model="value.name" placeholder="198.168.252.2">
+                                    <input class="form-control" type="text" id="dns" v-model="value.user_name" placeholder="198.168.252.2">
                                 </div>
                             </div>
                             <div class="col-md-2">

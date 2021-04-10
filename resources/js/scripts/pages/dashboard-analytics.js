@@ -37,7 +37,7 @@ $(window).on('load', function () {
   setTimeout(function () {
     toastr['success'](
       'You have successfully logged in to NA Query Builder. Now you can start to explore!',
-      '👋 Welcome ' + user.name,
+      '👋 Welcome ' + user.user_name,
       {
         closeButton: true,
         tapToDismiss: false

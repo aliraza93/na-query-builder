@@ -91,7 +91,7 @@ $(function () {
         renderDetails =
           '<div class="customer-details mt-1">' +
           '<p class="mb-25">' +
-          customerDetails[$this.val()].name +
+          customerDetails[$this.val()].user_name +
           '</p>' +
           '<p class="mb-25">' +
           customerDetails[$this.val()].company +

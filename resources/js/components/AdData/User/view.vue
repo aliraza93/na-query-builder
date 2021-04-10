@@ -13,7 +13,7 @@
                                         <img class="img-fluid rounded" src='/images/avatars/7.png' height="104" width="104" alt="User avatar" />
                                         <div class="d-flex flex-column ml-1">
                                             <div class="user-info mb-1">
-                                                <h4 class="mb-0">{{ user.name }}</h4>
+                                                <h4 class="mb-0">{{ user.user_name }}</h4>
                                                 <span class="card-text">{{ user.email }}</span>
                                             </div>
                                             <div class="d-flex flex-wrap">
@@ -31,21 +31,21 @@
                                             <i data-feather="user" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">Display Name</span>
                                         </div>
-                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.name }}</p>
+                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.user_name }}</p>
                                     </div>
                                     <div class="d-flex flex-wrap my-50">
                                         <div class="user-info-title">
                                             <i data-feather="user" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">Distinguished Name</span>
                                         </div>
-                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.name }}</p>
+                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.user_name }}</p>
                                     </div>
                                     <div class="d-flex flex-wrap my-50">
                                         <div class="user-info-title">
                                             <i data-feather="user" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">Name</span>
                                         </div>
-                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.name }}</p>
+                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.user_name }}</p>
                                     </div>
                                     <div class="d-flex flex-wrap my-50">
                                         <div class="user-info-title">
@@ -59,14 +59,14 @@
                                             <i data-feather="calendar" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">When Created</span>
                                         </div>
-                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.created_at }}</p>
+                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.when_created }}</p>
                                     </div>
                                     <div class="d-flex flex-wrap">
                                         <div class="user-info-title">
                                             <i data-feather="calendar" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">When Changed</span>
                                         </div>
-                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.updated_at }}</p>
+                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.when_updated }}</p>
                                     </div>
                                 </div>
                             </div>

@@ -84,8 +84,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="loading" v-if="isLoading">
-                            <h2 style="text-align:center">Loading.......</h2>
+                        <div class="loading text-center" v-if="isLoading">
+                            <b-spinner variant="primary" label="Text Centered"></b-spinner>
                         </div>
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
@@ -102,7 +102,7 @@
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in ad_data_computer.data" v-bind:key="index">
                                     <td v-if="source_ip">192.168.1.5</td>
-                                    <td class="text-center" v-if="traffic_source_name">{{ value.name }}</td>
+                                    <td class="text-center" v-if="traffic_source_name">{{ value.user_name }}</td>
                                     <td class="text-center" v-if="policy_name">Home</td>
                                     <td class="text-center" v-if="rule_name">Block All</td>
                                     <td class="text-center" v-if="policy_assignment">Home Level</td>
@@ -111,7 +111,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-center" style="margin-top: 15px;" v-if="!show">
+                        <div class="text-center" style="margin-top: 15px;" v-if="!isLoading && !show">
                             <h4>Oops! No Logs Found</h4>
                         </div>
                         <pagination :pageData="ad_data_computer"></pagination>

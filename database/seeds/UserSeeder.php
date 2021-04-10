@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
                 'delete' => false,
                 'admin' => false,
                 'active' => true,
-                'created_at' => Carbon::now()
+                'when_created' => Carbon::now()
             ],
             [
                 'name' => 'User',
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
                 'delete' => true,
                 'admin' => false,
                 'active' => true,
-                'created_at' => Carbon::now()
+                'when_created' => Carbon::now()
             ],
             [
                 'name' => 'Admin',
@@ -46,18 +46,20 @@ class UserSeeder extends Seeder
                 'delete' => true,
                 'admin' => true,
                 'active' => true,
-                'created_at' => Carbon::now()
+                'when_created' => Carbon::now()
             ]
         ]);
 
-        DB::table('users')
+        DB::table('login_user')
         ->insert([
             [
-                'name' => 'admin',
-                'email' => 'admin@admin.com',
-                'password' => bcrypt('1234'),
-                'user_type_id' => 3,
-                'created_at' => Carbon::now()
+                'first_name'    => 'Admin',
+                'last_name'     => 'User',
+                'user_name'     => 'admin',
+                'email'         => 'admin@admin.com',
+                'password'      => bcrypt('1234'),
+                'user_type_id'  => 3,
+                'when_created'  => Carbon::now()
             ]
         ]);
 
@@ -67,28 +69,28 @@ class UserSeeder extends Seeder
                 'name' => 'CRM',
                 'code' => 'CRM',
                 'path' => 'crm',
-                'created_at' => Carbon::now()
+                'when_created' => Carbon::now()
             ],
             [
                 'name' => 'administracja',
                 'code' => 'ADMIN',
                 'path' => 'admin',
-                'created_at' => Carbon::now()
+                'when_created' => Carbon::now()
             ]
         ]);
 
         DB::table('user_permissions')
         ->insert([
-            ['user_id' => 1,'permission_id' => 1],
-            ['user_id' => 1,'permission_id' => 2]
+            ['user_id' => 3,'permission_id' => 1],
+            ['user_id' => 3,'permission_id' => 2]
         ]);
 
-        // DB::table('company_types')
-        // ->insert([
-        //     ['name' => 'Media','code' => 'MED'],
-        //     ['name' => 'Firmy IT','code' => 'FIT'],
-        //     ['name' => 'Sklepy','code' => 'SKL'],
-        //     ['name' => 'Organizacje','code' => 'ORG'],
-        // ]);
+        DB::table('company_types')
+        ->insert([
+            ['name' => 'Media','code' => 'MED'],
+            ['name' => 'Firmy IT','code' => 'FIT'],
+            ['name' => 'Sklepy','code' => 'SKL'],
+            ['name' => 'Organizacje','code' => 'ORG'],
+        ]);
     }
 }

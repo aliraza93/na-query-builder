@@ -49,8 +49,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="loading" v-if="isLoading">
-                            <h2 style="text-align:center">Loading.......</h2>
+                        <div class="loading text-center" v-if="isLoading">
+                            <b-spinner variant="primary" label="Text Centered"></b-spinner>
                         </div>
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
@@ -61,7 +61,7 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in policies.data" v-bind:key="index">
-                                    <td v-if="list_name">{{ value.name }}</td>
+                                    <td v-if="list_name">{{ value.user_name }}</td>
                                     <td class="text-center">
                                         <button data-toggle="tooltip" @click="editURL(value.id)" title="Go To Computer" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
@@ -73,7 +73,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-center" style="margin-top: 15px;" v-if="!show">
+                        <div class="text-center" style="margin-top: 15px;" v-if="!isLoading && !show">
                             <h4>Oops! No URL Found</h4>
                         </div>
                         <pagination :pageData="policies"></pagination>

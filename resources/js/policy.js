@@ -1,10 +1,12 @@
 require('./vue-asset');
 import VueIziToast from 'vue-izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import BootstrapVue from "bootstrap-vue";
 import Vue from 'vue'
 window.Vue = require('vue');
 
 Vue.use(VueIziToast);
+Vue.use(BootstrapVue)
 
 //Policies Components
 Vue.component('policies-list', require('./components/Policy/Policies/index.vue').default)

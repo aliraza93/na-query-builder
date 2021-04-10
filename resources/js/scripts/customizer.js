@@ -209,7 +209,7 @@
 
   // Unison.on('change', function (bp) {
   //   if (menuType === 'horizontal-menu' && flag > 0) {
-  //     if (bp.name === 'xl') {
+  //     if (bp.user_name === 'xl') {
   //       $('#nav-type-floating').trigger('click');
   //     }
   //   }

@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-6">
-                    <button style="float: right;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-rule">Add Rule</button>
+                    <a href="rule-builder" style="float: right;" class="btn btn-primary">Add Rule</a>
                 </div>
             </div>
             <div class="table-responsive">

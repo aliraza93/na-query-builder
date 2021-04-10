@@ -17,5 +17,6 @@ mix.js('resources/js/policy.js', 'public/js')
 mix.js('resources/js/proxy.js', 'public/js')
 mix.js('resources/js/network.js', 'public/js')
 mix.js('resources/js/system.js', 'public/js')
+mix.js('resources/js/query-builder.js', 'public/js')
     .vue()
     .sass('resources/sass/app.scss', 'public/css');

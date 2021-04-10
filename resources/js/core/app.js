@@ -199,7 +199,7 @@ window.colors = {
 
     //Custom File Input
     $('.custom-file-input').on('change', function (e) {
-      $(this).siblings('.custom-file-label').html(e.target.files[0].name);
+      $(this).siblings('.custom-file-label').html(e.target.files[0].user_name);
     });
 
     /* Text Area Counter Set Start */
@@ -632,7 +632,7 @@ window.colors = {
                 $arrList = '';
               // Loop to check if current seach value match with the bookmarks already there in navbar
               for (var j = 0; j < arrList.length; j++) {
-                if (data.listItems[i].name === arrList[j].firstChild.dataset.originalTitle) {
+                if (data.listItems[i].user_name === arrList[j].firstChild.dataset.originalTitle) {
                   activeClass = ' text-warning';
                   break;
                 } else {
@@ -643,7 +643,7 @@ window.colors = {
               $bookmarkIcon = feather.icons['star'].toSvg({ class: 'bookmark-icon float-right' + activeClass });
             }
             // Search list item start with entered letters and create list
-            if (data.listItems[i].name.toLowerCase().indexOf(value) == 0 && a < 5) {
+            if (data.listItems[i].user_name.toLowerCase().indexOf(value) == 0 && a < 5) {
               if (a === 0) {
                 $activeItemClass = 'current_item';
               } else {
@@ -659,7 +659,7 @@ window.colors = {
                 '<div class="d-flex justify-content-start align-items-center">' +
                 feather.icons[data.listItems[i].icon].toSvg({ class: 'mr-75 ' }) +
                 '<span>' +
-                data.listItems[i].name +
+                data.listItems[i].user_name +
                 '</span>' +
                 '</div>' +
                 $bookmarkIcon +
@@ -675,7 +675,7 @@ window.colors = {
                 $arrList = '';
               // Loop to check if current search value match with the bookmarks already there in navbar
               for (var j = 0; j < arrList.length; j++) {
-                if (data.listItems[i].name === arrList[j].firstChild.dataset.originalTitle) {
+                if (data.listItems[i].user_name === arrList[j].firstChild.dataset.originalTitle) {
                   activeClass = ' text-warning';
                 } else {
                   activeClass = '';
@@ -686,8 +686,8 @@ window.colors = {
             }
             // Search list item not start with letters and create list
             if (
-              !(data.listItems[i].name.toLowerCase().indexOf(value) == 0) &&
-              data.listItems[i].name.toLowerCase().indexOf(value) > -1 &&
+              !(data.listItems[i].user_name.toLowerCase().indexOf(value) == 0) &&
+              data.listItems[i].user_name.toLowerCase().indexOf(value) > -1 &&
               a < 5
             ) {
               if (a === 0) {
@@ -705,7 +705,7 @@ window.colors = {
                 '<div class="d-flex justify-content-start align-items-center">' +
                 feather.icons[data.listItems[i].icon].toSvg({ class: 'mr-75 ' }) +
                 '<span>' +
-                data.listItems[i].name +
+                data.listItems[i].user_name +
                 '</span>' +
                 '</div>' +
                 $bookmarkIcon +

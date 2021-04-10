@@ -79,8 +79,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="loading" v-if="isLoading">
-                            <h2 style="text-align:center">Loading.......</h2>
+                        <div class="loading text-center" v-if="isLoading">
+                            <b-spinner variant="primary" label="Text Centered"></b-spinner>
                         </div>
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
@@ -97,7 +97,7 @@
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in ad_data_subnet.data" v-bind:key="index">
                                     <td class="text-center" v-if="enable">True</td>
-                                    <td class="text-center" v-if="subnet_name">{{ value.name }}</td>
+                                    <td class="text-center" v-if="subnet_name">{{ value.user_name }}</td>
                                     <td class="text-center" v-if="description"></td>
                                     <td class="text-center" v-if="ip_address_from">192.155.15.1</td>
                                     <td class="text-center" v-if="ip_address_to">192.155.451.1</td>
@@ -116,7 +116,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-center" style="margin-top: 15px;" v-if="!show">
+                        <div class="text-center" style="margin-top: 15px;" v-if="!isLoading && !show">
                             <h4>Oops! No Subnets Found</h4>
                         </div>
                         <pagination :pageData="ad_data_subnet"></pagination>

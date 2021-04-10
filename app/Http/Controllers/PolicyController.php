@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\Models\Admin\User;
 
 class PolicyController extends Controller
 {
@@ -67,9 +67,10 @@ class PolicyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function rule_builder()
     {
-        //
+        $pageConfigs = ['pageHeader' => false];
+        return view('content.policy.rules.rule-builder', ['pageConfigs' => $pageConfigs]);
     }
 
     /**

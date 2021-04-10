@@ -55,8 +55,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="loading" v-if="isLoading">
-                            <h2 style="text-align:center">Loading.......</h2>
+                        <div class="loading text-center" v-if="isLoading">
+                            <b-spinner variant="primary" label="Text Centered"></b-spinner>
                         </div>
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
@@ -68,7 +68,7 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in block_page.data" v-bind:key="index">
-                                    <td v-if="page_name">{{ value.name }}</td>
+                                    <td v-if="page_name">{{ value.user_name }}</td>
                                     <td class="text-center" v-if="default_page">True</td>
                                     <td class="text-center">
                                         <button data-toggle="tooltip" @click="editPage(value.id)" title="Go To Computer" class="btn">
@@ -81,7 +81,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-center" style="margin-top: 15px;" v-if="!show">
+                        <div class="text-center" style="margin-top: 15px;" v-if="!isLoading && !show">
                             <h4>Oops! No Block Pages Found</h4>
                         </div>
                         <pagination :pageData="block_page"></pagination>

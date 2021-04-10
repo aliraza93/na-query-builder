@@ -1,10 +1,12 @@
 require('./vue-asset');
 import VueIziToast from 'vue-izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import BootstrapVue from "bootstrap-vue";
 import Vue from 'vue'
 window.Vue = require('vue');
 
 Vue.use(VueIziToast);
+Vue.use(BootstrapVue)
 
 //SystemMaintenance Components
 Vue.component('system-maintenance', require('./components/system/SystemMaintenance/index.vue').default)

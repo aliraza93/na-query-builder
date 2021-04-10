@@ -78,20 +78,20 @@ export default {
                 this.user = {
                     id : response.data.id,
                     display_name: "Joseph",
-                    name: response.data.name,
-                    given_name: response.data.name,
-                    account_name: response.data.name,
-                    office_name: response.data.name,
+                    name: response.data.user_name,
+                    given_name: response.data.user_name,
+                    account_name: response.data.user_name,
+                    office_name: response.data.user_name,
                     telephone_number: '',
                     email: response.data.email,
                     department: '',
-                    distinguished_name: 'DS ' + response.data.name,
-                    last_login: response.data.created_at,
+                    distinguished_name: 'DS ' + response.data.user_name,
+                    last_login: response.data.when_created,
                     login_count: 5,
-                    user_prinicpal_name: 'Principal ' + response.data.name,
+                    user_prinicpal_name: 'Principal ' + response.data.user_name,
                     active: true,
-                    when_created: response.data.created_at,
-                    when_changed: response.data.updated_at
+                    when_created: response.data.when_created,
+                    when_changed: response.data.when_updated
                 };
             })
         },

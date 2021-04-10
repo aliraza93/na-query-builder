@@ -1,0 +1,162 @@
+[
+    {
+        "objectclass": [
+            "top",
+            "organizationalUnit"
+        ],
+        "0": "objectclass",
+        "ou": [
+            "Domain Controllers"
+        ],
+        "1": "ou",
+        "description": [
+            "Default container for domain controllers"
+        ],
+        "2": "description",
+        "distinguishedname": [
+            "OU=Domain Controllers,DC=egirna,DC=local"
+        ],
+        "3": "distinguishedname",
+        "instancetype": [
+            "4"
+        ],
+        "4": "instancetype",
+        "whencreated": [
+            "20200809074250.0Z"
+        ],
+        "5": "whencreated",
+        "whenchanged": [
+            "20200809074250.0Z"
+        ],
+        "6": "whenchanged",
+        "usncreated": [
+            "5804"
+        ],
+        "7": "usncreated",
+        "usnchanged": [
+            "5804"
+        ],
+        "8": "usnchanged",
+        "showinadvancedviewonly": [
+            "FALSE"
+        ],
+        "9": "showinadvancedviewonly",
+        "name": [
+            "Domain Controllers"
+        ],
+        "10": "name",
+        "objectguid": "b2f014a0-05cd-47c3-ada1-0fa0191dba60",
+        "11": "objectguid",
+        "systemflags": [
+            "-1946157056"
+        ],
+        "12": "systemflags",
+        "objectcategory": [
+            "CN=Organizational-Unit,CN=Schema,CN=Configuration,DC=egirna,DC=local"
+        ],
+        "13": "objectcategory",
+        "iscriticalsystemobject": [
+            "TRUE"
+        ],
+        "14": "iscriticalsystemobject",
+        "gplink": [
+            "[LDAP:\/\/CN={6AC1786C-016F-11D2-945F-00C04fB984F9},CN=Policies,CN=System,DC=egirna,DC=local;0]"
+        ],
+        "15": "gplink",
+        "dscorepropagationdata": [
+            "20200809074406.0Z",
+            "16010101000001.0Z"
+        ],
+        "16": "dscorepropagationdata",
+        "objectsid": null
+    }
+]
+
+
+
+[
+    {
+        "ts_id": 63,
+        "object_guid": 90000000000000000,
+        "common_name": "Compu1",
+        "sam_account_name": "COMPU1$",
+        "obj_dist_name": "CN=Compu1,CN=Computers,DC=egirna,DC=local",
+        "last_logon": "1600-12-31 23:00:00+02:05:09",
+        "object_sid": "S-1-5-21-2886082814-3353985293-1178532940-1107",
+        "operating_system": "",
+        "operating_system_service_pack": null,
+        "operating_system_version": "",
+        "when_created": "2020-08-09 10:55:44+02",
+        "when_changed": "2020-08-09 10:55:44+02"
+    },
+    {
+        "ts_id": 64,
+        "object_guid": 436236,
+        "common_name": "TestPC",
+        "sam_account_name": "TESTPC$",
+        "obj_dist_name": "CN=TestPC,DC=egirna,DC=local",
+        "last_logon": "1600-12-31 23:00:00+02:05:09",
+        "object_sid": "S-1-5-21-2886082814-3353985293-1178532940-1113",
+        "operating_system": "",
+        "operating_system_service_pack": null,
+        "operating_system_version": "",
+        "when_created": "2020-09-01 08:28:28+02",
+        "when_changed": "2020-09-01 08:28:28+02"
+    },
+    {
+        "ts_id": 65,
+        "object_guid": 0,
+        "common_name": "Testpc1",
+        "sam_account_name": "TESTPC1$",
+        "obj_dist_name": "CN=Testpc1,CN=Computers,DC=egirna,DC=local",
+        "last_logon": "1600-12-31 23:00:00+02:05:09",
+        "object_sid": "S-1-5-21-2886082814-3353985293-1178532940-1114",
+        "operating_system": "",
+        "operating_system_service_pack": null,
+        "operating_system_version": "",
+        "when_created": "2020-09-01 08:32:33+02",
+        "when_changed": "2020-09-01 08:32:33+02"
+    },
+    {
+        "ts_id": 66,
+        "object_guid": 0,
+        "common_name": "WINDEV2004EVAL",
+        "sam_account_name": "WINDEV2004EVAL$",
+        "obj_dist_name": "CN=WINDEV2004EVAL,CN=Computers,DC=egirna,DC=local",
+        "last_logon": "2020-09-01 13:41:21+02",
+        "object_sid": "S-1-5-21-2886082814-3353985293-1178532940-1115",
+        "operating_system": "Windows 10 Enterprise Evaluation",
+        "operating_system_service_pack": null,
+        "operating_system_version": "10.0 (18363)",
+        "when_created": "2020-09-01 08:51:04+02",
+        "when_changed": "2020-09-01 08:55:20+02"
+    },
+    {
+        "ts_id": 62,
+        "object_guid": 0,
+        "common_name": "WIN-J6OEE5M0BH3",
+        "sam_account_name": "WIN-J6OEE5M0BH3$",
+        "obj_dist_name": "CN=WIN-J6OEE5M0BH3,OU=Domain Controllers,DC=egirna,DC=local",
+        "last_logon": "2020-09-09 22:44:21+02",
+        "object_sid": "S-1-5-21-2886082814-3353985293-1178532940-1000",
+        "operating_system": "Windows Server 2019 Standard Evaluation",
+        "operating_system_service_pack": null,
+        "operating_system_version": "10.0 (17763)",
+        "when_created": "2020-08-09 07:44:04+02",
+        "when_changed": "2020-09-09 04:44:45+02"
+    },
+    {
+        "ts_id": 3,
+        "object_guid": 44444444,
+        "common_name": null,
+        "sam_account_name": null,
+        "obj_dist_name": null,
+        "last_logon": null,
+        "object_sid": "",
+        "operating_system": null,
+        "operating_system_service_pack": null,
+        "operating_system_version": null,
+        "when_created": null,
+        "when_changed": null
+    }
+]

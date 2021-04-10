@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\Models\Admin\User;
 
 class AdDataController extends Controller
 {
@@ -69,7 +69,7 @@ class AdDataController extends Controller
     public function user_list(Request $request)
     {
         $name = $request->name;
-        $user = User::orderBy('created_at','desc');
+        $user = User::orderBy('when_created','desc');
         if($name != ''){
             $user->where('name','LIKE','%'.$name.'%');
         }
@@ -81,7 +81,7 @@ class AdDataController extends Controller
     public function computer_list(Request $request)
     {
         $name = $request->name;
-        $user = User::orderBy('created_at','desc');
+        $user = User::orderBy('when_created','desc');
         if($name != ''){
             $user->where('name','LIKE','%'.$name.'%');
         }
@@ -93,7 +93,7 @@ class AdDataController extends Controller
     public function subnet_list(Request $request)
     {
         $name = $request->name;
-        $user = User::orderBy('created_at','desc');
+        $user = User::orderBy('when_created','desc');
         if($name != ''){
             $user->where('name','LIKE','%'.$name.'%');
         }

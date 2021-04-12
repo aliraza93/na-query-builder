@@ -68,7 +68,7 @@ class IP_addressController extends Controller
             
             //$affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
-            $db = DB::connection('pgsql3');
+            $db = DB::connection('pgsql');
             $db->update(
          'update  ip_address set 
             ip_address_points =?,
@@ -111,7 +111,7 @@ class IP_addressController extends Controller
         }
         $is_enabled=  $request->get('is_enabled');
         
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $db->insert(
             'insert into ip_address (ip_address_points,ip_address_ranges,name,is_enabled,description) 
             values (?,?,?,?,?)'

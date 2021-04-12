@@ -8,7 +8,7 @@ use App\Models\AD\AD_Groups;
 
 class UsersinGroup extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     protected $fillable = ['object_guid_parent', 'object_guid_child'];
     public static $validator = [
         'object_guid_parent' => 'required|string',

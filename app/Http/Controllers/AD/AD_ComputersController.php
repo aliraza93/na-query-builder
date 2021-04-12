@@ -20,10 +20,15 @@ class AD_ComputersController extends Controller
     private $m = AD_Computer::class;
     private $pk = 'object_guid';
 
+    //Computer List Page
+    public function computers() {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/computers/index', ['pageConfigs' => $pageConfigs]);
+    }
+
     public function index()
     {
-        return AD_Computer
-            ::orderBy('common_name', 'asc')
+        return AD_Computer::orderBy('common_name', 'asc')
             ->with('memberof', 'memberof.grpdetail')
             ->get();
     }
@@ -122,5 +127,37 @@ class AD_ComputersController extends Controller
             $AD_Computer = $AD_Computer->where(DB::raw("CONCAT(common_name, ' ', object_guid)"), 'like', '%' . $search . '%');
         }
         return $AD_Computer->take(100)->get();
+    }
+
+    // Computer List
+    public function computer_list(Request $request)
+    {
+        $common_name        = $request->common_name;
+        $sam_account_name   = $request->sam_account_name;
+        $operating_system   = $request->operating_system;
+        $computers          = DB::table('ad_computer')->orderBy('when_created','desc');
+        if($common_name != ''){
+            $computers->where('common_name','LIKE','%'.$common_name.'%');
+        }
+        if($sam_account_name != ''){
+            $computers->where('sam_account_name','LIKE','%'.$sam_account_name.'%');
+        }
+        if($operating_system != ''){
+            $computers->where('operating_system','LIKE','%'.$operating_system.'%');
+        }
+        $computers = $computers->paginate(10);
+        return $computers;
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showComputer(User $user)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/computers/show-ad-data-computer', ['pageConfigs' => $pageConfigs], compact('user'));
     }
 }

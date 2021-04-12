@@ -10,8 +10,7 @@
   "require": {
     "php": "^7.3|^8.0",
     "adldap2/adldap2-laravel": "^6.1",
-    "barryvdh/laravel-cors": "^0.9.2",
-    "barryvdh/laravel-debugbar": "^2.4",
+    "barryvdh/laravel-cors": "^2.0",
     "doctrine/dbal": "^2.6",
     "fideloper/proxy": "^4.4",
     "fruitcake/laravel-cors": "^2.0",
@@ -21,7 +20,7 @@
     "laravel/passport": "^10.0",
     "laravel/tinker": "^2.0",
     "laravel/ui": "^3.0",
-    "spatie/laravel-permission": "^3.8"
+    "spatie/laravel-permission": "^4.0"
   },
   "require-dev": {
     "facade/ignition": "^2.3.6",

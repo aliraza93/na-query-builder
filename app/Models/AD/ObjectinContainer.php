@@ -13,7 +13,7 @@ use App\Models\AD\AD_Ous_ts;
 
 class ObjectinContainer extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
    
     protected $fillable = ['ts_id_parent', 'ts_id_child'];
     public static $validator = [

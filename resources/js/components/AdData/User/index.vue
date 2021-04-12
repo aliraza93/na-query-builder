@@ -18,12 +18,10 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mx-0 row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_filter">
-                                    <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
-                                    </label>
-                                </div>
+                            <div class="col-sm-12 col-md-6 d-flex" style="margin-top: auto;">
+                                <input type="text" class="form-control" placeholder="Type Common Name..." v-model="commonname" v-on:keyup="get_users()">
+                                <input type="text" class="form-control" placeholder="Type Given Name..." v-model="givenname" v-on:keyup="get_users()">
+                                <input type="text" class="form-control" placeholder="Type Email..." v-model="emailaddress" v-on:keyup="get_users()">
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
@@ -38,20 +36,20 @@
                                             <div class="dropdown-menu dropdown-menu-right" id="showMenu" aria-labelledby="dropdown-user">
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="display_name" type="checkbox" id="display_name">
-                                                        <label class="custom-control-label" for="display_name">Display Name</label>
+                                                        <input class="custom-control-input" v-model="common_name" type="checkbox" id="common_name">
+                                                        <label class="custom-control-label" for="common_name">Common Name</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="distinguished_name" type="checkbox" id="distinguished_name">
-                                                        <label class="custom-control-label" for="distinguished_name">Distinguished Name</label>
+                                                        <input class="custom-control-input" v-model="surname" type="checkbox" id="surname">
+                                                        <label class="custom-control-label" for="surname">Surname</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="name" type="checkbox" id="name">
-                                                        <label class="custom-control-label" for="name">Name</label>
+                                                        <input class="custom-control-input" v-model="given_name" type="checkbox" id="given_name">
+                                                        <label class="custom-control-label" for="given_name">Given Name</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
@@ -90,9 +88,9 @@
                                             <label class="custom-control-label" for="checkboxSelectAll"></label>
                                         </div>
                                     </th>
-                                    <th class="text-center" v-if="display_name">Display Name</th>
-                                    <th class="text-center" v-if="distinguished_name">Distinguish Name</th>
-                                    <th class="text-center" v-if="name">Name</th>
+                                    <th class="text-center" v-if="common_name">Common Name</th>
+                                    <th class="text-center" v-if="surname">Surname</th>
+                                    <th class="text-center" v-if="given_name">Given Name</th>
                                     <th class="text-center" v-if="email">Email</th>
                                     <th class="text-center" v-if="when_created">When Created</th>
                                     <th class="text-center" v-if="when_changed">When Changed</th>
@@ -107,10 +105,10 @@
                                             <label class="custom-control-label" :for="`checkbox` + value.id"></label>
                                         </div>
                                     </td>
-                                    <td class="text-center" v-if="display_name">{{ value.user_name }}</td>
-                                    <td class="text-center" v-if="distinguished_name">{{ value.user_name }}</td>
-                                    <td class="text-center" v-if="name">{{ value.user_name }}</td>
-                                    <td class="text-center" v-if="email">{{ value.email }}</td>
+                                    <td class="text-center" v-if="common_name">{{ value.common_name }}</td>
+                                    <td class="text-center" v-if="surname">{{ value.surname }}</td>
+                                    <td class="text-center" v-if="given_name">{{ value.given_name }}</td>
+                                    <td class="text-center" v-if="email">{{ value.email_addresses }}</td>
                                     <td class="text-center" v-if="when_created">{{ value.when_created }}</td>
                                     <td class="text-center" v-if="when_changed">{{ value.when_updated }}</td>
                                     <td class="text-center">
@@ -152,14 +150,16 @@ export default {
         return {
             ad_data_users: [],
 
-            display_name: true,
-            distinguished_name: true,
-            name: true,
+            common_name: true,
+            surname: true,
+            given_name: true,
             email: true,
             when_created: true,
             when_changed: true,
 
-            name: '',
+            commonname: '',
+            givenname: '',
+            emailaddress: '',
             allSelected: false,
             selected: [],
             isLoading: false,
@@ -228,8 +228,12 @@ export default {
                 base_url +
                     "ad-data/users-list?page="+
                     page+
-                    "&name=" +
-                    this.name
+                    "&common_name=" +
+                    this.commonname +
+                    "&given_name=" +
+                    this.givenname +
+                    "&email=" +
+                    this.emailaddress
                 )
                 .then(response => {
                     this.ad_data_users = response.data

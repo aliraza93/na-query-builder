@@ -38,7 +38,7 @@ class AD_BulkSyncAll extends Controller
         
 
         try{
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         
         $allous = $request->get('ous');
         if (is_array($allous)) {

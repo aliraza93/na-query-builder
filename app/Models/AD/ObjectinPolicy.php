@@ -13,7 +13,7 @@ use App\Models\AD\AD_Ous;
 class ObjectinPolicy extends Model
 {
 
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
    
    
     protected $fillable = 

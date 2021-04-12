@@ -1,6 +1,58 @@
 <?php
 
 use App\Http\Controllers\LanguageController;
+
+/*
+|--------------------------------------------------------------------------
+| Ad Data Controllers
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\AD\Ad_userController;
+use App\Http\Controllers\AD\AD_ComputersController;
+use App\Http\Controllers\AdDataController;
+use App\Http\Controllers\AD\AD_GroupsController;
+use App\Http\Controllers\AD\AD_ContainerController;
+use App\Http\Controllers\AD\AD_OusController;
+use App\Http\Controllers\AD\NamedPageController;
+use App\Http\Controllers\AD\AD_TrafficController;
+use App\Http\Controllers\AD\SyncAllController;
+
+/*
+|--------------------------------------------------------------------------
+| CRM Controllers
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\Crm\PolicyController;
+use App\Http\Controllers\Crm\PolicyrulesController;
+
+/*
+|--------------------------------------------------------------------------
+| Proxy Controllers
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\ProxyController;
+
+/*
+|--------------------------------------------------------------------------
+| Network Controllers
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\NetworkController;
+
+/*
+|--------------------------------------------------------------------------
+| System Controllers
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\SystemController;
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard Controllers
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\DashboardController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,90 +66,121 @@ use App\Http\Controllers\LanguageController;
 
 Auth::routes();
 
-/* Route Dashboards */
+/*
+|--------------------------------------------------------------------------
+| Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
-  // Main Page Route
-  Route::get('/', 'DashboardController@dashboardAnalytics')->name('dashboard');
-  Route::get('/dashboard', 'DashboardController@dashboardAnalytics')->name('dashboard');
-  Route::get('analytics', 'DashboardController@dashboardAnalytics')->name('dashboard-analytics');
-  Route::get('ecommerce', 'DashboardController@dashboardEcommerce')->name('dashboard-ecommerce');
+  Route::get('fetch', [SyncAllController::class, 'index']);
+  /*
+  |--------------------------------------------------------------------------
+  | Main Routes
+  |--------------------------------------------------------------------------
+  */
+  Route::get('/', [DashboardController::class,'dashboardAnalytics'])->name('dashboard');
+  Route::get('/dashboard', [DashboardController::class,'dashboardAnalytics'])->name('dashboard');
+  Route::get('analytics', [DashboardController::class,'dashboardAnalytics'])->name('dashboard-analytics');
+  Route::get('ecommerce', [DashboardController::class,'dashboardEcommerce'])->name('dashboard-ecommerce');
 
-  /* Route AD Data */
+  /*
+  |--------------------------------------------------------------------------
+  | Ad Data Routes
+  |--------------------------------------------------------------------------
+  */
   Route::group(['prefix' => 'ad-data'], function () {
       
-      Route::get('users', 'AdDataController@users')->name('ad-data-users');
-      Route::get('users-list', 'AdDataController@user_list')->name('user_list');
-      Route::get('user/{user}', 'AdDataController@showUser');
+    Route::get('users', [Ad_userController::class, 'users'])->name('ad-data-users');
+    Route::get('users-list', [Ad_userController::class,'user_list'])->name('user_list');
+    Route::get('user/{user}', [Ad_userController::class,'showUser']);
 
-      Route::get('computers', 'AdDataController@computers')->name('ad-data-computers');
-      Route::get('computers-list', 'AdDataController@computer_list')->name('computer_list');
-      Route::get('computer/{user}', 'AdDataController@showComputer');
+    Route::get('computers', [AD_ComputersController::class,'computers'])->name('ad-data-computers');
+    Route::get('computers-list', [AD_ComputersController::class,'computer_list'])->name('computer_list');
+    Route::get('computer/{user}', 'AdDataController@showComputer');
 
-      Route::get('subnet', 'AdDataController@subnet')->name('ad-data-subnet');
-      Route::get('subnet-list', 'AdDataController@subnet_list')->name('computer_list');
-      Route::get('subnet/{user}', 'AdDataController@showSubnet');
+    Route::get('subnet', [AdDataController::class,'subnet'])->name('ad-data-subnet');
+    Route::get('subnet-list', [AdDataController::class,'subnet_list'])->name('computer_list');
+    Route::get('subnet/{user}', [AdDataController::class,'showSubnet']);
 
-      Route::get('tree-view', 'AdDataController@tree_view')->name('ad-data-tree-view');
-      
-      Route::get('groups', 'AdDataController@groups')->name('ad-data-groups');
-      
-      Route::get('containers', 'AdDataController@containers')->name('ad-data-containers');
-      
-      Route::get('organizational-units', 'AdDataController@organizational_units')->name('ad-data-organizational-units');
+    Route::get('tree-view', [AdDataController::class,'tree_view'])->name('ad-data-tree-view');
+    
+    Route::get('groups', [AD_GroupsController::class,'groups'])->name('ad-data-groups');
+    Route::get('groups-list', [AD_GroupsController::class,'groups_list'])->name('groups_list');
+
+    Route::get('containers', [AD_ContainerController::class,'containers'])->name('ad-data-containers');
+    Route::get('containers-list', [AD_ContainerController::class,'containers_list'])->name('containers_list');
+
+    Route::get('organizational-units', [AD_OusController::class,'organizational_units'])->name('ad-data-organizational-units');
+    Route::get('ou-list', [AD_OusController::class,'ou_list'])->name('ou_list');
   });
-  /* Route AD Data */
+  /*
+  |--------------------------------------------------------------------------
+  | End Ad Data Routes
+  |--------------------------------------------------------------------------
+  */
 
-  /* Route Policy */
+  /*
+  |--------------------------------------------------------------------------
+  | Policy Routes
+  |--------------------------------------------------------------------------
+  */
   Route::group(['prefix' => 'policy'], function () {
-    Route::get('policies', 'PolicyController@policies')->name('policy-policies');
+    Route::get('policies', [PolicyController::class,'policies'])->name('policy-policies');
+    Route::get('policies-list', [PolicyController::class,'policies_list'])->name('policies_list');
     Route::get('policy/{user}', 'PolicyController@showPolicy');
 
     Route::get('reports', 'PolicyController@reports')->name('policy-reports');
     
-    Route::get('rules', 'PolicyController@rules')->name('policy-rules');
-    
-    Route::get('url-lists', 'PolicyController@url_list')->name('policy-url-lists');
+    Route::get('rules', [PolicyrulesController::class,'rules'])->name('policy-rules');
+    Route::get('rules-list', [PolicyrulesController::class,'rules_list'])->name('rules_list');
 
-    Route::get('block-pages', 'PolicyController@block_pages')->name('policy-block-pages');
-    
-    Route::get('settings', 'PolicyController@settings')->name('policy-settings');
+    Route::get('url-lists', [App\Http\Controllers\PolicyController::class,'url_list'])->name('policy-url-lists');
 
-    Route::get('rule-builder', 'PolicyController@rule_builder');
+    Route::get('block-pages', [NamedPageController::class,'block_pages'])->name('policy-block-pages');
+    Route::get('block-pages-list', [NamedPageController::class,'block_pages_list'])->name('block-pages_list');
+
+    Route::get('settings', [PolicyController::class,'settings'])->name('policy-settings');
+
+    Route::get('rule-builder', [PolicyrulesController::class,'rule_builder']);
   });
-  /* Route Policy */
+  /*
+  |--------------------------------------------------------------------------
+  | Policy Routes
+  |--------------------------------------------------------------------------
+  */
 
   /* Route Proxy */
   Route::group(['prefix' => 'proxy'], function () {
-    Route::get('listeners', 'ProxyController@listeners')->name('proxy-listeners');
+    Route::get('listeners', [ProxyController::class,'listeners'])->name('proxy-listeners');
     
-    Route::get('CA', 'ProxyController@ca')->name('proxy-CA');
-    
-    Route::get('Generate-CA', 'ProxyController@GenerateCA')->name('proxy-Generate-CA');
-    
-    Route::get('upload-CA', 'ProxyController@upload_ca_page')->name('proxy-upload-CA');
-    Route::post('ca/upload', 'ProxyController@upload_ca');
+    Route::get('CA', [ProxyController::class,'ca'])->name('proxy-CA');
+ 
+    Route::get('Generate-CA', [ProxyController::class,'GenerateCA'])->name('proxy-Generate-CA');
+ 
+    Route::get('upload-CA', [ProxyController::class,'upload_ca_page'])->name('proxy-upload-CA');
+    Route::post('ca/upload', [ProxyController::class,'upload_ca']);
   });
   /* Route Proxy */
 
   /* Route Network */
   Route::group(['prefix' => 'network'], function () {
-    Route::get('interface', 'NetworkController@interface')->name('network-interface');
+    Route::get('interface', [NetworkController::class,'interface'])->name('network-interface');
     
-    Route::get('firewall', 'NetworkController@firewall')->name('network-firewall');
+    Route::get('firewall', [NetworkController::class,'firewall'])->name('network-firewall');
   });
   /* Route Network */
 
   /* Route System */
   Route::group(['prefix' => 'system'], function () {
-    Route::get('maintenance', 'SystemController@maintenance')->name('system-maintenance');
+    Route::get('maintenance', [SystemController::class,'maintenance'])->name('system-maintenance');
     
-    Route::get('dashboard', 'DashboardController@dashboardAnalytics')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class,'dashboardAnalytics'])->name('dashboard');
 
-    Route::get('logs', 'SystemController@logs')->name('system-logs');
-
-    Route::get('system-clock', 'SystemController@system_clocks')->name('system-system-clock');
+    Route::get('logs', [AD_TrafficController::class,'logs'])->name('system-logs');
+    Route::get('logs-list', [AD_TrafficController::class, 'traffic_logs_list'])->name('system-logs-list');
+    Route::get('system-clock', [SystemController::class,'system_clocks'])->name('system-system-clock');
     
-    Route::get('LDAP-configurations', 'SystemController@ldap_configurations')->name('system-LDAP-configurations');
+    Route::get('LDAP-configurations', [SystemController::class,'ldap_configurations'])->name('system-LDAP-configurations');
   });
   /* Route System */
 

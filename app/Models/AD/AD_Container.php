@@ -9,7 +9,7 @@ use App\Models\AD\UsersinGroup;
 class AD_Container extends Model
 {
   
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'container_uid',

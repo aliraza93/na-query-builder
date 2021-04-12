@@ -68,4 +68,42 @@ class PolicyController extends Controller
         }
         return $policy->take(100)->get();
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function policies()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/policies/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function settings()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/settings/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Policies List
+    public function policies_list(Request $request)
+    {
+        $policy_name        = $request->policy_name;
+        $priority           = $request->priority;
+        $policies           = DB::table('policy')->orderBy('when_created','desc');
+        if($policy_name != ''){
+            $policies->where('policy_name','LIKE','%'.$policy_name.'%');
+        }
+        if($priority != ''){
+            $policies->where('priority','LIKE','%'.$priority.'%');
+        }
+        $policies = $policies->paginate(10);
+        return $policies;
+    }
 }

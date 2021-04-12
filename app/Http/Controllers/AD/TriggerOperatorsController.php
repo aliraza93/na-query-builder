@@ -20,7 +20,7 @@ class TriggerOperatorsController extends Controller
 
     public function index()
     {
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $collection = $db->select('select *,operator_label As text,operator_code AS value from operator_list_all()');
         return  $collection;
 
@@ -28,7 +28,7 @@ class TriggerOperatorsController extends Controller
 
     public function show($id)
     {
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $statement = 'SELECT input_code, seq_no, operator_label, operator_code, complement_field_count
 	    FROM public.rule_builder_operator';      
         $policy = $db->select($statement, [$id, $id, $id]);

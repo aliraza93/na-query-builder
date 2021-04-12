@@ -9,7 +9,7 @@ use App\Models\AD\NamedPage;
 
 class Policies extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'policy_name',

@@ -80,4 +80,31 @@ class AD_TrafficController extends Controller
     }
     return $AD_Traffic->take(100)->get();
   }
+
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+  */
+  public function logs()
+  {
+      $pageConfigs = ['pageHeader' => false];
+      return view('/content/system/logs/index', ['pageConfigs' => $pageConfigs]);
+  }
+
+  // Traffic Logs List
+  public function traffic_logs_list(Request $request)
+  {
+      $traffic_source_name  = $request->traffic_source_name;
+      $source_ip            = $request->source_ip;
+      $logs                 = DB::table('traffic_log')->orderBy('when_created','desc');
+      if($traffic_source_name != ''){
+          $logs->where('traffic_source_name','LIKE','%'.$traffic_source_name.'%');
+      }
+      if($source_ip != ''){
+          $logs->where('source_ip','LIKE','%'.$source_ip.'%');
+      }
+      $logs = $logs->paginate(10);
+      return $logs;
+  }
 }

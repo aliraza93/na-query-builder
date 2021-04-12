@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trigger_define extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     protected $appends = ['text', 'value'];
 
 

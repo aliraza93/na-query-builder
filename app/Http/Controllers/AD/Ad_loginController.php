@@ -109,7 +109,7 @@ class Ad_loginController extends Controller
             $date = date_create($map['timestamp_last_determined']);
             $map['timestamp_last_determined'] =   date_format($date, "Y-m-d H:i:s P");
 
-            $db = DB::connection('pgsql3');
+            $db = DB::connection('pgsql');
             $ip_exist =   $db->table('ad_observed_ip')
             ->where('ip_address', '=', $map['ip_address'])
             ->where('is_computer_event', '=', $map['is_computer_event'])
@@ -205,7 +205,7 @@ class Ad_loginController extends Controller
 
                     // DB::table('squid_log')->insert($insert);
 
-                    $db = DB::connection('pgsql3');
+                    $db = DB::connection('pgsql');
                     $ip_exist =   $db->table('ad_observed_ip')->where('ip_address', '=', $ip_address)->count();
                     if ($ip_exist > 0) {
                         $db->table('ad_observed_ip')->where('ip_address', '=', $ip_address)->update(
@@ -246,7 +246,7 @@ class Ad_loginController extends Controller
 
                     $result = $model::where('object_guid', $guid)->update($update);
                     
-                    $db = DB::connection('pgsql3');
+                    $db = DB::connection('pgsql');
                   $ip_exist =   $db->table('ad_observed_ip')->where('ip_address','=',$ip_address)->count();
                    if($ip_exist > 0){
                         $db->table('ad_observed_ip')->where('ip_address', '=', $ip_address)->update(

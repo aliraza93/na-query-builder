@@ -132,7 +132,7 @@ union  SELECT DISTINCT on (vcf.ts_id_root,tsp.policy_id) ts_id_root,
  left join traffic_source_policy tsp on tsp.ts_id = vcf.ts_id_root
  left join policy plc on tsp.policy_id = plc.policy_id
  where  plc.policy_id is not null and vcf.ts_id_child =? ";
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $policy = $db->select($statement, [$id, $id]);
         return $policy;
 
@@ -154,7 +154,7 @@ union  SELECT DISTINCT on (vcf.ts_id_root,tsp.policy_id) ts_id_root,
  left join traffic_source_policy tsp on tsp.ts_id = vcf.ts_id_root
  left join policy plc on tsp.policy_id = plc.policy_id
  where  plc.policy_id is not null and vcf.ts_id_child =? ";
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $policy = $db->select($statement, [$id, $id]);
         return $policy;
 
@@ -176,7 +176,7 @@ union  SELECT DISTINCT on (vcf.ts_id_root,tsp.policy_id) ts_id_root,
  left join traffic_source_policy tsp on tsp.ts_id = vcf.ts_id_root
  left join policy plc on tsp.policy_id = plc.policy_id
  where  plc.policy_id is not null and vcf.ts_id_child =? ";
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $policy = $db->select($statement, [$id, $id]);
         return $policy;
 
@@ -198,7 +198,7 @@ union  SELECT DISTINCT on (vcf.ts_id_root,tsp.policy_id) ts_id_root,
  left join traffic_source_policy tsp on tsp.ts_id = vcf.ts_id_root
  left join policy plc on tsp.policy_id = plc.policy_id
  where  plc.policy_id is not null and vcf.ts_id_child =? ";
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $policy = $db->select($statement, [$id, $id]);
         return $policy;
 
@@ -220,7 +220,7 @@ union  SELECT DISTINCT on (vcf.ts_id_root,tsp.policy_id) ts_id_root,
  left join traffic_source_policy tsp on tsp.ts_id = vcf.ts_id_root
  left join policy plc on tsp.policy_id = plc.policy_id
  where  plc.policy_id is not null and vcf.ts_id_child =? ";
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $policy = $db->select($statement, [$id, $id]);
         return $policy;
 
@@ -241,7 +241,7 @@ union  SELECT DISTINCT on (vcf.ts_id_root,tsp.policy_id) ts_id_root,
  left join traffic_source_policy tsp on tsp.ts_id = vcf.ts_id_root
  left join policy plc on tsp.policy_id = plc.policy_id
  where  plc.policy_id is not null and vcf.ts_id_child =? ";
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $policy = $db->select($statement, [$id, $id]);
         return $policy;;
     }

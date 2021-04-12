@@ -49,7 +49,7 @@ where ts.subtype = 'OrgUnit'
         left join traffic_source cts on cts.ts_id =  cous.ts_id
          where  ts_id_child is not null)";
 	
-    return  DB::connection('pgsql3')->select($stat2)  ;
+    return  DB::connection('pgsql')->select($stat2)  ;
     }
 
     public function show($id)
@@ -92,7 +92,7 @@ where ts.subtype = 'OrgUnit'
     order by int_type asc";
         //ts.subtype = 'OrgUnit' and
        // $AD_OusInfo['policycontainer'] = ModelTreatment::getpolicyouse($id);
-       return  DB::connection('pgsql3')->select($stat2,[$id,$id,$id,$id])  ;
+       return  DB::connection('pgsql')->select($stat2,[$id,$id,$id,$id])  ;
     }
     public function update($prefix, Request $request, AD_Ous_ts $model)
     {

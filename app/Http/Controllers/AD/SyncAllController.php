@@ -59,10 +59,10 @@ class SyncAllController extends Controller
 
         //$this->ldap = $ldap;
 
-        $this->middleware('role:read', ['only' => ['index', 'usn', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
-        $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'usn', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
+        // $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
 
 
@@ -85,16 +85,12 @@ class SyncAllController extends Controller
     }
     public function index()
     {
-     
-
-       
         $statement = "select cp.ts_id as ts_id_parent, cc.ts_id as ts_id_child
         from ad_org_unit cp
         inner join ad_org_unit cc
         on cc.object_guid = ?
         where cp.object_guid = ?";
-        $db =  DB::connection('pgsql3');
-        
+        $db =  DB::connection('pgsql');
         
         try {
             $sync_status = [];
@@ -133,7 +129,7 @@ class SyncAllController extends Controller
                 return  $ldapconection;
             }
      
-             $allusers = $this->getusers();
+            $allusers = $this->getusers();
             $allous = $this->getous();
             $allgrp = $this->getgroups();
             $allcomputers = $this->getcomputers();
@@ -207,13 +203,13 @@ class SyncAllController extends Controller
             
            $grpstatus =  $this->objinboj($allgrp,$this->mgrpingrp, $op_grp_ou);
            if ($grpstatus !== true) {
-        if (is_array($grpstatus)) {
-          if ($grpstatus['status'] != 0) {
-            return  $grpstatus;
-          }
-        } else {
-          return  $grpstatus;
-        }
+                if (is_array($grpstatus)) {
+                    if ($grpstatus['status'] != 0) {
+                        return  $grpstatus;
+                    }
+                } else {
+                    return  $grpstatus;
+                }
            }
            
            
@@ -237,9 +233,9 @@ class SyncAllController extends Controller
          
             $sync_status[] = ['sync_users_in_groups' => 'success'];
 
-      // sync computer in groups mcompuersingrp
+            // sync computer in groups mcompuersingrp
       
-      $op_grp_ou =false;
+            $op_grp_ou =false;
             $comstatus =  $this->objinbojbychild($allcomputers, $this->mcompuersingrp, $op_grp_ou,'pc');
             if ($comstatus !== true) {
                 if (is_array($comstatus)) {
@@ -254,75 +250,75 @@ class SyncAllController extends Controller
          
             
             
-      //sync ous in ous 
-      
-      if (is_array($allous)) {
-       
-            foreach ($allous as $ous) {
-
-                foreach ($ous as $ouobj) {
+                //sync ous in ous 
                 
-                    $parentou = $ouobj['object_guid'];
-                    if ($parentou !== null) {
-                        $oubybase =   $this->ldap->search()->ous()->setDn($ouobj['obj_dist_name'])->get();
-                      
-                        foreach ($oubybase as $ouchild) {
-                            if ($ouchild !== null) {
-                             
-                            $childobj = $ouchild->getConvertedGuid();
-                            if ($parentou !== $childobj) {
-                                $p = $db->select($statement, [$childobj, $parentou]);
-                                if (isset($p[0])) {
-                                    if (isset($p[0]->ts_id_parent)) {
-                                        $findou =  $db->select('select ts_id_parent from traffic_source_contains where ts_id_parent =? 
-                            and ts_id_child =? ', [$p[0]->ts_id_parent, $p[0]->ts_id_child]);
-                                        if (count($findou) === 0) {
-                                            $db->insert('insert into traffic_source_contains (ts_id_parent, ts_id_child) 
-                            values (?, ?)', [$p[0]->ts_id_parent, $p[0]->ts_id_child]);
+                if (is_array($allous)) {
+                
+                        foreach ($allous as $ous) {
+
+                            foreach ($ous as $ouobj) {
+                            
+                                $parentou = $ouobj['object_guid'];
+                                if ($parentou !== null) {
+                                    $oubybase =   $this->ldap->search()->ous()->setDn($ouobj['obj_dist_name'])->get();
+                                
+                                    foreach ($oubybase as $ouchild) {
+                                        if ($ouchild !== null) {
+                                        
+                                        $childobj = $ouchild->getConvertedGuid();
+                                        if ($parentou !== $childobj) {
+                                            $p = $db->select($statement, [$childobj, $parentou]);
+                                            if (isset($p[0])) {
+                                                if (isset($p[0]->ts_id_parent)) {
+                                                    $findou =  $db->select('select ts_id_parent from traffic_source_contains where ts_id_parent =? 
+                                        and ts_id_child =? ', [$p[0]->ts_id_parent, $p[0]->ts_id_child]);
+                                                    if (count($findou) === 0) {
+                                                        $db->insert('insert into traffic_source_contains (ts_id_parent, ts_id_child) 
+                                        values (?, ?)', [$p[0]->ts_id_parent, $p[0]->ts_id_child]);
+                                                    }
+                                                }
+                                            }
                                         }
+                                    }
                                     }
                                 }
                             }
-                         }
+                        }
+                }
+                $sync_status[] = ['sync_ous_in_ous' => 'success'];
+            
+            
+                $statement = " INSERT  INTO  traffic_source_contains(ts_id_child,ts_id_parent)
+                SELECT obj.ts_id,ou.ts_id FROM ad_user obj
+                left join ad_org_unit ou on ou.obj_dist_name =?
+                left join traffic_source_contains tc on tc.ts_id_child = obj.ts_id 
+                and tc.ts_id_parent = ou.ts_id
+                where obj.obj_dist_name like ?
+                ON CONFLICT (ts_id_child,ts_id_parent) DO NOTHING";
+                $getallous =  $this->mous::get();
+                if ($getallous !== null) {
+                    foreach ($getallous as $oneous) {
+                        if ($oneous['obj_dist_name']!== null) {
+                            $p = $db->insert(
+                                $statement,
+                                [
+                                $oneous['obj_dist_name'],
+                                '%' . $oneous['obj_dist_name'] . '%'
+                            ]
+                            );
                         }
                     }
-                 }
-            }
-        }
-            $sync_status[] = ['sync_ous_in_ous' => 'success'];
-        
-         
-            $statement = " INSERT  INTO  traffic_source_contains(ts_id_child,ts_id_parent)
-            SELECT obj.ts_id,ou.ts_id FROM ad_user obj
-            left join ad_org_unit ou on ou.obj_dist_name =?
-            left join traffic_source_contains tc on tc.ts_id_child = obj.ts_id 
-            and tc.ts_id_parent = ou.ts_id
-            where obj.obj_dist_name like ?
-           ON CONFLICT (ts_id_child,ts_id_parent) DO NOTHING";
-            $getallous =  $this->mous::get();
-            if ($getallous !== null) {
-                foreach ($getallous as $oneous) {
-                    if ($oneous['obj_dist_name']!== null) {
-                        $p = $db->insert(
-                            $statement,
-                            [
-                             $oneous['obj_dist_name'],
-                             '%' . $oneous['obj_dist_name'] . '%'
-                          ]
-                        );
-                    }
-                }
 
             
                 $sync_status[] = ['sync_users_in_ous' => 'success'];
            
                 $statement = " INSERT  INTO  traffic_source_contains(ts_id_child,ts_id_parent)
-            SELECT obj.ts_id,ou.ts_id FROM ad_group obj
-            left join ad_org_unit ou on ou.obj_dist_name =?
-            left join traffic_source_contains tc on tc.ts_id_child = obj.ts_id 
-            and tc.ts_id_parent = ou.ts_id
-            where obj.obj_dist_name like ?
-            ON CONFLICT (ts_id_child,ts_id_parent) DO NOTHING";
+                    SELECT obj.ts_id,ou.ts_id FROM ad_group obj
+                    left join ad_org_unit ou on ou.obj_dist_name =?
+                    left join traffic_source_contains tc on tc.ts_id_child = obj.ts_id 
+                    and tc.ts_id_parent = ou.ts_id
+                    where obj.obj_dist_name like ?
+                    ON CONFLICT (ts_id_child,ts_id_parent) DO NOTHING";
             
                 foreach ($getallous as $oneous) {
                     if ($oneous['obj_dist_name'] !== null) {
@@ -338,102 +334,93 @@ class SyncAllController extends Controller
                 $sync_status[] = ['sync_groups_in_ous' => 'success'];
                /*
                 $teststat = "SELECT obj.ts_id,ou.ts_id FROM ad_computer obj
-            left join ad_org_unit ou on ou.obj_dist_name =?
-            left join traffic_source_contains tc on tc.ts_id_child = obj.ts_id 
-            and tc.ts_id_parent = ou.ts_id
-            where obj.obj_dist_name like  ?
-			 and tc.ts_id_child not in 
-      (select ts_id_child FROM traffic_source_contains where ts_id_parent = ou.ts_id )";
-      $testarry =null;
-        foreach ($getallous as $oneous) {
-          if ($oneous['obj_dist_name'] !== null) {
-            $p = $db->select(
-              $teststat,
-              [
-                $oneous['obj_dist_name'],
-                '%' . $oneous['obj_dist_name'] . '%'
-              ]
-            );
-          }
-           $testarry[]= $p;
+                left join ad_org_unit ou on ou.obj_dist_name =?
+                left join traffic_source_contains tc on tc.ts_id_child = obj.ts_id 
+                and tc.ts_id_parent = ou.ts_id
+                where obj.obj_dist_name like  ?
+                and tc.ts_id_child not in 
+                (select ts_id_child FROM traffic_source_contains where ts_id_parent = ou.ts_id )";
+                $testarry =null;
+                    foreach ($getallous as $oneous) {
+                    if ($oneous['obj_dist_name'] !== null) {
+                        $p = $db->select(
+                        $teststat,
+                        [
+                            $oneous['obj_dist_name'],
+                            '%' . $oneous['obj_dist_name'] . '%'
+                        ]
+                        );
+                    }
+                    $testarry[]= $p;
 
-        }
-        return $testarry;*/
+                    }
+                    return $testarry;*/
 
               
             
-           $statement = " INSERT  INTO  traffic_source_contains(ts_id_child,ts_id_parent)
-            SELECT obj.ts_id,ou.ts_id FROM ad_computer obj
-            left join ad_org_unit ou on ou.obj_dist_name =?
-            left join traffic_source_contains tc on tc.ts_id_child = obj.ts_id 
-            and tc.ts_id_parent = ou.ts_id
-            where obj.obj_dist_name like ?
-            ON CONFLICT (ts_id_child,ts_id_parent) DO NOTHING";
+                    $statement = " INSERT  INTO  traffic_source_contains(ts_id_child,ts_id_parent)
+                        SELECT obj.ts_id,ou.ts_id FROM ad_computer obj
+                        left join ad_org_unit ou on ou.obj_dist_name =?
+                        left join traffic_source_contains tc on tc.ts_id_child = obj.ts_id 
+                        and tc.ts_id_parent = ou.ts_id
+                        where obj.obj_dist_name like ?
+                        ON CONFLICT (ts_id_child,ts_id_parent) DO NOTHING";
 
-                foreach ($getallous as $oneous) {
-                    if ($oneous['obj_dist_name'] !== null) {
-                        $p = $db->insert(
-                            $statement,
-                            [
-                        $oneous['obj_dist_name'],
-                        '%' . $oneous['obj_dist_name'] . '%'
-                    ]
-                        );
+                            foreach ($getallous as $oneous) {
+                                if ($oneous['obj_dist_name'] !== null) {
+                                    $p = $db->insert(
+                                        $statement,
+                                        [
+                                    $oneous['obj_dist_name'],
+                                    '%' . $oneous['obj_dist_name'] . '%'
+                                ]
+                                    );
+                                }
+                            }
+                            $sync_status[] = ['sync_computers_in_ous' => 'success'];
+                            
+                            
                     }
-                }
-                $sync_status[] = ['sync_computers_in_ous' => 'success'];
-                
-                
-            }
-            
+                        
 
-          /*
-            
-            $ctrl1 = ["oid" => "1.2.840.113556.1.4.417", "iscritical" => true];
+                            /*
+                                
+                                $ctrl1 = ["oid" => "1.2.840.113556.1.4.417", "iscritical" => true];
 
-            $options = [LDAP_OPT_SERVER_CONTROLS => [$ctrl1]];
-              $this->ldap->getDefaultProvider()->getConnection()->setOptions($options);
-             $this->ldap->connect();
-              $obj = null;
-            $obj =  $this->ldap->getProvider('default')->search()->where('isdeleted', 'TRUE')->get();
-            if ($obj !== null) {
-                $this->handeldeletde($obj);
+                                $options = [LDAP_OPT_SERVER_CONTROLS => [$ctrl1]];
+                                $this->ldap->getDefaultProvider()->getConnection()->setOptions($options);
+                                $this->ldap->connect();
+                                $obj = null;
+                                $obj =  $this->ldap->getProvider('default')->search()->where('isdeleted', 'TRUE')->get();
+                                if ($obj !== null) {
+                                    $this->handeldeletde($obj);
 
-                $sync_status[] = ['sync_deleted-' => 'success'];
-            }
-            
-            */
+                                    $sync_status[] = ['sync_deleted-' => 'success'];
+                                }
+                                
+                            */
+                            //$rootDse['highestcommittedusn'][0]
 
-           
+                            $highest = ['highest_committed_usn' => $rootDse['highestcommittedusn'][0]];
+                            $model = $this->mvaluestore;
+                            $newvalues = $model::where('highest_committed_usn', '>=', '0')->first();
+                            if ($newvalues !== null) {
 
+                                $newvalues->update($highest);
+                            } 
 
+                            $sync_status[] = $highest;
 
-            //$rootDse['highestcommittedusn'][0]
-
-            $highest = ['highest_committed_usn' => $rootDse['highestcommittedusn'][0]];
-            $model = $this->mvaluestore;
-            $newvalues = $model::where('highest_committed_usn', '>=', '0')->first();
-            if ($newvalues !== null) {
-
-                $newvalues->update($highest);
-            } 
-
-            $sync_status[] = $highest;
-
-           
-            return ['status' => 0, "success" => 'active directory sync full', "sync_status" => $sync_status, ];
+                        
+                            return ['status' => 0, "success" => 'active directory sync full', "sync_status" => $sync_status, ];
 
         } catch (\Exception $e) {
-
-         //   $results =  ['status' => -2, 'msg' => $e->getMessage(), "sync_status" => $sync_status];
-      return response()->json(['status' => -2, "msg" => $e->getMessage(), "sync_status" => $sync_status], 200);
-
-
+            //   $results =  ['status' => -2, 'msg' => $e->getMessage(), "sync_status" => $sync_status];
+            return response()->json(['status' => -2, "msg" => $e->getMessage(), "sync_status" => $sync_status], 200);
             // something went wrong
         } catch (\Adldap\Auth\BindException $e) {
             
             return ['status' => -2, 'msg' => $e->getMessage()];
-         
         }
         // return [$allusers, $all,$ou,$computers, $rootDse['highestcommittedusn']];
     }
@@ -527,7 +514,7 @@ class SyncAllController extends Controller
      public function objinboj($allobj,$model,$action =false)
     {
       try {
-        //    $db =  DB::connection('pgsql3');
+        //    $db =  DB::connection('pgsql');
       //$model::where('object_guid_parent', "!=", "123e4567-e89b-12d3-a456-426652340000")->delete();
          $allgrpingrp=null;
           $cruentobj = [];
@@ -1023,7 +1010,7 @@ class SyncAllController extends Controller
      public function usnchange1()
     {
         try {
-            $db =  DB::connection('pgsql3');
+            $db =  DB::connection('pgsql');
           $u =  $db->select('select * from ad_user') ;
             $this->errors =  $db->select('select * from ad_usersf');
             $u =  $db->select('select * from ad_groups');
@@ -1054,7 +1041,7 @@ class SyncAllController extends Controller
         
 
         try {
-            $db =  DB::connection('pgsql3');
+            $db =  DB::connection('pgsql');
             $sync_status = [];
 
             $count = AD_LdapConnection::count();

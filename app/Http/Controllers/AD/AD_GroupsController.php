@@ -28,8 +28,7 @@ class AD_GroupsController extends Controller
 
     public function index()
     {
-        return AD_Groups
-            ::orderBy('common_name', 'asc')
+        return AD_Groups::orderBy('common_name', 'asc')
             ->with('memberof', 'memberof.parentdetail')
             ->get();
     }
@@ -85,7 +84,7 @@ class AD_GroupsController extends Controller
         if ($group_id === null) {
             return  ['status' => 1, 'error' => 'parent group required'];
         }
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $grptable=  $db->table('ad_group')->where('object_guid', '=', $group_id)->first();
         if($grptable === null){
           return  ['status' => 1, 'error' => 'parent group not found'];
@@ -169,7 +168,7 @@ class AD_GroupsController extends Controller
     }
     public function syncmembersmultiple(Request $request)
     {
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $requestitems = $request->get('items');
 
 
@@ -310,5 +309,32 @@ class AD_GroupsController extends Controller
             $AD_Groups = $AD_Groups->where(DB::raw("CONCAT(common_name, ' ', object_guid)"), 'like', '%' . $search . '%');
         }
         return $AD_Groups->take(100)->get();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function groups()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/groups/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Groups List
+    public function groups_list(Request $request)
+    {
+        $common_name        = $request->common_name;
+        $obj_dist_name      = $request->obj_dist_name;
+        $groups = DB::table('ad_group')->orderBy('when_created','desc');
+        if($common_name != ''){
+            $groups->where('common_name','LIKE','%'.$common_name.'%');
+        }
+        if($obj_dist_name != ''){
+            $groups->where('obj_dist_name','LIKE','%'.$obj_dist_name.'%');
+        }
+        $groups = $groups->paginate(10);
+        return $groups;
     }
 }

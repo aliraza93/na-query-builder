@@ -19,12 +19,9 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mx-0 row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_filter">
-                                    <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
-                                    </label>
-                                </div>
+                            <div class="col-sm-12 col-md-6 d-flex" style="margin-top: auto;">
+                                <input type="text" class="form-control" placeholder="Type Policy Name..." v-model="policyname" v-on:keyup="get_policies()">
+                                <input type="text" class="form-control" placeholder="Type Policy Priority..." v-model="policypriority" v-on:keyup="get_policies()">
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
@@ -75,9 +72,9 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in policies.data" v-bind:key="index">
-                                    <td class="text-center" v-if="priority"> {{ index+1 }}</td>
-                                    <td class="text-center" v-if="policy_name">{{ value.user_name }}</td>
-                                    <td class="text-center" v-if="block_page">{{ value.user_name }}</td>
+                                    <td class="text-center" v-if="priority"> {{ value.priority }}</td>
+                                    <td class="text-center" v-if="policy_name">{{ value.policy_name }}</td>
+                                    <td class="text-center" v-if="block_page">{{ value.block_page_id }}</td>
                                     <td class="text-center">
                                         <button data-toggle="tooltip" @click="editPolicy(value.id)" title="Go To Computer" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
@@ -101,8 +98,6 @@
 </template>
 <script>
 import Pagination  from '../../pagination/pagination.vue';
-import MenuIcon from 'vue-material-design-icons/Menu.vue';
-import Close from 'vue-material-design-icons/Close.vue';
 import { EventBus } from "../../../vue-asset";
 import AddPolicy from './AddPolicy.vue';
 import EditPolicy from './EditPolicy.vue';
@@ -111,8 +106,6 @@ import EditPolicy from './EditPolicy.vue';
 export default {
     components: {
         Pagination,
-        MenuIcon,
-        Close,
         AddPolicy,
         EditPolicy,
         // AdDataComputerInfo
@@ -128,7 +121,8 @@ export default {
 
             allSelected: false,
             selected: [],
-            name: '',
+            policyname: '',
+            policypriority: '',
             isLoading: false,
             policies_ids: [],
             errors: null,
@@ -162,9 +156,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_users();
+        this.get_policies();
         EventBus.$on("ad-data-users", function() {
-            _this.get_users();
+            _this.get_policies();
         });
     },
 
@@ -188,15 +182,17 @@ export default {
         },
 
         //Get All Users
-        get_users(page = 1) {
+        get_policies(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "ad-data/users-list?page="+
+                    "policy/policies-list?page="+
                     page+
-                    "&name=" +
-                    this.name
+                    "&policy_name=" +
+                    this.policyname +
+                    "&priority=" +
+                    this.policypriority
                 )
                 .then(response => {
                     this.policies = response.data
@@ -216,7 +212,7 @@ export default {
 
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_users(pageNo);
+            vm.get_policies(pageNo);
         },
         
         showMessage(data) {

@@ -19,12 +19,9 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mx-0 row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_filter">
-                                    <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
-                                    </label>
-                                </div>
+                            <div class="col-sm-12 col-md-6 d-flex" style="margin-top: auto;">
+                                <input type="text" class="form-control" placeholder="Type Page Name..." v-model="pagename" v-on:keyup="get_block_pages()">
+                                <input type="text" class="form-control" placeholder="Type Default Page..." v-model="defaultpage" v-on:keyup="get_block_pages()">
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
@@ -68,8 +65,8 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in block_page.data" v-bind:key="index">
-                                    <td v-if="page_name">{{ value.user_name }}</td>
-                                    <td class="text-center" v-if="default_page">True</td>
+                                    <td v-if="page_name">{{ value.title }}</td>
+                                    <td class="text-center" v-if="default_page">{{ value.default_page_flag }}</td>
                                     <td class="text-center">
                                         <button data-toggle="tooltip" @click="editPage(value.id)" title="Go To Computer" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
@@ -108,13 +105,13 @@ export default {
             block_page: [],
 
             page_name: true,
-            priority: true,
             default_page: true,
             when_changed: true,
 
             allSelected: false,
             selected: [],
-            name: '',
+            pagename: '',
+            defaultpage: '',
             isLoading: false,
             block_page_ids: [],
             errors: null,
@@ -148,9 +145,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_users();
+        this.get_block_pages();
         EventBus.$on("ad-data-users", function() {
-            _this.get_users();
+            _this.get_block_pages();
         });
     },
 
@@ -174,15 +171,17 @@ export default {
         },
 
         //Get All Users
-        get_users(page = 1) {
+        get_block_pages(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "ad-data/users-list?page="+
+                    "policy/block-pages-list?page="+
                     page+
-                    "&name=" +
-                    this.name
+                    "&title=" +
+                    this.page_name + 
+                    "&default_page=" +
+                    this.defaultpage
                 )
                 .then(response => {
                     this.block_page = response.data
@@ -202,7 +201,7 @@ export default {
 
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_users(pageNo);
+            vm.get_block_pages(pageNo);
         },
         
         showMessage(data) {

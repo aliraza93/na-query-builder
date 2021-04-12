@@ -93,4 +93,32 @@ class AD_OusController extends Controller
         }
         return $AD_Ous->take(100)->get();
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function organizational_units()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/organizational-units/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Organizational Units List
+    public function ou_list(Request $request)
+    {
+        $common_name        = $request->common_name;
+        $obj_dist_name      = $request->obj_dist_name;
+        $ous                = DB::table('ad_org_unit')->orderBy('when_created','desc');
+        if($common_name != ''){
+            $ous->where('common_name','LIKE','%'.$common_name.'%');
+        }
+        if($obj_dist_name != ''){
+            $ous->where('obj_dist_name','LIKE','%'.$obj_dist_name.'%');
+        }
+        $ous = $ous->paginate(10);
+        return $ous;
+    }
+
 }

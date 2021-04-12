@@ -50,7 +50,7 @@ left join traffic_source ts on ts.ts_id =  tsc.ts_id_child
 where ts.subtype = 'Computer' and ou.ts_id =?
 order by int_type asc";
         
-        return  DB::connection('pgsql3')->select($stat2, [$id, $id, $id, $id]);
+        return  DB::connection('pgsql')->select($stat2, [$id, $id, $id, $id]);
     }
 
     public  static function getgroups($id){
@@ -81,7 +81,7 @@ order by int_type asc";
     where ts.subtype = 'Computer' and grp.ts_id =?
     order by int_type asc";
         
-            return  DB::connection('pgsql3')->select($stat2, [$id,$id,$id])  ;
+            return  DB::connection('pgsql')->select($stat2, [$id,$id,$id])  ;
 
     }
     public  static function getusers($id,$str){
@@ -95,7 +95,7 @@ order by int_type asc";
 	order by obj.common_name asc
 	limit 250";
         
-            return  DB::connection('pgsql3')->select($stat2,
+            return  DB::connection('pgsql')->select($stat2,
              [
              $id,
              '%'.$str.'%'
@@ -113,7 +113,7 @@ order by int_type asc";
 	order by obj.common_name asc
 	limit 250";
         
-            return  DB::connection('pgsql3')->select($stat2,
+            return  DB::connection('pgsql')->select($stat2,
              [
              $id,
              '%'.$str.'%'

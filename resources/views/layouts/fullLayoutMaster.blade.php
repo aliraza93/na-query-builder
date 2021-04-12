@@ -31,7 +31,7 @@ $configData = Helper::applClasses();
     data-menu=" vertical-menu-modern" data-layout="{{ ($configData['theme'] === 'light') ? '' : $configData['layoutTheme'] }}" style="{{ $configData['bodyStyle'] }}" data-framework="laravel" data-asset-path="{{ asset('/')}}">
 
   <!-- BEGIN: Content-->
-  <div class="app-content content {{ $configData['pageClass'] }}" style="margin: 0 auto;">
+  <div class="app-content content {{ $configData['pageClass'] }}" style="margin: 0 auto; margin-top: -7%;">
     <div class="content-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container p-0' : '' }}">
       <div class="content-body">
 

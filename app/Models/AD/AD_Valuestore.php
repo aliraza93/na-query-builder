@@ -12,7 +12,7 @@ use App\Models\Crm\Policy_users;
 class AD_Valuestore extends Model
 {
   //object_guid, common_name, obj_dist_name
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'highest_committed_usn',

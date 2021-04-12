@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GroupinGroup extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'object_guid_parent',

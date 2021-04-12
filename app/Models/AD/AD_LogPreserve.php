@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AD_LogPreserve extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $guarded = [];
     

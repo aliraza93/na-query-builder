@@ -8,7 +8,7 @@ use App\Models\AD\AD_Ous_ts;
 
 class ObjectTypeOus extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     //protected $hidden = ['ts_id'];
     public $timestamps = false;
     protected $fillable = [

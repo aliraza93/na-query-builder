@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AD_Ous_ts extends Model
 {
   //ts_id, common_name, obj_dist_name
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     //protected $hidden = ['ts_id'];
     public $timestamps = false;
     protected $fillable = [

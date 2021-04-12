@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NamedListentry extends Model
 {
   //1)Regex 2)Wildcard 3)String
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'match_string',

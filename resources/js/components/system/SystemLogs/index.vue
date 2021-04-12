@@ -18,17 +18,14 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mx-0 row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_filter">
-                                    <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
-                                    </label>
-                                </div>
+                            <div class="col-sm-12 col-md-6 d-flex" style="margin-top: auto;">
+                                <input type="text" class="form-control" placeholder="Type Source Name..." v-model="sourcename" v-on:keyup="get_logs()">
+                                <input type="text" class="form-control" placeholder="Type Source IP Page..." v-model="sourceip" v-on:keyup="get_logs()">
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
                                     <div class="col-md-8">
-                                        <button v-if="ad_data_computer_ids != ''" style="margin-top: 7px;" type="button" class="btn btn-primary">Add proxy User</button>
+                                        <button v-if="system_logs_ids != ''" style="margin-top: 7px;" type="button" class="btn btn-primary">Add proxy User</button>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="ropdown dropdown-user" style="float: right;">
@@ -100,11 +97,11 @@
                                 </tr>
                             </thead>
                             <tbody v-if="show">
-                                <tr v-for="(value,index) in ad_data_computer.data" v-bind:key="index">
-                                    <td v-if="source_ip">192.168.1.5</td>
+                                <tr v-for="(value,index) in system_logs.data" v-bind:key="index">
+                                    <td v-if="source_ip">{{ value.source_ip }}</td>
                                     <td class="text-center" v-if="traffic_source_name">{{ value.user_name }}</td>
-                                    <td class="text-center" v-if="policy_name">Home</td>
-                                    <td class="text-center" v-if="rule_name">Block All</td>
+                                    <td class="text-center" v-if="policy_name">{{ value.policy_name }}</td>
+                                    <td class="text-center" v-if="rule_name">{{ value.rule_name }}</td>
                                     <td class="text-center" v-if="policy_assignment">Home Level</td>
                                     <td class="text-center" v-if="nlp_response_time">3072</td>
                                     <td class="text-center" v-if="nlp_top5">Insurance 97%</td>
@@ -114,7 +111,7 @@
                         <div class="text-center" style="margin-top: 15px;" v-if="!isLoading && !show">
                             <h4>Oops! No Logs Found</h4>
                         </div>
-                        <pagination :pageData="ad_data_computer"></pagination>
+                        <pagination :pageData="system_logs"></pagination>
                     </div>
                 </div>
             </div>
@@ -131,7 +128,7 @@ export default {
     },
     data() {
         return {
-            ad_data_computer: [],
+            system_logs: [],
 
             source_ip: true,
             traffic_source_name: true,
@@ -143,9 +140,10 @@ export default {
 
             allSelected: false,
             selected: [],
-            name: '',
+            sourcename: '',
+            sourceip: '',
             isLoading: false,
-            ad_data_computer_ids: [],
+            system_logs_ids: [],
             errors: null,
             notificationSystem: {
             options: {
@@ -177,9 +175,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_users();
-        EventBus.$on("ad-data-users", function() {
-            _this.get_users();
+        this.get_logs();
+        EventBus.$on("system-logs", function() {
+            _this.get_logs();
         });
     },
 
@@ -191,10 +189,10 @@ export default {
 
         //Select all checkboxes
         selectAll() {
-            this.ad_data_computer_ids = [];
+            this.system_logs_ids = [];
             if (!this.allSelected) {
-                for (var user in this.ad_data_computer.data) {
-                    this.ad_data_computer_ids.push(this.ad_data_computer.data[user].id);
+                for (var user in this.system_logs.data) {
+                    this.system_logs_ids.push(this.system_logs.data[user].id);
                 }
             }
         },
@@ -203,18 +201,20 @@ export default {
         },
 
         //Get All Users
-        get_users(page = 1) {
+        get_logs(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "ad-data/users-list?page="+
+                    "system/logs-list?page="+
                     page+
-                    "&name=" +
-                    this.name
+                    "&source_name=" +
+                    this.sourcename +
+                    "&source_ip=" +
+                    this.sourceip
                 )
                 .then(response => {
-                    this.ad_data_computer = response.data
+                    this.system_logs = response.data
                     this.isLoading = false;
                 })
                 .catch(err => {
@@ -231,7 +231,7 @@ export default {
 
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_users(pageNo);
+            vm.get_logs(pageNo);
         },
         
         showMessage(data) {
@@ -252,7 +252,7 @@ export default {
 
     computed: {
         show() {
-            return this.ad_data_computer.data ? (this.ad_data_computer.data.length >= 1 ? true: false) : null
+            return this.system_logs.data ? (this.system_logs.data.length >= 1 ? true: false) : null
         },
 
         showMenu() {

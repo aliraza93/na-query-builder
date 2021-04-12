@@ -10,7 +10,7 @@ use App\Models\AD\AD_Users;
 class AD_observed_ip extends Model
 {
     
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'ip_address',

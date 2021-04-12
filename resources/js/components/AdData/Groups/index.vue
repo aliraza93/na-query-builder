@@ -18,17 +18,14 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mx-0 row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_filter">
-                                    <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
-                                    </label>
-                                </div>
+                            <div class="col-sm-12 col-md-6 d-flex" style="margin-top: auto;">
+                                <input type="text" class="form-control" placeholder="Type Common Name..." v-model="commonname" v-on:keyup="get_computers()">
+                                <input type="text" class="form-control" placeholder="Type Distinguished Name..." v-model="distinguishedname" v-on:keyup="get_computers()">
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
                                     <div class="col-md-8">
-                                        <button v-if="ad_data_computer_ids != ''" style="margin-top: 7px;" type="button" class="btn btn-primary">Add proxy User</button>
+                                        <!-- <button v-if="ad_data_computer_ids != ''" style="margin-top: 7px;" type="button" class="btn btn-primary">Add proxy User</button> -->
                                     </div>
                                     <div class="col-md-4">
                                         <div class="ropdown dropdown-user" style="float: right;">
@@ -38,8 +35,8 @@
                                             <div class="dropdown-menu dropdown-menu-right" id="showMenu" aria-labelledby="dropdown-user">
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                     <div class="custom-control custom-checkbox"> 
-                                                        <input class="custom-control-input" v-model="display_name" type="checkbox" id="display_name">
-                                                        <label class="custom-control-label" for="display_name">Display Name</label>
+                                                        <input class="custom-control-input" v-model="common_name" type="checkbox" id="common_name">
+                                                        <label class="custom-control-label" for="common_name">Common Name</label>
                                                     </div>
                                                 </a>
                                                 <a class="dropdown-item d-flex" href="javascript:void(0);">
@@ -72,8 +69,8 @@
                         <table v-else class="datatables-basic table dataTable no-footer dtr-column" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                             <thead>
                                 <tr role="row">
-                                    <th class="text-center" v-if="display_name">Display Name</th>
-                                    <th class="text-center" v-if="distinguished_name">Distinguish Name</th>
+                                    <th class="text-center" v-if="common_name">Common Name</th>
+                                    <th class="text-center" v-if="distinguished_name">Distinguished Name</th>
                                     <th class="text-center" v-if="when_created">When Created</th>
                                     <th class="text-center" v-if="when_changed">When Changed</th>
                                     <th class="text-center">Action</th>
@@ -81,12 +78,12 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in ad_data_computer.data" v-bind:key="index">
-                                    <td class="text-center" v-if="display_name">AD {{ value.user_name }}</td>
-                                    <td class="text-center" v-if="distinguished_name">Distinguish Name {{ value.user_name }}</td>
+                                    <td class="text-center" v-if="common_name">AD {{ value.common_name }}</td>
+                                    <td class="text-center" v-if="distinguished_name">{{ value.obj_dist_name }}</td>
                                     <td class="text-center" v-if="when_created">{{ value.when_created }}</td>
                                     <td class="text-center" v-if="when_changed">{{ value.when_updated }}</td>
                                     <td class="text-center">
-                                        <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To Computer" class="btn">
+                                        <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showGroup(value.id)" title="Go To Computer" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>
                                         <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
@@ -120,14 +117,15 @@ export default {
         return {
             ad_data_computer: [],
 
-            display_name: true,
+            common_name: true,
             distinguished_name: true,
             when_created: true,
             when_changed: true,
 
             allSelected: false,
             selected: [],
-            name: '',
+            commonname: '',
+            distinguishedname: '',
             isLoading: false,
             ad_data_computer_ids: [],
             errors: null,
@@ -161,9 +159,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_users();
+        this.get_groups();
         EventBus.$on("ad-data-users", function() {
-            _this.get_users();
+            _this.get_groups();
         });
     },
 
@@ -186,16 +184,18 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
-        get_users(page = 1) {
+        //Get All Groups
+        get_groups(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "ad-data/users-list?page="+
+                    "ad-data/groups-list?page="+
                     page+
-                    "&name=" +
-                    this.name
+                     "&common_name=" +
+                    this.commonname +
+                    "&obj_dist_name=" +
+                    this.distinguishedname
                 )
                 .then(response => {
                     this.ad_data_computer = response.data
@@ -209,13 +209,13 @@ export default {
         },
 
         //Show User Page
-        // showUser(id) {
+        // showGroup(id) {
         //     axios.get(base_url + 'ad-data/user/' + id).then(response => {})
         // },
 
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_users(pageNo);
+            vm.get_groups(pageNo);
         },
         
         showMessage(data) {

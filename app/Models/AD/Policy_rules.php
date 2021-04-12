@@ -9,7 +9,7 @@ use App\Models\AD\Rules;
 
 class Policy_rules extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = ['policy_id', 'priority','rule_id'];
    

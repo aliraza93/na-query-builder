@@ -12,13 +12,6 @@ class SystemController extends Controller
         $pageConfigs = ['pageHeader' => false];
         return view('/content/system/maintenance/index', ['pageConfigs' => $pageConfigs]);
     }
-    
-    // System Logs Page
-    public function logs()
-    {
-        $pageConfigs = ['pageHeader' => false];
-        return view('/content/system/logs/index', ['pageConfigs' => $pageConfigs]);
-    }
 
     // System Clock Page
     public function system_clocks()

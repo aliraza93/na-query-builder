@@ -23,7 +23,7 @@ class TriggertypeController extends Controller
 
     public function index()
     {
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $statment = 'select rbt.trigger_code, rbt.trigger_label, rbt.seq_no, rbt.input_code,
          rbi.has_choice_list_flag,rbt.trigger_code_parent
          from rule_builder_trigger rbt

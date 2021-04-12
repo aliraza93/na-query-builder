@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ad_user extends Model
 {
 
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'object_guid',

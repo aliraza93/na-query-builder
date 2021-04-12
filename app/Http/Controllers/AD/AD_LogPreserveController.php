@@ -35,9 +35,9 @@ class AD_LogPreserveController extends Controller
     $rejected = $request['log_preserve_days_rejected'];
 
     if ($this->m::count() === 1) {
-      DB::connection('pgsql3')->table('configuration')->update(['log_preserve_days_allowed' => $allowed, 'log_preserve_days_rejected' => $rejected]);
+      DB::connection('pgsql')->table('configuration')->update(['log_preserve_days_allowed' => $allowed, 'log_preserve_days_rejected' => $rejected]);
     } else {
-      DB::connection('pgsql3')->insert('insert into configuration (log_preserve_days_allowed, log_preserve_days_rejected) values (?, ?)', [$allowed, $rejected]);
+      DB::connection('pgsql')->insert('insert into configuration (log_preserve_days_allowed, log_preserve_days_rejected) values (?, ?)', [$allowed, $rejected]);
     }
 
     return response()->json('Saved Successfully', 200);

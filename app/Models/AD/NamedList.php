@@ -9,7 +9,7 @@ use App\Models\AD\NamedListentry;
 class NamedList extends Model
 {
   
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'list_title',

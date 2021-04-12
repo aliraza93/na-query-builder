@@ -12,7 +12,7 @@ use App\Models\Crm\Policy_users;
 class AD_Users extends Model
 {
   
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'object_guid',

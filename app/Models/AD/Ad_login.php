@@ -13,7 +13,7 @@ SELECT "Timestamp", "IsComputerEvent", "IPAddress", "UserId", "UserName", "UserD
 class Ad_login extends Model
 {
     
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'ip_address',

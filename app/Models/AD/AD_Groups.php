@@ -20,7 +20,7 @@ class AD_Groups extends Model
 {
 
 
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
 
     protected $fillable = [

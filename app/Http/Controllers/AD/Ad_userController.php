@@ -26,15 +26,13 @@ class Ad_userController extends Controller
 
     public function index()
     {
-        return Ad_user
-            ::orderBy('object_guid', 'asc')
+        return Ad_user::orderBy('object_guid', 'asc')
                ->get();
     }
 
     public function show($object_guid)
     {
-        $User_nameInfo = Ad_user
-            ::where('object_guid', $object_guid)
+        $User_nameInfo = Ad_user::where('object_guid', $object_guid)
             ->with('groupsname', 'groupsname.grpname')
             ->first();
         if ($User_nameInfo == null) {
@@ -137,9 +135,7 @@ class Ad_userController extends Controller
     }
     public function destroy($prefix, Ad_user $model)
     {
-
         $model->destroy($prefix);
-
 
         return ['status' => 0];
         //   return $this->rDestroy($model);
@@ -189,5 +185,84 @@ class Ad_userController extends Controller
             $ad_user = $ad_user->where(DB::raw("CONCAT(object_guid, ' ', domin)"), 'like', '%' . $search . '%');
         }
         return $ad_user->take(100)->get();
+    }
+
+    // User List Page
+    public function users()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/users/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Tree View Page
+    public function tree_view()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/tree-view/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Groups List Page
+    public function groups()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/groups/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Organizational units List Page
+    public function containers()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/containers/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Organizational units List Page
+    public function organizational_units()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/organizational-units/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // User List
+    public function user_list(Request $request)
+    {
+        $common_name    = $request->common_name;
+        $surname        = $request->surname;
+        $email          = $request->email;
+        $user = DB::table('ad_user')->orderBy('when_created','desc');
+        if($common_name != ''){
+            $user->where('common_name','LIKE','%'.$common_name.'%');
+        }
+        if($surname != ''){
+            $user->where('surname','LIKE','%'.$surname.'%');
+        }
+        if($email != ''){
+            $user->where('email_addresses','LIKE','%'.$email.'%');
+        }
+        $user = $user->paginate(10);
+        return $user;
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showUser(User $user)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/users/show-ad-data-user', ['pageConfigs' => $pageConfigs], compact('user'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showSubnet(User $user)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/subnet/show-ad-data-subnet', ['pageConfigs' => $pageConfigs], compact('user'));
     }
 }

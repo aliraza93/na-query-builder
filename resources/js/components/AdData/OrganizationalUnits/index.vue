@@ -18,12 +18,9 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mx-0 row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_filter">
-                                    <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
-                                    </label>
-                                </div>
+                            <div class="col-sm-12 col-md-6 d-flex" style="margin-top: auto;">
+                                <input type="text" class="form-control" placeholder="Type Common Name..." v-model="commonname" v-on:keyup="get_ou()">
+                                <input type="text" class="form-control" placeholder="Type Distinguished Name..." v-model="distinguishedname" v-on:keyup="get_ou()">
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
@@ -81,7 +78,7 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in ad_data_computer.data" v-bind:key="index">
-                                    <td class="text-center" v-if="ou_name">OU {{ value.user_name }}</td>
+                                    <td class="text-center" v-if="ou_name">{{ value.user_name }}</td>
                                     <td class="text-center" v-if="distinguished_name">Distinguish Name {{ value.user_name }}</td>
                                     <td class="text-center" v-if="when_created">{{ value.when_created }}</td>
                                     <td class="text-center" v-if="when_changed">{{ value.when_updated }}</td>
@@ -131,13 +128,15 @@ export default {
 
             allSelected: false,
             selected: [],
-            name: '',
+            commonname: '',
+            distinguishedname: '',
             isLoading: false,
             ad_data_computer_ids: [],
             errors: null,
             notificationSystem: {
             options: {
                 success: {
+                    overlay: true,
                     position: "topRight",
                     timeout: 3000,
                     class: 'success_notification'
@@ -165,9 +164,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_users();
-        EventBus.$on("ad-data-users", function() {
-            _this.get_users();
+        this.get_ou();
+        EventBus.$on("ad-data-ou", function() {
+            _this.get_ou();
         });
     },
 
@@ -190,16 +189,18 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
-        get_users(page = 1) {
+        //Get All Organizational Units
+        get_ou(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "ad-data/users-list?page="+
+                    "ad-data/ou-list?page="+
                     page+
-                    "&name=" +
-                    this.name
+                    "&common_name=" +
+                    this.commonname +
+                    "&obj_dist_name=" +
+                    this.distinguishedname
                 )
                 .then(response => {
                     this.ad_data_computer = response.data
@@ -219,7 +220,7 @@ export default {
 
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_users(pageNo);
+            vm.get_ou(pageNo);
         },
         
         showMessage(data) {

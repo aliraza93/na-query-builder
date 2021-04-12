@@ -19,12 +19,8 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mx-0 row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_filter">
-                                    <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
-                                    </label>
-                                </div>
+                            <div class="col-sm-12 col-md-6 d-flex" style="margin-top: auto;">
+                                <input type="text" class="form-control" placeholder="Type Common Name..." v-model="commonname" v-on:keyup="get_containers()">
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <div class="row d-flex" style="float: right;">
@@ -61,9 +57,9 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in ad_data_container.data" v-bind:key="index">
-                                    <td v-if="container_name">AD {{ value.user_name }}</td>
+                                    <td v-if="container_name">{{ value.common_name }}</td>
                                     <td class="d-flex">
-                                        <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To Computer" class="btn">
+                                        <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showContainer(value.id)" title="Go To Computer" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>
                                         <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
@@ -110,7 +106,7 @@ export default {
 
             allSelected: false,
             selected: [],
-            name: '',
+            commonname: '',
             isLoading: false,
             ad_data_container_ids: [],
             errors: null,
@@ -144,9 +140,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_users();
+        this.get_containers();
         EventBus.$on("ad-data-users", function() {
-            _this.get_users();
+            _this.get_containers();
         });
     },
 
@@ -169,16 +165,16 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
-        get_users(page = 1) {
+        //Get All Containers
+        get_containers(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "ad-data/users-list?page="+
+                    "ad-data/containers-list?page="+
                     page+
-                    "&name=" +
-                    this.name
+                    "&common_name=" +
+                    this.commonname
                 )
                 .then(response => {
                     this.ad_data_container = response.data
@@ -192,13 +188,13 @@ export default {
         },
 
         //Show User Page
-        // showUser(id) {
+        // showContainer(id) {
         //     axios.get(base_url + 'ad-data/user/' + id).then(response => {})
         // },
 
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_users(pageNo);
+            vm.get_containers(pageNo);
         },
         
         showMessage(data) {

@@ -56,7 +56,7 @@ class NamedPageController extends Controller
         }
         
         if ($request->get('default_page_flag') === true || $request->get('default_page_flag') === "true" || $request->get('default_page_flag') === "1") {
-            DB::connection('pgsql3')->table('block_page')->update(['default_page_flag' => false]);
+            DB::connection('pgsql')->table('block_page')->update(['default_page_flag' => false]);
         }
 
         return $this->sUpdate($this->m, $model, $request->all(), $this->pk, $prefix);
@@ -119,5 +119,32 @@ class NamedPageController extends Controller
             $NamedPage = $NamedPage->where(DB::raw("title"), 'like', '%' . $search . '%');
         }
         return $NamedPage->take(100)->get();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function block_pages()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/block-pages/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Block pages List
+    public function block_pages_list(Request $request)
+    {
+        $title              = $request->title;
+        $default_page_flag  = $request->default_page_flag;
+        $block_pages        = DB::table('block_page')->orderBy('when_created','desc');
+        if($title != ''){
+            $block_pages->where('title','LIKE','%'.$title.'%');
+        }
+        if($default_page_flag != ''){
+            $block_pages->where('default_page_flag','LIKE','%'.$default_page_flag.'%');
+        }
+        $block_pages = $block_pages->paginate(10);
+        return $block_pages;
     }
 }

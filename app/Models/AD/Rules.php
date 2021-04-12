@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rules extends Model
 {
  
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'rule_id',

@@ -61,7 +61,7 @@ trait ADTreatMapDB
         try {
 
 
-            //  $db = DB::connection('pgsql3');
+            //  $db = DB::connection('pgsql');
             if (is_array($requests)) {
             foreach ($requests as  $arrays) {
                     if (is_array($arrays)) {
@@ -119,7 +119,7 @@ trait ADTreatMapDB
         try {
 
 
-            //  $db = DB::connection('pgsql3');
+            //  $db = DB::connection('pgsql');
             if (is_array($requests)) {
                 foreach ($requests as  $arrays) {
                     if (is_array($arrays)) {

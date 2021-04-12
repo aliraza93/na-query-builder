@@ -126,4 +126,28 @@ class AD_ContainerController extends Controller
         }
         return $AD_Container->take(100)->get();
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function containers()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/ad-data/containers/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Containers List
+    public function containers_list(Request $request)
+    {
+        $common_name        = $request->common_name;
+        $containers          = DB::table('container')->orderBy('when_created','desc');
+        if($common_name != ''){
+            $containers->where('common_name','LIKE','%'.$common_name.'%');
+        }
+        $containers = $containers->paginate(10);
+        return $containers;
+    }
+
 }

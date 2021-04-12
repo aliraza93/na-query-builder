@@ -37,7 +37,7 @@ class Full_SyncController extends Controller
         if ($group_id === null) {
             return  ['status' => 1, 'error' => 'parent group required'];
         }
-        $db = DB::connection('pgsql3');
+        $db = DB::connection('pgsql');
         $grptable=  $db->table('ad_group')->where('object_guid', '=', $group_id)->first();
         if($grptable === null){
           return  ['status' => 1, 'error' => 'parent group not found'];

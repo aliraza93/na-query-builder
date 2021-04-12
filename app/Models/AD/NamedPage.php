@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class NamedPage extends Model
 {
   
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $attributes = array(
         'html_content' => '<!DOCTYPE html>

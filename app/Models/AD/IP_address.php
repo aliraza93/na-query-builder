@@ -9,7 +9,7 @@ class IP_address extends Model
 {
     
  
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
     public $timestamps = false;
     protected $fillable = [
         'ip_address_points',

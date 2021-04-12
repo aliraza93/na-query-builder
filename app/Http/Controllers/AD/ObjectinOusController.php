@@ -68,7 +68,7 @@ class ObjectinOusController extends Controller
         $parent = $prefix;
           $child = $request->get('ts_id_child');
 
-        $db =  DB::connection('pgsql3');
+        $db =  DB::connection('pgsql');
     /*    $statement =    "update traffic_source_contains  set blocked_flag = ?
 where (ts_id_parent,ts_id_child)  in (
 select ts_id_parent,ts_id_child from traffic_source_contains  ts

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class trigger_type extends Model
 {
-    protected $connection = 'pgsql3';
+    protected $connection = 'pgsql';
 
     protected $fillable = [
         'trigger_label',

@@ -74,13 +74,19 @@
                                 <tr v-for="(value,index) in policies.data" v-bind:key="index">
                                     <td class="text-center" v-if="priority"> {{ value.priority }}</td>
                                     <td class="text-center" v-if="policy_name">{{ value.policy_name }}</td>
-                                    <td class="text-center" v-if="block_page">{{ value.block_page_id }}</td>
+                                    <td class="text-center" v-if="block_page">{{ value.blockpage.title }}</td>
                                     <td class="text-center">
-                                        <button data-toggle="tooltip" @click="editPolicy(value.id)" title="Go To Computer" class="btn">
-                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
+                                        <button data-toggle="tooltip" @click="editPolicy(value.policy_id)" title="Edit Policy" class="btn">
+                                            <i style="margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
                                         <button type="button" @click="sendInfo(value.policy_id)" data-toggle="modal" data-target="#delete-policy" class="btn">
-                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-trash"></i>
+                                            <i style="margin-top: 1px;" class="fa fa-trash"></i>
+                                        </button>
+                                        <button data-toggle="tooltip" @click="changePriority(value.policy_id, 'up')" title="Priority Up" class="btn">
+                                            <i style="margin-top: 1px;" class="fa fa-arrow-up"></i>
+                                        </button>
+                                        <button data-toggle="tooltip" @click="changePriority(value.policy_id, 'down')" title="Priority Down" class="btn">
+                                            <i style="margin-top: 1px;" class="fa fa-arrow-down"></i>
                                         </button>
                                         <!-- Delete Policy Modal -->
                                         <div class="modal custom-modal fade" id="delete-policy" role="dialog">
@@ -152,12 +158,12 @@ export default {
             notificationSystem: {
             options: {
                 success: {
-                    position: "topRight",
+                    position: "center",
                     timeout: 3000,
                     class: 'success_notification'
                 },
                 error: {
-                    position: "topRight",
+                    position: "center",
                     timeout: 4000,
                     class: 'error_notification'
                 },
@@ -228,11 +234,6 @@ export default {
             });
         },
 
-        //Show User Page
-        // showUser(id) {
-        //     axios.get(base_url + 'ad-data/user/' + id).then(response => {})
-        // },
-
         pageClicked(pageNo) {
             var vm = this;
             vm.get_policies(pageNo);
@@ -244,6 +245,13 @@ export default {
             } else {
                 this.$toast.error(data.message, "Error Alert", this.notificationSystem.options.error);
             }
+        },
+
+        changePriority(id, action) {
+            axios.post(base_url + 'policy/change-priority/'+ id + '/' + action)
+            .then(response => {
+                EventBus.$emit("policies-added");
+            })
         },
 
         //View User Info

@@ -99,7 +99,7 @@ export default {
     },
 
     mounted() {
-        console.log('component called')
+        // console.log('component called')
     },
 
     created() {

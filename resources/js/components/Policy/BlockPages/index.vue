@@ -69,10 +69,10 @@
                                     <td class="text-center" v-if="default_page">{{ value.default_page_flag }}</td>
                                     <td class="text-center">
                                         <button data-toggle="tooltip" @click="editPage(value.block_page_id)" title="Edit Page" class="btn">
-                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
+                                            <i style="margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
                                         <button type="button" @click="sendInfo(value.block_page_id)" data-toggle="modal" data-target="#delete-page" class="btn">
-                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-trash"></i>
+                                            <i style="margin-top: 1px;" class="fa fa-trash"></i>
                                         </button>
                                         <!-- Delete Page Modal -->
                                         <div class="modal custom-modal fade" id="delete-page" role="dialog">
@@ -143,7 +143,7 @@ export default {
             notificationSystem: {
             options: {
                 success: {
-                    position: "topRight",
+                    position: "center",
                     timeout: 3000,
                     class: 'success_notification'
                 },

@@ -60,7 +60,7 @@
                                     <td v-if="container_name">{{ value.common_name }}</td>
                                     <td class="d-flex">
                                         <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showContainer(value.id)" title="Go To Computer" class="btn">
-                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-eye"></i>
+                                            <i style="margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>
                                         <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
                                             <i class="fa fa-info-circle"></i>
@@ -113,12 +113,12 @@ export default {
             notificationSystem: {
             options: {
                 success: {
-                    position: "topRight",
+                    position: "center",
                     timeout: 3000,
                     class: 'success_notification'
                 },
                 error: {
-                    position: "topRight",
+                    position: "center",
                     timeout: 4000,
                     class: 'error_notification'
                 },

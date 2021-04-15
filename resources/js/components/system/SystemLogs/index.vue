@@ -148,12 +148,12 @@ export default {
             notificationSystem: {
             options: {
                 success: {
-                    position: "topRight",
+                    position: "center",
                     timeout: 3000,
                     class: 'success_notification'
                 },
                 error: {
-                    position: "topRight",
+                    position: "center",
                     timeout: 4000,
                     class: 'error_notification'
                 },

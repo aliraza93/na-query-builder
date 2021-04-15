@@ -81,12 +81,12 @@ export default {
                 options: {
                     success: {
                         overlay: true,
-                        position: "topRight",
+                        position: "center",
                         timeout: 3000,
                         class: 'success_notification'
                     },
                     error: {
-                        position: "topRight",
+                        position: "center",
                         timeout: 4000,
                         class: 'error_notification'
                     },

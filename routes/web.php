@@ -125,11 +125,14 @@ Route::middleware('auth')->group(function () {
   |--------------------------------------------------------------------------
   */
   Route::group(['prefix' => 'policy'], function () {
-    Route::get('policies', [PolicyController::class,'policies'])->name('policy-policies');
-    Route::get('policies-list', [PolicyController::class,'policies_list'])->name('policies_list');
+    Route::get('policies', [App\Http\Controllers\AD\PolicyController::class,'policies'])->name('policy-policies');
+    Route::get('policies-list', [App\Http\Controllers\AD\PolicyController::class,'policies_list'])->name('policies_list');
     Route::get('policy/{user}', 'PolicyController@showPolicy');
     Route::post('add-policy', [App\Http\Controllers\AD\PolicyController::class, 'store'])->name('block-page.store');
+    Route::get('policy/{policy}/edit', [App\Http\Controllers\AD\PolicyController::class, 'edit']);
+    Route::post('policy/{policy}/update', [App\Http\Controllers\AD\PolicyController::class, 'update']);
     Route::delete('delete-policy/{policy}', [App\Http\Controllers\AD\PolicyController::class, 'destroy']);
+    Route::post('change-priority/{policy}/{action}', [App\Http\Controllers\AD\PolicyController::class, 'change_priority']);
 
     Route::get('reports', 'PolicyController@reports')->name('policy-reports');
     

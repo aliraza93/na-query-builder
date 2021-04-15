@@ -35,7 +35,7 @@ class Policies extends Model
         return $this->hasMany(Policy_rules::class,'policy_id', 'policy_id')->orderBy('priority', 'asc');
     }
 
-//rulename
+    //rulename
     public function policysubnet()
     {
         return $this->hasMany(ObjectinPolicy::class, 'policy_id', 'policy_id')
@@ -46,7 +46,8 @@ class Policies extends Model
             'traffic_source.ts_id'
         )->where("subtype", "IP");
     }
- public function policycomputer()
+    
+    public function policycomputer()
     {
         return $this->hasMany(ObjectinPolicy::class, 'policy_id', 'policy_id')
             ->leftJoin(
@@ -56,6 +57,7 @@ class Policies extends Model
                 'traffic_source.ts_id'
             )->where("subtype", "Computer");
     }
+    
     public function policyuser()
     {
         return $this->hasMany(ObjectinPolicy::class, 'policy_id', 'policy_id')
@@ -66,6 +68,7 @@ class Policies extends Model
                 'traffic_source.ts_id'
             )->where("subtype", "User");
     }
+    
     public function policygrp()
     {
         return $this->hasMany(ObjectinPolicy::class, 'policy_id', 'policy_id')
@@ -76,6 +79,7 @@ class Policies extends Model
                 'traffic_source.ts_id'
             )->where("subtype", "Group");
     }
+    
     public function policyous()
     {
         return $this->hasMany(ObjectinPolicy::class, 'policy_id', 'policy_id')
@@ -86,6 +90,7 @@ class Policies extends Model
             'traffic_source.ts_id'
         )->where("subtype", "OrgUnit");
     }
+    
     public function policycontainer()
     {
         return $this->hasMany(ObjectinPolicy::class, 'policy_id', 'policy_id')

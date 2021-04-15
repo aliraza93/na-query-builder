@@ -45,41 +45,60 @@ class PolicyController extends Controller
                         ->first();
         return $PoliciesInfo;
     }
-    public function update($prefix, Request $request, Policies $model)
+    public function update(Request $request, Policies $policy)
     {
-        //  return $this->rUpdate($this->m, $model, $request->all(), $this->pk);
-        $id = $request->get('policy_id');
-        $priority = $request->get('priority') ;
-            if ($request->get('action') === 'up' ) {
-               $checknewpro = $priority -1;
-               if ($checknewpro > 0) {
-                 $checkpolicy =  Policies::where('priority','=', $checknewpro)->first();
-                   if($checkpolicy !== null){
-                    $negtive_priority = -1 * $checknewpro;
-                    Policies::where('priority', '=', $checknewpro)
-                    ->update(array('priority' => $negtive_priority));
+        $request->validate([
+            'policy_name' => 'required',
+            'block_pages' => 'required'
+        ]);
+        try{
 
-                    Policies::where('priority', '=', $priority)
-                    ->update(array('priority' => $checknewpro));
-                    $postive_pro = -1 * $negtive_priority;
-                    Policies::where('priority', '=', $negtive_priority)
-                    ->update(array('priority' => $priority));
-                    return ['status' => 0];
+            $policy->policy_name = $request->policy_name;
+            $policy->block_page_id = $request->block_pages['code']; 
+            $policy->when_updated = now();
+            $policy->update();
 
-                   }else{
+            return response()->json(['status'=>'success','message'=>'Policy Updated Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>$e->getMessage()]);
+
+        }
+    }
+
+    public function change_priority(Policies $policy, $action) {
+        $id = $policy->policy_id;
+        $priority = $policy->priority;
+            if ($action === 'up' ) {
+                $checknewpro = $priority -1;
+                if ($checknewpro > 0) {
+                    $checkpolicy =  Policies::where('priority','=', $checknewpro)->first();
+                    if($checkpolicy !== null){
+                        $negtive_priority = -1 * $checknewpro;
+                        Policies::where('priority', '=', $checknewpro)
+                        ->update(array('priority' => $negtive_priority));
+
+                        Policies::where('priority', '=', $priority)
+                        ->update(array('priority' => $checknewpro));
+                        $postive_pro = -1 * $negtive_priority;
+                        Policies::where('priority', '=', $negtive_priority)
+                        ->update(array('priority' => $priority));
+                        return ['status' => 0];
+                   } 
+                   else {
                     Policies::where('priority', '=', $priority)
                         ->update(array('priority' => $checknewpro));
                     return ['status' => 0];
-
                    }
-               }else{
-                 return ['status' => 0];
-
                }
-               
+               else{
+                 return ['status' => 0];
+               }
             }
 
-        if ($request->get('action') === 'down') {
+        if ($action === 'down') {
             $checknewpro = $priority + 1;
             $max = Policies::max('priority');
 
@@ -104,34 +123,44 @@ class PolicyController extends Controller
             } else {
                 return ['status' => 0];
             }
-        }
-        
-        return $this->sUpdate($this->m, $model, $request->all(), $this->pk, $prefix);
+        }    
     }
+
+    public function edit(Policies $policy) {
+        return response()->json([
+            'policy'    => $policy,
+            'blockpage' => $policy->blockpage
+        ]);
+    }
+
     public function store(Request $request)
     {
+        $old_value = Policies::orderBy('when_created', 'desc')->first();
         $request->validate([
             'policy_name' => 'required',
             'block_pages' => 'required',
         ]);
         try{
-            if($request->get('priority') == null){
-                $maxp = $this->m::max('priority') +1;
-                $request->request->add(['priority' => $maxp]);
-                $request->request->add(['block_page_id' => $request->block_pages['code']]);
-            }
-            return $this->rStore($this->m, $request, $this->pk);
+            
+            $policy = new Policies;
+            $policy->policy_name = $request->policy_name;
+            $policy->block_page_id = $request->block_pages['code'];
+            $policy->priority = empty($old_value) ? 1 : $old_value->priority + 1;
+            $policy->when_created = now();
+            $policy->save();
+
             return response()->json(['status'=>'success','message'=>'Policy Added Successfully !']);
         }
         catch(\Exception $e)
         {
          
-            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
+            return response()->json(['status'=>'error','message'=>$e->getMessage()]);
 
         }
 
         
     }
+
     public function destroy(Policies $policy)
     {
         try{
@@ -167,5 +196,32 @@ class PolicyController extends Controller
             $policy = $policy->where(DB::raw("CONCAT(policy_name, ' ', priority)"), 'like', '%' . $search . '%');
         }
         return $policy->take(100)->get();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function policies()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/policies/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Policies List
+    public function policies_list(Request $request)
+    {
+        $policy_name        = $request->policy_name;
+        $priority           = $request->priority;
+        $policies           = Policies::with('blockpage')->orderBy('priority');
+        if($policy_name != ''){
+            $policies->where('policy_name','LIKE','%'.$policy_name.'%');
+        }
+        if($priority != ''){
+            $policies->where('priority','LIKE','%'.$priority.'%');
+        }
+        $policies = $policies->paginate(10);
+        return $policies;
     }
 }

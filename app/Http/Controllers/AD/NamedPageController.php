@@ -56,6 +56,7 @@ class NamedPageController extends Controller
             }
             $page->title = $request->title;
             $page->default_page_flag = $request->default_page; 
+            $page->when_changed = now();
             $page->update();
             // return $this->sUpdate($this->m, $page, $request->all(), $this->pk, $page->block_page_id);
 

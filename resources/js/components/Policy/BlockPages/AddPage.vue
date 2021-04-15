@@ -64,7 +64,7 @@ export default {
                     class: 'complete_notification'
                 },
                 error: {
-                    position: "topRight",
+                    position: "center",
                     timeout: 4000,
                     class: 'error_notification'
                 },

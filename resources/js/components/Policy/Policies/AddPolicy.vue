@@ -10,7 +10,7 @@
                     </button>
                 </div>
                 <validation-observer ref="observer" v-slot="{ handleSubmit }">
-                    <b-form @submit.stop.prevent="handleSubmit(addBlockPolicy)">
+                    <b-form @submit.stop.prevent="handleSubmit(addPolicy)">
                         <div class="modal-body">
                             
                             <validation-provider
@@ -85,7 +85,7 @@ export default {
                         class: 'complete_notification'
                     },
                     error: {
-                        position: "topRight",
+                        position: "center",
                         timeout: 4000,
                         class: 'error_notification'
                     },
@@ -126,8 +126,8 @@ export default {
             });
         }, 
 
-        //Add Block Policy
-        addBlockPolicy() {
+        //Add Policy
+        addPolicy() {
             this.saving = true
             axios
             .post(base_url + "policy/add-policy", this.policy)

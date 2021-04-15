@@ -6,15 +6,16 @@ use App\Models\Libraries\ModelTreatment;
 use App\Models\AD\NamedPage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class NamedPageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store']]);
-        $this->middleware('role:update', ['only' => ['update']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store']]);
+        // $this->middleware('role:update', ['only' => ['update']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
 
     private $m = NamedPage::class;
@@ -22,9 +23,7 @@ class NamedPageController extends Controller
 
     public function index()
     {
-        return NamedPage
-            ::orderBy('title', 'asc')
-            ->get();
+        return NamedPage::orderBy('title', 'asc')->get();
     }
 
     public function show($id)
@@ -38,56 +37,87 @@ class NamedPageController extends Controller
 
         return $NamedPageInfo;
     }
-    public function update($prefix, Request $request, NamedPage $model)
+    public function update(Request $request, NamedPage $page)
     {
-        $page = NamedPage::findOrFail($prefix);
-        $pageName = $page->title;
+        $request->validate([
+            'title' => 'required',
+        ]);
+        try{
+            $pageName = $page->title;
 
-        if ($page->default_page_flag == true) {
-            if ($request->get('default_page_flag') === false || $request->get('default_page_flag') === "false" || $request->get('default_page_flag') === "0") {
-                return ['status' => -2,
-                    "msg" => [
-                        "default_page_flag" => [
-                            "Can't set $pageName's flag to false, please assign another default page to true to enable the update"
-                        ]
-                    ]
-                ];
+            if ($page->default_page_flag == true) {
+                if ($request->get('default_page') === false || $request->get('default_page') === "false" || $request->get('default_page') === "0") {
+                    return response()->json(['status'=>'error','message'=>"Can't set $pageName's flag to false, please assign another default page to true to enable the update"]);
+                }
             }
-        }
-        
-        if ($request->get('default_page_flag') === true || $request->get('default_page_flag') === "true" || $request->get('default_page_flag') === "1") {
-            DB::connection('pgsql')->table('block_page')->update(['default_page_flag' => false]);
-        }
+            
+            if ($request->get('default_page') === true || $request->get('default_page') === "true" || $request->get('default_page') === "1") {
+                DB::connection('pgsql')->table('block_page')->update(['default_page_flag' => false]);
+            }
+            $page->title = $request->title;
+            $page->default_page_flag = $request->default_page; 
+            $page->update();
+            // return $this->sUpdate($this->m, $page, $request->all(), $this->pk, $page->block_page_id);
 
-        return $this->sUpdate($this->m, $model, $request->all(), $this->pk, $prefix);
+            return response()->json(['status'=>'success','message'=>'Page Updated Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
 
+        }
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
-    {
-        if ($this->m::count() === 0) {
-            $request->request->set('default_page_flag', 'true');
+    {   
+        $request->validate([
+            'title' => 'required',
+        ]);
+        try{
+            if ($this->m::count() === 0) {
+                $request->request->set('default_page_flag', 'true');
+            }
+            $this->rStore($this->m, $request, $this->pk);
+
+            return response()->json(['status'=>'success','message'=>'Page Added Successfully !']);
         }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
 
-        return $this->rStore($this->m, $request, $this->pk);
-    }
-    public function destroy($prefix, NamedPage $model)
-    {
-        $page = NamedPage::findOrFail($prefix);
-        
-        if ($page->default_page_flag == true) {
-            return ['status' => -2,
-                "msg" => [
-                    "default_page_flag" => [
-                        'Can not delete block page with true flag on it'
-                    ]
-                ]
-            ];
         }
-
-        $model->destroy($prefix);
-
-        return ['status' => 0];
     }
+
+    public function destroy(NamedPage $page)
+    {
+        try{
+            if ($page->default_page_flag == true) {
+                return response()->json(['status'=>'error','message'=>'Can not delete block page with true flag on it !']);
+            }
+            $page->delete();
+
+            return response()->json(['status'=>'success','message'=>'Page Deleted Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
+
+        }
+    }
+
+    public function edit(NamedPage $page) {
+        return $page;
+    }
+
     public function search(Request $request)
     {
         $columns = [
@@ -136,8 +166,8 @@ class NamedPageController extends Controller
     public function block_pages_list(Request $request)
     {
         $title              = $request->title;
-        $default_page_flag  = $request->default_page_flag;
-        $block_pages        = DB::table('block_page')->orderBy('when_created','desc');
+        $default_page_flag  = $request->default_page;
+        $block_pages        = NamedPage::orderBy('when_created','desc');
         if($title != ''){
             $block_pages->where('title','LIKE','%'.$title.'%');
         }

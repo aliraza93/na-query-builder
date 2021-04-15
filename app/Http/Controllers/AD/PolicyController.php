@@ -12,12 +12,12 @@ class PolicyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store']]);
-        $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store']]);
+        // $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
-
+    
     private $m = Policies::class;
     private $pk = 'policy_id';
 
@@ -34,18 +34,15 @@ class PolicyController extends Controller
     public function show($id)
     {
         //usergrp
-        $PoliciesInfo = Policies
-            ::where('policy_id', $id)
-            ->with('policyrule', 'policyrule.rulename')
-            ->with('policyuser', 'policyuser.username')
-            ->with('policygrp', 'policygrp.grpname')
-            ->with('policycontainer', 'policycontainer.contname')
-            ->with('policysubnet', 'policysubnet.subname')
-            ->with('policycomputer', 'policycomputer.computername')
-            ->with('policyous', 'policyous.ousname')
-
-            ->first();
-        
+        $PoliciesInfo = Policies::where('policy_id', $id)
+                        ->with('policyrule', 'policyrule.rulename')
+                        ->with('policyuser', 'policyuser.username')
+                        ->with('policygrp', 'policygrp.grpname')
+                        ->with('policycontainer', 'policycontainer.contname')
+                        ->with('policysubnet', 'policysubnet.subname')
+                        ->with('policycomputer', 'policycomputer.computername')
+                        ->with('policyous', 'policyous.ousname')
+                        ->first();
         return $PoliciesInfo;
     }
     public function update($prefix, Request $request, Policies $model)
@@ -113,22 +110,40 @@ class PolicyController extends Controller
     }
     public function store(Request $request)
     {
-        if($request->get('priority') == null){
-           $maxp = $this->m::max('priority') +1;
+        $request->validate([
+            'policy_name' => 'required',
+            'block_pages' => 'required',
+        ]);
+        try{
+            if($request->get('priority') == null){
+                $maxp = $this->m::max('priority') +1;
+                $request->request->add(['priority' => $maxp]);
+                $request->request->add(['block_page_id' => $request->block_pages['code']]);
+            }
+            return $this->rStore($this->m, $request, $this->pk);
+            return response()->json(['status'=>'success','message'=>'Policy Added Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
 
-            $request->request->add(['priority' => $maxp]);
-
- 
         }
 
-        return $this->rStore($this->m, $request, $this->pk);
+        
     }
-    public function destroy($prefix, Policies $model)
+    public function destroy(Policies $policy)
     {
+        try{
+            $policy->delete();
+            return response()->json(['status'=>'success','message'=>'Policy Deleted Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
 
-        $model->destroy($prefix);
-
-        return ['status' => 0];
+        }
     }
 
     public function search(Request $request)

@@ -79,9 +79,33 @@
                                         <button data-toggle="tooltip" @click="editPolicy(value.id)" title="Go To Computer" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
-                                        <a :href="`policy/` + value.id" title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
-                                            <i class="fa fa-info-circle"></i>
-                                        </a>
+                                        <button type="button" @click="sendInfo(value.policy_id)" data-toggle="modal" data-target="#delete-policy" class="btn">
+                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-trash"></i>
+                                        </button>
+                                        <!-- Delete Policy Modal -->
+                                        <div class="modal custom-modal fade" id="delete-policy" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="form-header">
+                                                            <h3>Delete Policy</h3>
+                                                            <p>Are you sure want to delete?</p>
+                                                        </div>
+                                                        <div class="modal-btn delete-action">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <a href="javascript:void(0);" @click="destroy(selected_policy_id)" class="btn btn-primary continue-btn">Delete</a>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Delete Policy Modal -->
                                     </td>
                                 </tr>
                             </tbody>
@@ -101,14 +125,12 @@ import Pagination  from '../../pagination/pagination.vue';
 import { EventBus } from "../../../vue-asset";
 import AddPolicy from './AddPolicy.vue';
 import EditPolicy from './EditPolicy.vue';
-// import AdDataComputerInfo from './AdDataComputerInfo.vue';
 
 export default {
     components: {
         Pagination,
         AddPolicy,
-        EditPolicy,
-        // AdDataComputerInfo
+        EditPolicy
     },
     data() {
         return {
@@ -121,6 +143,7 @@ export default {
 
             allSelected: false,
             selected: [],
+            selected_policy_id: '',
             policyname: '',
             policypriority: '',
             isLoading: false,
@@ -157,7 +180,7 @@ export default {
     created() {
         var _this = this;
         this.get_policies();
-        EventBus.$on("ad-data-users", function() {
+        EventBus.$on("policies-added", function() {
             _this.get_policies();
         });
     },
@@ -227,6 +250,26 @@ export default {
         editPolicy(id) {
             EventBus.$emit("edit-policy", id);
         },
+
+        sendInfo(id) {
+            this.selected_policy_id = id;
+        },
+
+        destroy(id) {
+            axios.delete(base_url + "policy/delete-policy/" + id)
+
+            .then(response => {
+                EventBus.$emit("policies-added");
+                $('#delete-policy').modal('hide');
+                this.showMessage(response.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    this.showMessage(err.response.data)
+                }
+            });
+            
+        }
             
     },
 

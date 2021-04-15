@@ -12,10 +12,10 @@ class PolicyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store']]);
-        $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store']]);
+        // $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
 
     private $m = Policies::class;
@@ -44,6 +44,38 @@ class PolicyController extends Controller
             ->first();
         
         return $PoliciesInfo;
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {   
+        $old_value = Policies::orderBy('when_created', 'desc')->first();
+        $request->validate([
+            'policy_name' => 'required',
+            'block_pages' => 'required',
+        ]);
+        try{
+            
+            $policy = new Policies;
+            $policy->policy_name = $request->policy_name;
+            $policy->block_page_id = $request->block_pages['code'];
+            $policy->priority = $old_value->priority + 1;
+            $policy->when_created = now();
+            $policy->save();
+
+            return response()->json(['status'=>'success','message'=>'Policy Added Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
+
+        }
     }
 
     public function search(Request $request)

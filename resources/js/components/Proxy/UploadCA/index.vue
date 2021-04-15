@@ -59,12 +59,12 @@ export default {
     },
     
     methods: {
-            triggerSend() {
-                this.$refs.myVueDropzone.processQueue();
-            },
-            uploadSuccess: function(file, response) {
-                this.$refs.myVueDropzone.removeAllFiles()
-            },
+        triggerSend() {
+            this.$refs.myVueDropzone.processQueue();
+        },
+        uploadSuccess: function(file, response) {
+            this.$refs.myVueDropzone.removeAllFiles()
+        },
     },
 
     computed: {

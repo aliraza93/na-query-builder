@@ -14,8 +14,7 @@ class Policies extends Model
 {
     protected $fillable = [
         'policy_name',
-        'priority',
-        'descr'
+        'priority'
 
     ];
     protected $appends = ['fullname'];
@@ -28,7 +27,6 @@ class Policies extends Model
     public static $validator = [
         'policy_name' => 'required|string',
         'priority' => 'required|string',
-        'descr' => 'string|string',
 
 
     ];

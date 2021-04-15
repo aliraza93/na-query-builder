@@ -19,8 +19,7 @@
     "laravel/legacy-factories": "^1.1",
     "laravel/passport": "^10.0",
     "laravel/tinker": "^2.0",
-    "laravel/ui": "^3.0",
-    "spatie/laravel-permission": "^4.0"
+    "laravel/ui": "^3.0"
   },
   "require-dev": {
     "facade/ignition": "^2.3.6",

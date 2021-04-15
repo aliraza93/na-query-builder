@@ -68,12 +68,36 @@
                                     <td v-if="page_name">{{ value.title }}</td>
                                     <td class="text-center" v-if="default_page">{{ value.default_page_flag }}</td>
                                     <td class="text-center">
-                                        <button data-toggle="tooltip" @click="editPage(value.id)" title="Go To Computer" class="btn">
+                                        <button data-toggle="tooltip" @click="editPage(value.block_page_id)" title="Edit Page" class="btn">
                                             <i style="font-size: 17px; margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
-                                        <a :href="`policy/` + value.id" title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
-                                            <i class="fa fa-info-circle"></i>
-                                        </a>
+                                        <button type="button" @click="sendInfo(value.block_page_id)" data-toggle="modal" data-target="#delete-page" class="btn">
+                                            <i style="font-size: 17px; margin-top: 1px;" class="fa fa-trash"></i>
+                                        </button>
+                                        <!-- Delete Page Modal -->
+                                        <div class="modal custom-modal fade" id="delete-page" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="form-header">
+                                                            <h3>Delete Page</h3>
+                                                            <p>Are you sure want to delete?</p>
+                                                        </div>
+                                                        <div class="modal-btn delete-action">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <a href="javascript:void(0);" @click="destroy(selected_page_id)" class="btn btn-primary continue-btn">Delete</a>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Delete Page Modal -->
                                     </td>
                                 </tr>
                             </tbody>
@@ -110,6 +134,7 @@ export default {
 
             allSelected: false,
             selected: [],
+            selected_page_id: '',
             pagename: '',
             defaultpage: '',
             isLoading: false,
@@ -123,8 +148,10 @@ export default {
                     class: 'success_notification'
                 },
                 error: {
-                    position: "topRight",
-                    timeout: 4000,
+                    overlay: true,
+                    zindex: 999,
+                    position: "center",
+                    timeout: 3000,
                     class: 'error_notification'
                 },
                 completed: {
@@ -146,7 +173,7 @@ export default {
     created() {
         var _this = this;
         this.get_block_pages();
-        EventBus.$on("ad-data-users", function() {
+        EventBus.$on("block-pages-added", function() {
             _this.get_block_pages();
         });
     },
@@ -179,7 +206,7 @@ export default {
                     "policy/block-pages-list?page="+
                     page+
                     "&title=" +
-                    this.page_name + 
+                    this.pagename + 
                     "&default_page=" +
                     this.defaultpage
                 )
@@ -194,11 +221,6 @@ export default {
             });
         },
 
-        //Show User Page
-        // showUser(id) {
-        //     axios.get(base_url + 'ad-data/user/' + id).then(response => {})
-        // },
-
         pageClicked(pageNo) {
             var vm = this;
             vm.get_block_pages(pageNo);
@@ -206,17 +228,35 @@ export default {
         
         showMessage(data) {
             if (data.status  == "success") {
-                this.$toast.success(data.message, 'Success Alert', this.notificationSystem.options.success );
+                this.$toast.success(data.message, 'Success Alert', this.notificationSystem.options.info );
             } else {
                 this.$toast.error(data.message, "Error Alert", this.notificationSystem.options.error);
             }
         },
 
-        //View User Info
         editPage(id) {
             EventBus.$emit("edit-page", id);
         },
+
+        sendInfo(id) {
+            this.selected_page_id = id;
+        },
+
+        destroy(id) {
+            axios.delete(base_url + "policy/block-page/" + id)
+
+            .then(response => {
+                EventBus.$emit("block-pages-added");
+                $('#delete-page').modal('hide');
+                this.showMessage(response.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    this.showMessage(err.response.data)
+                }
+            });
             
+        }
     },
 
     computed: {

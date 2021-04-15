@@ -128,6 +128,8 @@ Route::middleware('auth')->group(function () {
     Route::get('policies', [PolicyController::class,'policies'])->name('policy-policies');
     Route::get('policies-list', [PolicyController::class,'policies_list'])->name('policies_list');
     Route::get('policy/{user}', 'PolicyController@showPolicy');
+    Route::post('add-policy', [App\Http\Controllers\AD\PolicyController::class, 'store'])->name('block-page.store');
+    Route::delete('delete-policy/{policy}', [App\Http\Controllers\AD\PolicyController::class, 'destroy']);
 
     Route::get('reports', 'PolicyController@reports')->name('policy-reports');
     
@@ -138,6 +140,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('block-pages', [NamedPageController::class,'block_pages'])->name('policy-block-pages');
     Route::get('block-pages-list', [NamedPageController::class,'block_pages_list'])->name('block-pages_list');
+    Route::post('block-page', [NamedPageController::class, 'store'])->name('block-page.store');
+    Route::delete('block-page/{page}', [NamedPageController::class, 'destroy']);
+    Route::get('block-page/{page}/edit', [NamedPageController::class, 'edit']);
+    Route::post('block-page/{page}/update', [NamedPageController::class, 'update']);
+    Route::get('get-block-pages', [NamedPageController::class, 'index']);
 
     Route::get('settings', [PolicyController::class,'settings'])->name('policy-settings');
 

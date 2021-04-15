@@ -8,10 +8,7 @@ import {
   extend,
   localize
 } from "vee-validate";
-import en from "vee-validate/dist/locale/en.json";
 import * as rules from "vee-validate/dist/rules";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
 
 import Vue from 'vue'
 window.Vue = require('vue');

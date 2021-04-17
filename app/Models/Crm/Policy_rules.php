@@ -10,6 +10,7 @@ class Policy_rules extends Model
 {
     protected $fillable = ['policy_id', 'r_action', 'descr', 'priority', 'r_condition'];
     protected $appends = ['fullname'];
+
     public function getFullnameAttribute()
     {
         if ($this->r_action == 1){
@@ -22,6 +23,7 @@ class Policy_rules extends Model
 
        
     }
+    
     public static $validator = [
         'policy_id' => 'required|string',
         'r_action' => 'required|string',

@@ -1,32 +1,42 @@
 <template>
     <!-- Modal -->
-    <div class="modal fade text-left" id="add-rule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal fade text-left" id="edit-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">Add Rule</h4>
+                    <h4 class="modal-title" id="myModalLabel33">Edit Container</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <validation-observer ref="observer" v-slot="{ handleSubmit }">
-                    <b-form @submit.stop.prevent="handleSubmit(addRule)">
+                    <b-form @submit.stop.prevent="handleSubmit(updateContainer)">
                         <div class="modal-body">
                             <validation-provider
-                                name="page"
+                                name="Name"
                                 :rules="{ required: true, min: 3 }"
                                 v-slot="validationContext"
                                 >
-                                <b-form-group id="example-input-group-2" label="Block Page" label-for="example-input-2">
-                                    <v-select :options="options"
-                                        id="example-input-2"
-                                        name="example-input-2"
-                                        :state="getValidationState(validationContext)"
-                                        aria-describedby="input-2-live-feedback">
-                                    </v-select>
-                                    <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[1] }}</b-form-invalid-feedback>
+                                <b-form-group id="example-input-group-1" label="Page Name" label-for="example-input-1">
+                                    <b-form-input
+                                    id="example-input-1"
+                                    name="example-input-1"
+                                    v-model="container.common_name"
+                                    :state="getValidationState(validationContext)"
+                                    aria-describedby="input-1-live-feedback"
+                                    ></b-form-input>
+
+                                    <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                                 </b-form-group>
                             </validation-provider>
+
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox"> 
+                                    <input class="custom-control-input" v-model="container.default_page" type="checkbox" value="" id="checkboxSelectAll">
+                                    <label class="custom-control-label" for="checkboxSelectAll">Default Page</label>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <b-button variant="primary" :disabled="disableSubmitButton" type="submit" value="Submit">
@@ -41,20 +51,18 @@
         </div>
     </div>
 </template>
+
 <script>
-import { EventBus } from "../../../../vue-asset";
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css';
+import { EventBus } from "../../../vue-asset";
 
 export default {
-    components: {vSelect},
+
     data() {
         return {
-            rule: {
-                rule_name: '',
+            container: {
+                id: '',
+                common_name: ''
             },
-            options: [],
-            rules: [],
             saving: false,
             notificationSystem: {
                 options: {
@@ -65,8 +73,10 @@ export default {
                         class: 'complete_notification'
                     },
                     error: {
+                        overlay: true,
                         position: "center",
-                        timeout: 4000,
+                        zindex: 999,
+                        timeout: 3000,
                         class: 'error_notification'
                     },
                     completed: {
@@ -88,7 +98,17 @@ export default {
     },
 
     mounted() {
-        this.getRules();
+        // console.log('component called')
+    },
+
+    created() {
+        var _this = this;
+       
+        EventBus.$on('edit-container',function(id){
+            _this.container.id = id;
+            _this.getEditData(id);
+            $('#edit-container').modal('show');
+        });
     },
 
     methods: {
@@ -97,8 +117,8 @@ export default {
             return dirty || validated ? valid : null;
         },
         resetForm() {
-            this.rule = {
-                rule_name: ''
+            this.container = {
+                common_name: ''
             };
 
             this.$nextTick(() => {
@@ -106,19 +126,30 @@ export default {
             });
         }, 
 
-        //Add Rule
-        addRule() {
+        getEditData(id){
+            axios.get(base_url+'policy/block-page/'+id+'/edit')
+            .then(response => {
+                this.container = {
+                    id : response.data.container_id,
+                    common_name: response.data.common_name
+                };
+            })
+        },
+
+        //Add Container
+        updateContainer() {
             this.saving = true
             axios
-            .post(base_url + "policy/add-policy", this.rule)
+            .post(base_url + "policy/block-page/" + this.container.id + "/update", this.container)
 
             .then(response => {
-                $("#add-policy").modal("hide");
-                EventBus.$emit("policies-added");
+                $("#edit-container").modal("hide");
+                EventBus.$emit("block-pages-added");
                 this.saving = false
                 this.showMessage(response.data);
-                this.rule = {
-                    rule_name: ''
+                this.container = {
+                    common_name: '',
+                    default_page: ''
                 };
             })
             .catch(err => {
@@ -127,22 +158,6 @@ export default {
                     this.showMessage(err.response.data)
                 }
             });
-        },
-
-        getRules() {
-            axios.get(base_url + 'policy/get-rules').then(response => {
-                this.rules = response.data
-                var arrayAllBusinessUsers=[];
-                this.rules.forEach(element => {
-                    var valueToPush = {};
-                    valueToPush["label"] = element.title;
-                    
-                    valueToPush["code"] = element.block_page_id;
-                    
-                    arrayAllBusinessUsers.push(valueToPush);
-                });
-                this.options = arrayAllBusinessUsers;
-            })
         },
 
         showMessage(data) {
@@ -159,5 +174,5 @@ export default {
             return this.saving ? true: false
         }
     },
-};
+}
 </script>

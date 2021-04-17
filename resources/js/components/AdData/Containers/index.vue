@@ -3,6 +3,7 @@
         <div class="row">
             <ad-data-computer-info></ad-data-computer-info>
             <ad-data-add-container></ad-data-add-container>
+            <edit-container></edit-container>
         </div>
         <div class="row">
             <div class="col-12">
@@ -56,7 +57,7 @@
                                 </tr>
                             </thead>
                             <tbody v-if="show">
-                                <tr v-for="(value,index) in ad_data_container.data" v-bind:key="index">
+                                <tr v-for="(value,index) in containers.data" v-bind:key="index">
                                     <td v-if="container_name">{{ value.common_name }}</td>
                                     <td class="d-flex">
                                         <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showContainer(value.id)" title="Go To Computer" class="btn">
@@ -65,6 +66,36 @@
                                         <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
                                             <i class="fa fa-info-circle"></i>
                                         </button>
+                                        <button data-toggle="tooltip" @click="editContainer(value.ts_id)" title="Edit Container" class="btn">
+                                            <i style="margin-top: 1px;" class="fa fa-edit"></i>
+                                        </button>
+                                        <button type="button" @click="sendInfo(value.ts_id)" data-toggle="modal" data-target="#delete-container" class="btn">
+                                            <i style="margin-top: 1px;" class="fa fa-trash"></i>
+                                        </button>
+                                        <!-- Delete Container Modal -->
+                                        <div class="modal custom-modal fade" id="delete-container" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="form-header">
+                                                            <h3>Delete Container</h3>
+                                                            <p>Are you sure want to delete?</p>
+                                                        </div>
+                                                        <div class="modal-btn delete-action">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <a href="javascript:void(0);" @click="destroy(selected_container_id)" class="btn btn-primary continue-btn">Delete</a>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Delete Container Modal -->
                                     </td>
                                 </tr>
                             </tbody>
@@ -72,7 +103,7 @@
                         <div class="text-center" style="margin-top: 15px;" v-if="!isLoading && !show">
                             <h4>Oops! No Containers Found</h4>
                         </div>
-                        <pagination :pageData="ad_data_container"></pagination>
+                        <pagination :pageData="containers"></pagination>
                     </div>
                 </div>
             </div>
@@ -84,8 +115,9 @@ import Pagination  from '../../pagination/pagination.vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
 import Close from 'vue-material-design-icons/Close.vue';
 import { EventBus } from "../../../vue-asset";
-import AdDataComputerInfo from './AdDataContainerInfo.vue';
-import AdDataAddContainer from './AdDataAddContainer.vue';
+import AdDataComputerInfo from './ContainerInfo.vue';
+import AdDataAddContainer from './AddContainer.vue';
+import EditContainer from './EditContainer.vue';
 
 export default {
     components: {
@@ -93,11 +125,12 @@ export default {
         MenuIcon,
         Close,
         AdDataComputerInfo,
-        AdDataAddContainer
+        AdDataAddContainer,
+        EditContainer
     },
     data() {
         return {
-            ad_data_container: [],
+            containers: [],
 
             container_name: true,
             distinguished_name: true,
@@ -106,9 +139,10 @@ export default {
 
             allSelected: false,
             selected: [],
+            selected_container_id: '',
             commonname: '',
             isLoading: false,
-            ad_data_container_ids: [],
+            containers_ids: [],
             errors: null,
             notificationSystem: {
             options: {
@@ -141,7 +175,7 @@ export default {
     created() {
         var _this = this;
         this.get_containers();
-        EventBus.$on("ad-data-users", function() {
+        EventBus.$on("containers-added", function() {
             _this.get_containers();
         });
     },
@@ -154,10 +188,10 @@ export default {
 
         //Select all checkboxes
         selectAll() {
-            this.ad_data_container_ids = [];
+            this.containers_ids = [];
             if (!this.allSelected) {
-                for (var user in this.ad_data_container.data) {
-                    this.ad_data_container_ids.push(this.ad_data_container.data[user].id);
+                for (var user in this.containers.data) {
+                    this.containers_ids.push(this.containers.data[user].id);
                 }
             }
         },
@@ -177,7 +211,7 @@ export default {
                     this.commonname
                 )
                 .then(response => {
-                    this.ad_data_container = response.data
+                    this.containers = response.data
                     this.isLoading = false;
                 })
                 .catch(err => {
@@ -210,12 +244,36 @@ export default {
             // $('#basic-modals').modal('show');
             EventBus.$emit("show-user-info", id);
         },
+
+        editContainer(id) {
+            EventBus.$emit("edit-container", id);
+        },
+
+        sendInfo(id) {
+            this.selected_container_id = id;
+        },
+
+        destroy(id) {
+            axios.delete(base_url + "policy/block-page/" + id)
+
+            .then(response => {
+                EventBus.$emit("block-pages-added");
+                $('#delete-page').modal('hide');
+                this.showMessage(response.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    this.showMessage(err.response.data)
+                }
+            });
+            
+        }
             
     },
 
     computed: {
         show() {
-            return this.ad_data_container.data ? (this.ad_data_container.data.length >= 1 ? true: false) : null
+            return this.containers.data ? (this.containers.data.length >= 1 ? true: false) : null
         },
 
         showMenu() {

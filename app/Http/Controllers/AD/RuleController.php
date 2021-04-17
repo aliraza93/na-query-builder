@@ -12,10 +12,10 @@ class RuleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store']]);
-        $this->middleware('role:update', ['only' => ['store']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store']]);
+        // $this->middleware('role:update', ['only' => ['store']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
 
     private $m = Rules::class;
@@ -40,6 +40,7 @@ class RuleController extends Controller
             
         return $Rules_info;
     }
+    
     public function multipleDelete(Request $request)
     {
     //    return ['status' => 0];
@@ -53,6 +54,7 @@ class RuleController extends Controller
 
         return ['status' => 0];
     }
+    
     public function multipleAdd(Request $request, Rules $model)
     {
         $items = $request->get('items');
@@ -60,6 +62,7 @@ class RuleController extends Controller
         $model::insert($items);
         return ['status' => 0];
     }
+    
     public function update($prefix, Request $request, Rules $model)
     {
         //  return $this->rUpdate($this->m, $model, $request->all(), $this->pk);
@@ -68,13 +71,26 @@ class RuleController extends Controller
         }
         return $this->sUpdate($this->m, $model, $request->all(), $this->pk, $prefix);
     }
+    
     public function store(Request $request)
     {
-        if ($request->get('immediate_flag') == null || $request->get('immediate_flag') == '') {
-            $request->request->set('immediate_flag', false);
+        $request->validate([
+            'rule_name' => 'required',
+            'match_action' => 'required',
+            'match_conditions' => 'required'
+        ]);
+        try {
+            if ($request->get('immediate_flag') == null || $request->get('immediate_flag') == '') {
+                $request->request->set('immediate_flag', false);
+            }
+            $this->rStore($this->m, $request, $this->pk);    
+            return response()->json(['status' => 'success', 'message' => 'Rule Added Successfully !']);
+        } catch (\Exception $e) {
+
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
-        return $this->rStore($this->m, $request, $this->pk);
     }
+
     public function destroy($prefix, Rules $model)
     {
 
@@ -105,6 +121,7 @@ class RuleController extends Controller
 
         return ModelTreatment::getAsyncData($model, $request, $columns, 'ad', 'rule', 'rule_name', 'ASC');
     }
+    
     public function itemsList($mode, $search = '')
     {
         $Rules = DB::table('rule')

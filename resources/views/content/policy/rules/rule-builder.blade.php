@@ -1,35 +1,9 @@
-@isset($pageConfigs)
-    {!! Helper::updatePageConfig($pageConfigs) !!}
-@endisset
 
-<!DOCTYPE html>
-{{-- {!! Helper::applClasses() !!} --}}
-@php
-    $configData = Helper::applClasses();
-@endphp
+@extends('layouts/contentLayoutMaster')
 
-<html lang="@if(session()->has('locale')){{session()->get('locale')}}@else{{$configData['defaultLanguage']}}@endif" data-textdirection="{{ env('MIX_CONTENT_DIRECTION') === 'rtl' ? 'rtl' : 'ltr' }}" class="{{ ($configData['theme'] === 'light') ? '' : $configData['layoutTheme'] }}">
-<head>
-    <!-- ========== Meta Tags ========== -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Sasoft - Software Landing Page">
-    
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- ========== Page Title ========== -->
-    <title>Rule Builder - NA Query Builder</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('images/logo/favicon.ico')}}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
-    {{-- {!! Helper::applClasses() !!} --}}
-    @php $configData = Helper::applClasses(); @endphp
+@section('title', 'Rule Builder')
 
-    {{-- Page Styles --}}
-    @if($configData['mainLayoutType'] === 'horizontal')
-    <link rel="stylesheet" href="{{ asset('css/base/core/menu/menu-types/horizontal-menu.css') }}" />
-    @endif
-    <link rel="stylesheet" href="{{ asset('css/base/core/menu/menu-types/vertical-menu.css') }}" />
+@section('vendor-style')
     {{-- vendor css files --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"yy>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
@@ -40,50 +14,153 @@
     <link rel="stylesheet" href="{{ asset('vendors/css/forms/select/select2.min.css') }}">
     <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/css/query-builder.default.min.css">
+@endsection
+<style>
+    .query-builder, .query-builder * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-</head>
-<html>
-<body class="horizontal-layout horizontal-menu {{$configData['horizontalMenuType']}} {{ $configData['showMenu'] === true ? '' : '1-column' }}
-{{ $configData['blankPageClass'] }} {{ $configData['bodyClass'] }}
-{{ $configData['footerType'] }}" data-menu="horizontal-menu" data-col="{{ $configData['showMenu'] === true ? '' : '1-column' }}" data-open="hover" data-layout="{{ ($configData['theme'] === 'light') ? '' : $configData['layoutTheme'] }}" style="{{ $configData['bodyStyle'] }}" data-framework="laravel" data-asset-path="{{ asset('/')}}">
-    <!-- BEGIN: Content-->
-    <div style="margin-top: 10px;">
-        @if(($configData['contentLayout']!=='default') && isset($configData['contentLayout']))
-        <div class="content-area-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container p-0' : '' }}">
-            <div class="{{ $configData['sidebarPositionClass'] }}">
-                <div class="sidebar">
-                    {{-- Include Sidebar Content --}}
-                    @yield('content-sidebar')
-                </div>
-            </div>
-            <div class="{{ $configData['contentsidebarClass'] }}">
-                <div class="content-wrapper">
-                    <div class="content-body">
-                        {{-- Include Page Content --}}
-                        @include('content.policy.rules._content')
-                    </div>
-                </div>
-            </div>
-        </div>
-        @else
-        <div class="content-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container p-0' : '' }}">
-            {{-- Include Breadcrumb --}}
-            @if($configData['pageHeader'] == true)
-                @include('panels.breadcrumb')
-            @endif
+    .rules-group-container {
+        width: -webkit-fill-available;
+    }
+    
+    .query-builder {
+        font-family: sans-serif;
+    }
 
-            <div class="content-body">
+    .query-builder .hide {
+        display: none;
+    }
 
-                {{-- Include Page Content --}}
-                @include('content.policy.rules._content')
+    .query-builder .pull-right {
+        float: right !important;
+    }
 
-            </div>
-        </div>
-        @endif
+    .query-builder .btn {
+        text-transform: none;
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
 
-    </div>
-    <!-- End: Content-->
+    .query-builder .btn.focus, .query-builder .btn:focus, .query-builder .btn:hover {
+        color: #333;
+        text-decoration: none;
+    }
 
+    .query-builder .btn.active, .query-builder .btn:active {
+        background-image: none;
+        outline: 0px none;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.125) inset;
+    }
+
+    .query-builder .btn-success {
+        color: #FFF;
+        background-color: #5CB85C;
+        border-color: #4CAE4C;
+    }
+
+    .query-builder .btn-primary {
+        color: #FFF;
+        background-color: #337AB7;
+        border-color: #2E6DA4;
+    }
+
+    .query-builder .btn-danger {
+        color: #FFF;
+        background-color: #D9534F;
+        border-color: #D43F3A;
+    }
+
+    .query-builder .btn-success.active, .query-builder .btn-success.focus,
+    .query-builder .btn-success:active, .query-builder .btn-success:focus,
+    .query-builder .btn-success:hover {
+        color: #FFF;
+        background-color: #449D44;
+        border-color: #398439;
+    }
+
+    .query-builder .btn-primary.active, .query-builder .btn-primary.focus,
+    .query-builder .btn-primary:active, .query-builder .btn-primary:focus,
+    .query-builder .btn-primary:hover {
+        color: #FFF;
+        background-color: #286090;
+        border-color: #204D74;
+    }
+
+    .query-builder .btn-danger.active, .query-builder .btn-danger.focus,
+    .query-builder .btn-danger:active, .query-builder .btn-danger:focus,
+    .query-builder .btn-danger:hover {
+        color: #FFF;
+        background-color: #C9302C;
+        border-color: #AC2925;
+    }
+
+    .query-builder .btn-group {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .query-builder .btn-group > .btn {
+        position: relative;
+        float: left;
+    }
+
+    .query-builder .btn-group > .btn:first-child {
+        margin-left: 0px;
+    }
+
+    .query-builder .btn-group > .btn:first-child:not(:last-child) {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .query-builder .btn-group > .btn:last-child:not(:first-child) {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    .query-builder .btn-group .btn + .btn, .query-builder .btn-group .btn + .btn-group,
+    .query-builder .btn-group .btn-group + .btn, .query-builder .btn-group .btn-group + .btn-group {
+        margin-left: -1px;
+    }
+
+    .query-builder .btn-xs, .query-builder .btn-group-xs > .btn {
+        padding: 1px 5px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+    }
+</style>
+@section('content')
+<section id="policy">
+    <rule-builder></rule-builder>
+</section>
+<section>
+    
+</section>
+
+@endsection
+@section('vendor-script')
+  <!-- vendor files -->
+  <script src="{{ asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
+@endsection
+@section('page-script')
     {{-- Page js files --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
@@ -130,106 +207,8 @@
     <script src="{{ asset('css/querybuilder/plugins/unique-filter/plugin.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder@2.6.0/dist/i18n/query-builder.en.js"></script>
     <!-- endinjector -->
-
-    <script>
-        $(document).ready(function(){
-            var rules_plugins = {
-                condition: 'AND',
-                rules: [{
-                    id: 'name',
-                    operator: 'equal',
-                    value: 'Mistic'
-                }, {
-                    condition: 'OR',
-                    rules: [{
-                    id: 'category',
-                    operator: 'in',
-                    value: [1, 2]
-                    }, {
-                    id: 'in_stock',
-                    operator: 'equal',
-                    value: 0
-                    }]
-                }]
-                };
-
-                $('#builder').queryBuilder({
-                plugins: [
-                    'sortable',
-                    // 'filter-description',
-                    'unique-filter',
-                    'bt-tooltip-errors',
-                    'bt-selectpicker',
-                    'bt-checkbox'
-                    // 'invert',
-                    // 'not-group'
-                ],
-
-                filters: [{
-                    id: 'name',
-                    label: 'Name',
-                    type: 'string',
-                    unique: true,
-                    description: 'This filter is "unique", it can be used only once'
-                }, {
-                    id: 'category',
-                    label: 'Category',
-                    type: 'integer',
-                    input: 'checkbox',
-                    values: {
-                    1: 'Books',
-                    2: 'Movies',
-                    3: 'Music',
-                    4: 'Goodies'
-                    },
-                    color: 'primary',
-                    description: 'This filter uses Awesome Bootstrap Checkboxes',
-                    operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
-                }, {
-                    id: 'in_stock',
-                    label: 'In stock',
-                    type: 'integer',
-                    input: 'radio',
-                    values: {
-                    1: 'Yes',
-                    0: 'No'
-                    },
-                    colors: {
-                    1: 'success',
-                    0: 'danger'
-                    },
-                    description: 'This filter also uses Awesome Bootstrap Checkboxes',
-                    operators: ['equal']
-                }, {
-                    id: 'price',
-                    label: 'Price',
-                    type: 'double',
-                    validation: {
-                    min: 0,
-                    step: 0.01
-                    }
-                }],
-
-                rules: rules_plugins
-                });
-
-                $('#btn-reset').on('click', function() {
-                $('#builder-plugins').queryBuilder('reset');
-                });
-
-                $('#btn-set').on('click', function() {
-                $('#builder-plugins').queryBuilder('setRules', rules_plugins);
-                });
-
-                $('#btn-get').on('click', function() {
-                    var result = $('#builder-plugins').queryBuilder('getRules');
-
-                    if (!$.isEmptyObject(result)) {
-                        alert(JSON.stringify(result, null, 2));
-                    }
-                });
-            
-        })
+    <script type="text/javascript">
+        var base_url = "{{ url('/').'/' }}";
     </script>
-</body>
-</html>
+    <script type="text/javascript" src="{{ url('js/policy.js') }}"></script>
+@endsection

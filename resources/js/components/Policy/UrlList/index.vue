@@ -22,7 +22,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="dataTables_filter">
                                     <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
+                                        <input type="search" class="form-control" placeholder="" v-model="title" v-on:keyup="get_url_list()" aria-controls="DataTables_Table_0">
                                     </label>
                                 </div>
                             </div>
@@ -60,15 +60,42 @@
                                 </tr>
                             </thead>
                             <tbody v-if="show">
-                                <tr v-for="(value,index) in policies.data" v-bind:key="index">
-                                    <td v-if="list_name">{{ value.user_name }}</td>
+                                <tr v-for="(value,index) in url_list.data" v-bind:key="index">
+                                    <td v-if="list_name">{{ value.list_title }}</td>
                                     <td class="text-center">
-                                        <button data-toggle="tooltip" @click="editURL(value.id)" title="Go To Computer" class="btn">
+                                        <button data-toggle="tooltip" @click="editURL(value.list_id)" title="Edit URL" class="btn">
                                             <i style="margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
-                                        <a :href="`policy/` + value.id" title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
-                                            <i class="fa fa-info-circle"></i>
+                                        <button type="button" @click="sendInfo(value.list_id)" data-toggle="modal" data-target="#delete-url" class="btn">
+                                            <i style="margin-top: 1px; color: red;" class="fa fa-trash"></i>
+                                        </button>
+                                        <a :href="`list-details/` + value.list_id" title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
+                                            <i class="fa fa-arrow-right"></i>
                                         </a>
+                                        <!-- Delete URL List Modal -->
+                                        <div class="modal custom-modal fade" id="delete-url" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="form-header">
+                                                            <h3>Delete URL List</h3>
+                                                            <p>Are you sure want to delete?</p>
+                                                        </div>
+                                                        <div class="modal-btn delete-action">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <a href="javascript:void(0);" @click="destroy(selected_url_id)" class="btn btn-primary continue-btn">Delete</a>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Delete URL List Modal -->
                                     </td>
                                 </tr>
                             </tbody>
@@ -76,7 +103,7 @@
                         <div class="text-center" style="margin-top: 15px;" v-if="!isLoading && !show">
                             <h4>Oops! No URL Found</h4>
                         </div>
-                        <pagination :pageData="policies"></pagination>
+                        <pagination :pageData="url_list"></pagination>
                     </div>
                 </div>
             </div>
@@ -97,7 +124,7 @@ export default {
     },
     data() {
         return {
-            policies: [],
+            url_list: [],
 
             list_name: true,
             priority: true,
@@ -106,9 +133,10 @@ export default {
 
             allSelected: false,
             selected: [],
-            name: '',
+            selected_url_id: '',
+            title: '',
             isLoading: false,
-            policies_ids: [],
+            url_list_ids: [],
             errors: null,
             notificationSystem: {
             options: {
@@ -140,9 +168,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_users();
-        EventBus.$on("ad-data-users", function() {
-            _this.get_users();
+        _this.get_url_list()
+        EventBus.$on("url-list-added", function() {
+            _this.get_url_list();
         });
     },
 
@@ -154,10 +182,10 @@ export default {
 
         //Select all checkboxes
         selectAll() {
-            this.policies_ids = [];
+            this.url_list_ids = [];
             if (!this.allSelected) {
-                for (var user in this.policies.data) {
-                    this.policies_ids.push(this.policies.data[user].id);
+                for (var user in this.url_list.data) {
+                    this.url_list_ids.push(this.url_list.data[user].id);
                 }
             }
         },
@@ -165,19 +193,18 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
-        get_users(page = 1) {
+        get_url_list(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "ad-data/users-list?page="+
+                    "policy/url-list?page="+
                     page+
-                    "&name=" +
-                    this.name
+                    "&list_title=" +
+                    this.title
                 )
                 .then(response => {
-                    this.policies = response.data
+                    this.url_list = response.data
                     this.isLoading = false;
                 })
                 .catch(err => {
@@ -187,14 +214,9 @@ export default {
             });
         },
 
-        //Show User Page
-        // showUser(id) {
-        //     axios.get(base_url + 'ad-data/user/' + id).then(response => {})
-        // },
-
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_users(pageNo);
+            vm.get_url_list(pageNo);
         },
         
         showMessage(data) {
@@ -205,16 +227,35 @@ export default {
             }
         },
 
-        //View User Info
         editURL(id) {
             EventBus.$emit("edit-url", id);
         },
+
+        sendInfo(id) {
+            this.selected_url_id = id;
+        },
+
+        destroy(id) {
+            axios.delete(base_url + "policy/url-list/" + id)
+
+            .then(response => {
+                EventBus.$emit("url-list-added");
+                $('#delete-url').modal('hide');
+                this.showMessage(response.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    this.showMessage(err.response.data)
+                }
+            });
+            
+        }
             
     },
 
     computed: {
         show() {
-            return this.policies.data ? (this.policies.data.length >= 1 ? true: false) : null
+            return this.url_list.data ? (this.url_list.data.length >= 1 ? true: false) : null
         },
 
         showMenu() {

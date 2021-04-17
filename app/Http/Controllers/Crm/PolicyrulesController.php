@@ -12,10 +12,10 @@ class PolicyrulesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store']]);
-        $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store']]);
+        // $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
 
     private $m = Policy_rules::class;
@@ -23,9 +23,7 @@ class PolicyrulesController extends Controller
 
     public function index()
     {
-        return Policy_rules
-            ::orderBy('rule_id', 'asc')
-            ->get();
+        return Policy_rules::orderBy('rule_id', 'asc')->get();
     }
 
     public function show($id)

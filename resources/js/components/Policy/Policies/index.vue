@@ -88,6 +88,9 @@
                                         <button data-toggle="tooltip" @click="changePriority(value.policy_id, 'down')" title="Priority Down" class="btn">
                                             <i style="margin-top: 1px;" class="fa fa-arrow-down"></i>
                                         </button>
+                                        <a :href="`policy-details/` + value.policy_id" data-toggle="tooltip" title="Go To Policy" class="btn">
+                                            <i style="margin-top: 1px;" class="fa fa-arrow-right"></i>
+                                        </a>
                                         <!-- Delete Policy Modal -->
                                         <div class="modal custom-modal fade" id="delete-policy" role="dialog">
                                             <div class="modal-dialog modal-dialog-centered">

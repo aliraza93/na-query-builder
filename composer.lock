@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "659ad2a0ef8680975063ad687e68e50d",
+    "content-hash": "c072a6539dda1a1b8765be5d7e4df167",
     "packages": [
         {
             "name": "adldap2/adldap2",
@@ -6302,6 +6302,66 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.3"
             },
             "time": "2020-07-13T06:12:54+00:00"
+        },
+        {
+            "name": "timgws/query-builder-parser",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/timgws/QueryBuilderParser.git",
+                "reference": "c253a9a8ff9f019ba450a84a214d5431cd4cb4e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/timgws/QueryBuilderParser/zipball/c253a9a8ff9f019ba450a84a214d5431cd4cb4e7",
+                "reference": "c253a9a8ff9f019ba450a84a214d5431cd4cb4e7",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^8.0||^7.0||^6.0||4.1 - 6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3.1||^0.9.4",
+                "phpunit/phpunit": "^8.5||^7.0"
+            },
+            "suggest": {
+                "jenssegers/mongodb": "Use QueryBuilderParser with MongoDB"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "timgws\\": "src/QueryBuilderParser/",
+                    "timgws\\test\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Groeneveld",
+                    "email": "tim@timg.ws",
+                    "homepage": "http://timg.ws"
+                }
+            ],
+            "description": "Build complex Eloquent & QueryBuilder queries automatically when using jQuery-QueryBuilder",
+            "homepage": "http://github.com/timgws/QueryBuilderParser",
+            "keywords": [
+                "ajax",
+                "eloquent",
+                "jquery",
+                "laravel",
+                "mongodb",
+                "parser",
+                "query builder",
+                "sql"
+            ],
+            "support": {
+                "issues": "https://github.com/timgws/QueryBuilderParser/issues",
+                "source": "https://github.com/timgws/QueryBuilderParser/tree/1.6.0"
+            },
+            "time": "2020-09-22T04:59:20+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

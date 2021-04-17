@@ -16,6 +16,8 @@ use App\Http\Controllers\AD\AD_OusController;
 use App\Http\Controllers\AD\NamedPageController;
 use App\Http\Controllers\AD\AD_TrafficController;
 use App\Http\Controllers\AD\SyncAllController;
+use App\Http\Controllers\AD\NamedListController;
+use App\Http\Controllers\AD\RuleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +110,7 @@ Route::middleware('auth')->group(function () {
     Route::get('groups-list', [AD_GroupsController::class,'groups_list'])->name('groups_list');
 
     Route::get('containers', [AD_ContainerController::class,'containers'])->name('ad-data-containers');
+    Route::post('container', [AD_ContainerController::class, 'store']);
     Route::get('containers-list', [AD_ContainerController::class,'containers_list'])->name('containers_list');
 
     Route::get('organizational-units', [AD_OusController::class,'organizational_units'])->name('ad-data-organizational-units');
@@ -127,19 +130,27 @@ Route::middleware('auth')->group(function () {
   Route::group(['prefix' => 'policy'], function () {
     Route::get('policies', [App\Http\Controllers\AD\PolicyController::class,'policies'])->name('policy-policies');
     Route::get('policies-list', [App\Http\Controllers\AD\PolicyController::class,'policies_list'])->name('policies_list');
-    Route::get('policy/{user}', 'PolicyController@showPolicy');
     Route::post('add-policy', [App\Http\Controllers\AD\PolicyController::class, 'store'])->name('block-page.store');
     Route::get('policy/{policy}/edit', [App\Http\Controllers\AD\PolicyController::class, 'edit']);
     Route::post('policy/{policy}/update', [App\Http\Controllers\AD\PolicyController::class, 'update']);
     Route::delete('delete-policy/{policy}', [App\Http\Controllers\AD\PolicyController::class, 'destroy']);
     Route::post('change-priority/{policy}/{action}', [App\Http\Controllers\AD\PolicyController::class, 'change_priority']);
+    Route::get('policy-details/{policy}', [App\Http\Controllers\AD\PolicyController::class, 'policy_details']);
+    Route::get('get-rules/{policy}', [App\Http\Controllers\AD\PolicyController::class, 'show']);
 
-    Route::get('reports', 'PolicyController@reports')->name('policy-reports');
+    Route::get('reports', [App\Http\Controllers\AD\PolicyController::class, 'reports'])->name('policy-reports');
     
     Route::get('rules', [PolicyrulesController::class,'rules'])->name('policy-rules');
     Route::get('rules-list', [PolicyrulesController::class,'rules_list'])->name('rules_list');
+    Route::post('rule', [RuleController::class, 'store']);
 
-    Route::get('url-lists', [App\Http\Controllers\PolicyController::class,'url_list'])->name('policy-url-lists');
+    Route::get('url-lists', [NamedListController::class,'url_list'])->name('policy-url-lists');
+    Route::post('url-list', [NamedListController::class, 'store']);
+    Route::get('url-list', [NamedListController::class,'url_name_list'])->name('url_name_list');
+    Route::get('url-list/{url}/edit', [NamedListController::class, 'edit']);
+    Route::post('url-list/{url}/update', [NamedListController::class, 'update']);
+    Route::delete('url-list/{url}', [NamedListController::class, 'destroy']);
+    Route::get('list-details/{url}', [NamedListController::class, 'url_list_details']);
 
     Route::get('block-pages', [NamedPageController::class,'block_pages'])->name('policy-block-pages');
     Route::get('block-pages-list', [NamedPageController::class,'block_pages_list'])->name('block-pages_list');

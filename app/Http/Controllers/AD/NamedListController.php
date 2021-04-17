@@ -11,14 +11,21 @@ class NamedListController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
-        $this->middleware('role:update', ['only' => ['update']]);
-        $this->middleware('role:delete', ['only' => ['destroy', 'multipleDelete']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
+        // $this->middleware('role:update', ['only' => ['update']]);
+        // $this->middleware('role:delete', ['only' => ['destroy', 'multipleDelete']]);
     }
 
     private $m = NamedList::class;
     private $pk = 'list_id';
+
+    // URL List Page
+    public function url_list()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/url-list/index', ['pageConfigs' => $pageConfigs]);
+    }
 
     public function index()
     {
@@ -40,22 +47,62 @@ class NamedListController extends Controller
 
         return $NamedListInfo;
     }
-    public function update($prefix, Request $request, NamedList $model)
-    {
-        //  return $this->rUpdate($this->m, $model, $request->all(), $this->pk);
-        return $this->sUpdate($this->m, $model, $request->all(), $this->pk, $prefix);
+
+    public function edit(NamedList $url) {
+        return $url;
     }
+
+    public function update(Request $request, NamedList $url)
+    {
+        $request->validate([
+            'list_title' => 'required',
+        ]);
+        try{ 
+            $url->list_title = $request->list_title;
+            $url->when_changed = now();
+            $url->update();
+            return response()->json(['status'=>'success','message'=>'URL List Updated Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
+
+        }
+    }
+
     public function store(Request $request)
     {
-        return $this->rStore($this->m, $request, $this->pk);
+        $request->validate([
+            'list_title' => 'required',
+        ]);
+        try{
+            $this->rStore($this->m, $request, $this->pk);
+
+            return response()->json(['status'=>'success','message'=>'List Added Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
+
+        }
     }
-    public function destroy($prefix, NamedList $model)
+
+    public function destroy(NamedList $url)
     {
+        try{
+            $url->delete();
+            return response()->json(['status'=>'success','message'=>'URL List Deleted Successfully !']);
+        }
+        catch(\Exception $e)
+        {
+         
+            return response()->json(['status'=>'error','message'=>'Something Went Wrong !']);
 
-        $model->destroy($prefix);
-
-        return ['status' => 0];
+        }
     }
+
     public function multipleAdd(Request $request, NamedList $model)
     {
         $items = $request->get('items');
@@ -77,6 +124,7 @@ class NamedListController extends Controller
 
         return ['status' => 0];
     }
+
     public function search(Request $request)
     {
         $columns = [
@@ -88,14 +136,16 @@ class NamedListController extends Controller
             $model = NamedList
                 ::orderBy('list_title', 'asc');
        
-        return ModelTreatment::getAsyncData($model, $request, $columns, 'ad', 'named_list', 'list_title', 'ASC');
-    }catch (\Exception $e) {
+            return ModelTreatment::getAsyncData($model, $request, $columns, 'ad', 'named_list', 'list_title', 'ASC');
+        }
+        catch (\Exception $e) {
 
             return $e->getMessage();
 
             // something went wrong
         }
     }
+
     public function itemsList($mode, $search = '')
     {
         $NamedList = DB::table('named_list')
@@ -108,5 +158,28 @@ class NamedListController extends Controller
             $NamedList = $NamedList->where(DB::raw("CONCAT(list_title, ' ', container_uid)"), 'like', '%' . $search . '%');
         }
         return $NamedList->take(100)->get();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function url_list_details(NamedList $url)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('content.policy.url-list.list-details', ['pageConfigs' => $pageConfigs], compact('url'));
+    }
+
+    // Url List
+    public function url_name_list(Request $request)
+    {
+        $list_title     = $request->list_title;
+        $url_title      = DB::table('named_list')->orderBy('when_created');
+        if ($list_title != '') {
+            $url_title->where('list_title', 'LIKE', '%' . $list_title . '%');
+        }
+        $url_title = $url_title->paginate(10);
+        return $url_title;
     }
 }

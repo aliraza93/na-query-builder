@@ -11,10 +11,10 @@ class AD_ContainerController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
-        $this->middleware('role:update', ['only' => ['update']]);
-        $this->middleware('role:delete', ['only' => ['destroy', 'multipleDelete']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
+        // $this->middleware('role:update', ['only' => ['update']]);
+        // $this->middleware('role:delete', ['only' => ['destroy', 'multipleDelete']]);
     }
 
     private $m = AD_Container::class;
@@ -53,7 +53,17 @@ class AD_ContainerController extends Controller
     }
     public function store(Request $request)
     {
-        return $this->rStore($this->m, $request, $this->pk);
+        $request->validate([
+            'common_name' => 'required',
+        ]);
+        try {
+
+            $this->rStore($this->m, $request, $this->pk);
+            return response()->json(['status' => 'success', 'message' => 'Container Added Successfully !']);
+        } catch (\Exception $e) {
+
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
     public function destroy($prefix, AD_Container $model)
     {

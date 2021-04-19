@@ -1,13 +1,23 @@
 <template>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Rule Builder</h4>
                 </div>
                 <div class="card-body">
+                    <div id="builder"></div>
+                    <!-- <button type="button" class="btn btn-primary" id="btn-get">Get Rules</button>
+                    <button type="button" class="btn btn-primary" id="btn-get-sql">Get SQL</button> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
                     <validation-observer ref="observer" v-slot="{ handleSubmit }">
-                    <b-form @submit.stop.prevent="handleSubmit(addBlockPage)">
+                    <b-form @submit.stop.prevent="handleSubmit(addRule)">
                         <validation-provider
                             name="Name"
                             :rules="{ required: true, min: 3 }"
@@ -53,25 +63,15 @@
                             </div>
                         </div>
 
-                        <b-button variant="primary" :disabled="disableSubmitButton" type="submit" value="Submit">
-                            {{saving ? "Submitting..." : "Submit"}}
-                            <b-spinner v-if="saving" small type="grow"></b-spinner>
-                        </b-button>
-                        <b-button class="ml-3" @click="resetForm()">Reset</b-button>
+                       <div style="text-align: end;">
+                            <b-button variant="primary" :disabled="disableSubmitButton" type="submit" value="Submit">
+                                {{saving ? "Submitting..." : "Submit"}}
+                                <b-spinner v-if="saving" small type="grow"></b-spinner>
+                            </b-button>
+                            <b-button @click="resetForm()">Reset</b-button>
+                       </div>
                     </b-form>
                 </validation-observer>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title"></h4>
-                </div>
-                <div class="card-body">
-                    <div id="builder"></div>
-                    <button type="button" class="btn btn-primary" id="btn-get">Get Rules</button>
-                    <button type="button" class="btn btn-primary" id="btn-get-sql">Get SQL</button>
                 </div>
             </div>
         </div>
@@ -89,6 +89,7 @@ export default {
                 match_conditions: null,
                 immediate_flag: ''
             },
+            triggers: [],
             options: [
                     { value: null, text: 'Please select an option' },
                     { value: 'Allow', text: 'Allow' },
@@ -96,6 +97,7 @@ export default {
                     { value: 'Deny Page', text: 'Deny Page' },
                     { value: 'Filter', text: 'Filter' }
             ],
+            filters: [],
             saving: false,
             notificationSystem: {
                 options: {
@@ -130,6 +132,11 @@ export default {
 
     mounted() {
         this.loadQueryBuilder()
+        this.getTriggers()
+    },
+
+    created() {
+            
     },
 
     methods: {
@@ -160,33 +167,33 @@ export default {
                     error: 'fas fa-exclamation-triangle'
                 },
 
-                // plugins: {
-                //     'bt-tooltip-errors': {
-                //         delay: 100
-                //     },
-                //     'sortable': null,
-                //     'filter-description': {
-                //         mode: 'bootbox'
-                //     },
-                //     // 'bt-selectpicker': null,
-                //     'chosen-selectpicker': null,
-                //     'unique-filter': null,
-                //     'bt-checkbox': {
-                //         color: 'primary'
-                //     },
-                //     // 'invert': null,
-                //     // 'not-group': null
-                // },
-                plugins: [
-                    'sortable',
-                    // 'filter-description',
-                    'unique-filter',
-                    'bt-tooltip-errors',
-                    'chosen-selectpicker',
-                    'bt-checkbox'
-                    // 'invert',
-                    // 'not-group'
-                ],
+                plugins: {
+                    'bt-tooltip-errors': {
+                        delay: 100
+                    },
+                    'sortable': null,
+                    'filter-description': {
+                        mode: 'bootbox'
+                    },
+                    // 'bt-selectpicker': {liveSearch:true},
+                    'chosen-selectpicker': null,
+                    'unique-filter': null,
+                    'bt-checkbox': {
+                        color: 'primary'
+                    },
+                    // 'invert': null,
+                    // 'not-group': null
+                },
+                // plugins: [
+                //     'sortable',
+                //     // 'filter-description',
+                //     'unique-filter',
+                //     'bt-tooltip-errors',
+                //     'chosen-selectpicker',
+                //     'bt-checkbox'
+                //     // 'invert',
+                //     // 'not-group'
+                // ],
 
                 // standard operators in custom optgroups
                 operators: [{
@@ -283,7 +290,7 @@ export default {
                         type: 'string',
                         optgroup: 'core',
                         default_value: 'Mistic',
-                        size: 30,
+                        size: 50,
                         validation: {
                             allow_empty_value: true
                         },
@@ -612,7 +619,7 @@ export default {
             // init
             $('#builder').queryBuilder(options);
             
-
+            $('select').addClass('form-control')
             $('#btn-get').on('click', function() {
                 var result = $('#builder').queryBuilder('getRules');
 
@@ -644,8 +651,43 @@ export default {
             });
         }, 
 
-        //Add Block Page
-        addBlockPage() {
+        getOperators() {
+
+        },
+
+        getTriggers() {
+            axios.get(base_url + 'policy/get-triggers').then(response => {
+                this.triggers = response.data
+                this.setTriggers()
+            })
+        },
+
+        setTriggers() {
+            var arrayAllBusinessUsers = [];
+            this.triggers.forEach(element => {
+                var valueToPush = {};
+                
+                valueToPush["id"]               = element.trigger_code;
+                valueToPush["field"]            = element.trigger_label;
+                valueToPush["label"]            = element.trigger_label;
+                valueToPush["icon"]             = 'fas fa-user';
+                valueToPush['value_separator']  =   '|';
+                valueToPush['type']             = 'string';
+                valueToPush['optgroup']         = 'core';
+                valueToPush['default_value']    = 'Example';
+                valueToPush['size']             = 50;
+                valueToPush['validation']       = {
+                                                    allow_empty_value: true
+                                                };
+                valueToPush['unique']           = true
+                
+                arrayAllBusinessUsers.push(valueToPush);
+            });
+            this.filters = arrayAllBusinessUsers;
+        },
+
+        //Add Rule
+        addRule() {
             var result = $('#builder').queryBuilder('getRules');
             if (!$.isEmptyObject(result)) {
                 this.rule.match_conditions = JSON.stringify(result, null, 2)

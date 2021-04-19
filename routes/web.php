@@ -18,6 +18,8 @@ use App\Http\Controllers\AD\AD_TrafficController;
 use App\Http\Controllers\AD\SyncAllController;
 use App\Http\Controllers\AD\NamedListController;
 use App\Http\Controllers\AD\RuleController;
+use App\Http\Controllers\AD\PolicyrulesController;
+use App\Http\Controllers\AD\TriggertypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +27,7 @@ use App\Http\Controllers\AD\RuleController;
 |--------------------------------------------------------------------------
 */
 use App\Http\Controllers\Crm\PolicyController;
-use App\Http\Controllers\Crm\PolicyrulesController;
+// use App\Http\Controllers\Crm\PolicyrulesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -140,9 +142,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('reports', [App\Http\Controllers\AD\PolicyController::class, 'reports'])->name('policy-reports');
     
-    Route::get('rules', [PolicyrulesController::class,'rules'])->name('policy-rules');
-    Route::get('rules-list', [PolicyrulesController::class,'rules_list'])->name('rules_list');
+    Route::get('rules', [RuleController::class,'rules'])->name('policy-rules');
+    Route::get('rules-list', [RuleController::class,'rules_list'])->name('rules_list');
     Route::post('rule', [RuleController::class, 'store']);
+    Route::get('get-rules', [RuleController::class, 'index']);
+    Route::post('add-policy-rule/{policy}', [PolicyrulesController::class, 'store']);
+    Route::get('policy-rules-list', [PolicyrulesController::class, 'policy_rules_list']);
+    Route::post('change-policyrule-priority/{rule}/{action}', [PolicyrulesController::class, 'update']);
+    Route::delete('delete-policy-rule/{rule}', [PolicyrulesController::class, 'destroy']);
+    Route::delete('rule/{rule}', [RuleController::class, 'destroy']);
+    Route::get('rule-builder', [RuleController::class,'rule_builder']);
+    Route::get('get-triggers', [TriggertypeController::class, 'index']);
 
     Route::get('url-lists', [NamedListController::class,'url_list'])->name('policy-url-lists');
     Route::post('url-list', [NamedListController::class, 'store']);
@@ -162,7 +172,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings', [PolicyController::class,'settings'])->name('policy-settings');
 
-    Route::get('rule-builder', [PolicyrulesController::class,'rule_builder']);
   });
   /*
   |--------------------------------------------------------------------------

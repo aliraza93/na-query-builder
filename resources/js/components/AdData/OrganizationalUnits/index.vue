@@ -231,7 +231,7 @@ export default {
             }
         },
 
-        //View User Info
+        
         view(id) {
             // $('#basic-modals').modal('show');
             EventBus.$emit("show-user-info", id);

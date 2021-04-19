@@ -148,7 +148,7 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
+        
         get_users(page = 1) {
             this.isLoading = true;
             axios
@@ -188,7 +188,7 @@ export default {
             }
         },
 
-        //View User Info
+        
         editURL(id) {
             EventBus.$emit("edit-url", id);
         },

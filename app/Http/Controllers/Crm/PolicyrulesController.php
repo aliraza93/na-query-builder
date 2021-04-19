@@ -76,41 +76,4 @@ class PolicyrulesController extends Controller
         return $policy_rules->take(100)->get();
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-    */
-    public function rules()
-    {
-        $pageConfigs = ['pageHeader' => false];
-        return view('/content/policy/rules/index', ['pageConfigs' => $pageConfigs]);
-    }
-
-    // Rules List
-    public function rules_list(Request $request)
-    {
-        $rule_name      = $request->rule_name;
-        $match_action   = $request->match_action;
-        $rules          = DB::table('rule')->orderBy('when_created','desc');
-        if($rule_name != ''){
-            $rules->where('rule_name','LIKE','%'.$rule_name.'%');
-        }
-        if($match_action != ''){
-            $rules->where('match_action','LIKE','%'.$match_action.'%');
-        }
-        $rules = $rules->paginate(10);
-        return $rules;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function rule_builder()
-    {
-        $pageConfigs = ['pageHeader' => false];
-        return view('content.policy.rules.rule-builder', ['pageConfigs' => $pageConfigs]);
-    }
 }

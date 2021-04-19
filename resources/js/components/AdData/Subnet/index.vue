@@ -214,7 +214,7 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
+        
         get_users(page = 1) {
             this.isLoading = true;
             axios
@@ -254,7 +254,7 @@ export default {
             }
         },
 
-        //View User Info
+        
         view(id) {
             // $('#basic-modals').modal('show');
             EventBus.$emit("show-user-info", id);

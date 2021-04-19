@@ -4,13 +4,13 @@
             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="d-flex justify-content-between align-items-center mx-0 row">
                     <div class="col-sm-12 col-md-6 d-flex mb-1" style="margin-top: auto;">
-                        <input type="text" class="form-control" placeholder="Type Rule Name..." v-model="rulename" v-on:keyup="get_policies()">
-                        <input type="text" class="form-control" placeholder="Type Rule Priority..." v-model="rulepriority" v-on:keyup="get_policies()">
+                        <input type="text" class="form-control" placeholder="Type Rule Name..." v-model="rulename" v-on:keyup="get_policy_rules()">
+                        <input type="text" class="form-control" placeholder="Type Rule Priority..." v-model="rulepriority" v-on:keyup="get_policy_rules()">
                     </div>
                     <div class="col-sm-12 col-md-6 mb-1">
                         <div class="row d-flex" style="float: right;">
                             <div class="col-md-8">
-                                <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-rule">Add Rule</button>
+                                <button style="margin-top: 7px;" class="btn btn-primary" data-toggle="modal" data-target="#add-policy-rule">Add Rule</button>
                             </div>
                             <div class="col-md-4">
                                 <div class="ropdown dropdown-user" style="float: right;">
@@ -56,13 +56,10 @@
                     <tbody v-if="show">
                         <tr v-for="(value,index) in policies.data" v-bind:key="index">
                             <td class="text-center" v-if="priority"> {{ value.priority }}</td>
-                            <td class="text-center" v-if="rule_name">{{ value.policy_name }}</td>
+                            <td class="text-center" v-if="rule_name">{{ value.rulename.rule_name }}</td>
                             <td class="text-center">
-                                <button data-toggle="tooltip" @click="editRule(value.rule_id)" title="Edit Rule" class="btn">
-                                    <i style="margin-top: 1px;" class="fa fa-edit"></i>
-                                </button>
                                 <button type="button" @click="sendInfo(value.rule_id)" data-toggle="modal" data-target="#delete-rule" class="btn">
-                                    <i style="margin-top: 1px;" class="fa fa-trash"></i>
+                                    <i style="margin-top: 1px; color: red;" class="fa fa-trash"></i>
                                 </button>
                                 <button data-toggle="tooltip" @click="changePriority(value.rule_id, 'up')" title="Priority Up" class="btn">
                                     <i style="margin-top: 1px;" class="fa fa-arrow-up"></i>
@@ -107,7 +104,7 @@
                 <pagination :pageData="policies"></pagination>
             </div>
         </div>
-        <add-rule></add-rule>
+        <add-rule :policy="policy"></add-rule>
     </div>
 </template>
 <script>
@@ -116,6 +113,9 @@ import { EventBus } from "../../../../vue-asset";
 import AddRule from './AddRule.vue'
 
 export default {
+
+    props: ['policy'],
+
     components: { AddRule, Pagination },
     data() {
         return {
@@ -164,9 +164,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_policies();
-        EventBus.$on("policies-added", function() {
-            _this.get_policies();
+        this.get_policy_rules();
+        EventBus.$on("policy-rules-added", function() {
+            _this.get_policy_rules();
         });
     },
 
@@ -189,13 +189,13 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
-        get_policies(page = 1) {
+        
+        get_policy_rules(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "policy/policies-list?page="+
+                    "policy/policy-rules-list?page="+
                     page+
                     "&rule_name=" +
                     this.rulename +
@@ -215,7 +215,7 @@ export default {
 
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_policies(pageNo);
+            vm.get_policy_rules(pageNo);
         },
         
         showMessage(data) {
@@ -227,15 +227,10 @@ export default {
         },
 
         changePriority(id, action) {
-            axios.post(base_url + 'rule/change-priority/'+ id + '/' + action)
+            axios.post(base_url + 'policy/change-policyrule-priority/'+ id + '/' + action)
             .then(response => {
-                EventBus.$emit("policies-added");
+                EventBus.$emit("policy-rules-added");
             })
-        },
-
-        //View User Info
-        editRule(id) {
-            EventBus.$emit("edit-rule", id);
         },
 
         sendInfo(id) {
@@ -243,10 +238,10 @@ export default {
         },
 
         destroy(id) {
-            axios.delete(base_url + "rule/delete-rule/" + id)
+            axios.delete(base_url + "policy/delete-policy-rule/" + id)
 
             .then(response => {
-                EventBus.$emit("policies-added");
+                EventBus.$emit("policy-rules-added");
                 $('#delete-rule').modal('hide');
                 this.showMessage(response.data);
             })

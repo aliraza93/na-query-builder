@@ -44,7 +44,7 @@
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <rules-tab></rules-tab>
+                            <rules-tab :policy="policy"></rules-tab>
                             <scope-tab></scope-tab>
                         </div>
                     </div>

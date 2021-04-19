@@ -69,6 +69,7 @@ export default {
                     success: {
                         overlay: true,
                         position: "center",
+                        zindex: 999,
                         timeout: 3000,
                         class: 'complete_notification'
                     },
@@ -127,7 +128,7 @@ export default {
         }, 
 
         getEditData(id){
-            axios.get(base_url+'policy/block-page/'+id+'/edit')
+            axios.get(base_url+'ad-data/container/'+id+'/edit')
             .then(response => {
                 this.container = {
                     id : response.data.container_id,
@@ -140,11 +141,11 @@ export default {
         updateContainer() {
             this.saving = true
             axios
-            .post(base_url + "policy/block-page/" + this.container.id + "/update", this.container)
+            .post(base_url + "ad-data/container/" + this.container.id + "/update", this.container)
 
             .then(response => {
                 $("#edit-container").modal("hide");
-                EventBus.$emit("block-pages-added");
+                EventBus.$emit("containers-added");
                 this.saving = false
                 this.showMessage(response.data);
                 this.container = {

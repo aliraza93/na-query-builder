@@ -63,9 +63,33 @@
                                 <button data-toggle="tooltip" @click="editRule(value.id)" title="Go To Computer" class="btn">
                                     <i style="margin-top: 1px;" class="fa fa-edit"></i>
                                 </button>
-                                <a :href="`policy/` + value.id" title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
-                                    <i class="fa fa-info-circle"></i>
-                                </a>
+                                <button type="button" @click="sendInfo(value.rule_id)" data-toggle="modal" data-target="#delete-page" class="btn">
+                                    <i style="margin-top: 1px; color: red;" class="fa fa-trash"></i>
+                                </button>
+                                <!-- Delete Rule Modal -->
+                                <div class="modal custom-modal fade" id="delete-page" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="form-header">
+                                                    <h3>Delete Rule</h3>
+                                                    <p>Are you sure want to delete?</p>
+                                                </div>
+                                                <div class="modal-btn delete-action">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <a href="javascript:void(0);" @click="destroy(selected_rule_id)" class="btn btn-primary continue-btn">Delete</a>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Delete Rule Modal -->
                             </td>
                         </tr>
                     </tbody>
@@ -99,6 +123,7 @@ export default {
             selected: [],
             rulename: '',
             matchaction: '',
+            selected_rule_id: '',
             isLoading: false,
             rules_ids: [],
             errors: null,
@@ -133,7 +158,7 @@ export default {
     created() {
         var _this = this;
         this.get_rules();
-        EventBus.$on("ad-data-users", function() {
+        EventBus.$on("rules-added", function() {
             _this.get_rules();
         });
     },
@@ -157,7 +182,7 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
+        
         get_rules(page = 1) {
             this.isLoading = true;
             axios
@@ -199,9 +224,24 @@ export default {
             }
         },
 
-        //View User Info
-        editRule(id) {
-            EventBus.$emit("edit-policy", id);
+        sendInfo(id) {
+            this.selected_rule_id = id;
+        },
+
+        destroy(id) {
+            axios.delete(base_url + "policy/rule/" + id)
+
+            .then(response => {
+                EventBus.$emit("rules-added");
+                $('#delete-rule').modal('hide');
+                this.showMessage(response.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    this.showMessage(err.response.data)
+                }
+            });
+            
         },
             
     },

@@ -10,12 +10,14 @@ use App\Models\AD\Rules;
 class Policy_rules extends Model
 {
     protected $connection = 'pgsql';
-    public $timestamps = false;
+    public $timestamps = true;
+    const CREATED_AT = 'when_created';
+    const UPDATED_AT = 'when_changed';
     protected $fillable = ['policy_id', 'priority','rule_id'];
    
     public static $validator = [
-        'policy_id' => 'required|string',
-        'rule_id' =>'required|string',
+        'policy_id' => 'required',
+        'rule_id' =>'required',
         'priority' => 'required',
        
     ];

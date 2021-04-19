@@ -5,7 +5,7 @@
 
 @section('vendor-style')
     {{-- vendor css files --}}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"yy>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/1.0.2/awesome-bootstrap-checkbox.css">
@@ -24,6 +24,10 @@
 
     .rules-group-container {
         width: -webkit-fill-available;
+    }
+
+    .chosen-container {
+        width: 200px !important;
     }
     
     .query-builder {
@@ -55,6 +59,7 @@
         background-image: none;
         border: 1px solid transparent;
         border-radius: 4px;
+        margin: 4px;
     }
 
     .query-builder .btn.focus, .query-builder .btn:focus, .query-builder .btn:hover {

@@ -72,7 +72,7 @@
                                             <i style="margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
                                         <button type="button" @click="sendInfo(value.block_page_id)" data-toggle="modal" data-target="#delete-page" class="btn">
-                                            <i style="margin-top: 1px;" class="fa fa-trash"></i>
+                                            <i style="margin-top: 1px; color: red;" class="fa fa-trash"></i>
                                         </button>
                                         <!-- Delete Page Modal -->
                                         <div class="modal custom-modal fade" id="delete-page" role="dialog">
@@ -197,7 +197,7 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
+        
         get_block_pages(page = 1) {
             this.isLoading = true;
             axios

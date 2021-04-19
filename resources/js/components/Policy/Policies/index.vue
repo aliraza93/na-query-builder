@@ -80,7 +80,7 @@
                                             <i style="margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
                                         <button type="button" @click="sendInfo(value.policy_id)" data-toggle="modal" data-target="#delete-policy" class="btn">
-                                            <i style="margin-top: 1px;" class="fa fa-trash"></i>
+                                            <i style="margin-top: 1px; color: red;" class="fa fa-trash"></i>
                                         </button>
                                         <button data-toggle="tooltip" @click="changePriority(value.policy_id, 'up')" title="Priority Up" class="btn">
                                             <i style="margin-top: 1px;" class="fa fa-arrow-up"></i>
@@ -213,7 +213,7 @@ export default {
             this.allSelected = false;
         },
 
-        //Get All Users
+        
         get_policies(page = 1) {
             this.isLoading = true;
             axios
@@ -257,7 +257,7 @@ export default {
             })
         },
 
-        //View User Info
+        
         editPolicy(id) {
             EventBus.$emit("edit-policy", id);
         },

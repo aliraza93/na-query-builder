@@ -23,9 +23,7 @@ class RuleController extends Controller
 
     public function index()
     {
-        return Rules
-            ::orderBy('rule_name', 'asc')
-              ->get();
+        return Rules::orderBy('rule_name', 'asc')->get();
     }
 
     public function show($id)
@@ -91,12 +89,15 @@ class RuleController extends Controller
         }
     }
 
-    public function destroy($prefix, Rules $model)
+    public function destroy(Rules $rule)
     {
+        try {
+            $rule->delete();    
+            return response()->json(['status' => 'success', 'message' => 'Rule Deleted Successfully !']);
+        } catch (\Exception $e) {
 
-        $model->destroy($prefix);
-
-        return ['status' => 0];
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
   
     public function search(Request $request)
@@ -134,5 +135,43 @@ class RuleController extends Controller
             $Rules = $Rules->where(DB::raw("CONCAT(rule_name, ' ', rule_id)"), 'like', '%' . $search . '%');
         }
         return $Rules->take(100)->get();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function rules()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/policy/rules/index', ['pageConfigs' => $pageConfigs]);
+    }
+
+    // Rules List
+    public function rules_list(Request $request)
+    {
+        $rule_name      = $request->rule_name;
+        $match_action   = $request->match_action;
+        $rules          = DB::table('rule')->orderBy('when_created','desc');
+        if($rule_name != ''){
+            $rules->where('rule_name','LIKE','%'.$rule_name.'%');
+        }
+        if($match_action != ''){
+            $rules->where('match_action','LIKE','%'.$match_action.'%');
+        }
+        $rules = $rules->paginate(10);
+        return $rules;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rule_builder()
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('content.policy.rules.rule-builder', ['pageConfigs' => $pageConfigs]);
     }
 }

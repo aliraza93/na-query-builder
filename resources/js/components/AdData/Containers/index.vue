@@ -70,7 +70,7 @@
                                             <i style="margin-top: 1px;" class="fa fa-edit"></i>
                                         </button>
                                         <button type="button" @click="sendInfo(value.ts_id)" data-toggle="modal" data-target="#delete-container" class="btn">
-                                            <i style="margin-top: 1px;" class="fa fa-trash"></i>
+                                            <i style="margin-top: 1px; color: red;" class="fa fa-trash"></i>
                                         </button>
                                         <!-- Delete Container Modal -->
                                         <div class="modal custom-modal fade" id="delete-container" role="dialog">
@@ -239,7 +239,7 @@ export default {
             }
         },
 
-        //View User Info
+        
         view(id) {
             // $('#basic-modals').modal('show');
             EventBus.$emit("show-user-info", id);

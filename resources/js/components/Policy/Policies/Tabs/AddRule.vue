@@ -1,6 +1,6 @@
 <template>
     <!-- Modal -->
-    <div class="modal fade text-left" id="add-rule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal fade text-left" id="add-policy-rule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -13,14 +13,15 @@
                     <b-form @submit.stop.prevent="handleSubmit(addRule)">
                         <div class="modal-body">
                             <validation-provider
-                                name="page"
+                                name="Rule"
                                 :rules="{ required: true, min: 3 }"
                                 v-slot="validationContext"
                                 >
-                                <b-form-group id="example-input-group-2" label="Block Page" label-for="example-input-2">
+                                <b-form-group id="example-input-group-2" label="Rule" label-for="example-input-2">
                                     <v-select :options="options"
                                         id="example-input-2"
                                         name="example-input-2"
+                                        v-model="rule.rules"
                                         :state="getValidationState(validationContext)"
                                         aria-describedby="input-2-live-feedback">
                                     </v-select>
@@ -47,11 +48,15 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 
 export default {
+
+    props: ['policy'],
+
     components: {vSelect},
     data() {
         return {
             rule: {
-                rule_name: '',
+                priority: '',
+                rules: ''
             },
             options: [],
             rules: [],
@@ -110,11 +115,11 @@ export default {
         addRule() {
             this.saving = true
             axios
-            .post(base_url + "policy/add-policy", this.rule)
+            .post(base_url + "policy/add-policy-rule/" + this.policy.policy_id, this.rule)
 
             .then(response => {
-                $("#add-policy").modal("hide");
-                EventBus.$emit("policies-added");
+                $("#add-policy-rule").modal("hide");
+                EventBus.$emit("policy-rules-added");
                 this.saving = false
                 this.showMessage(response.data);
                 this.rule = {
@@ -135,9 +140,9 @@ export default {
                 var arrayAllBusinessUsers=[];
                 this.rules.forEach(element => {
                     var valueToPush = {};
-                    valueToPush["label"] = element.title;
+                    valueToPush["label"] = element.rule_name;
                     
-                    valueToPush["code"] = element.block_page_id;
+                    valueToPush["code"] = element.rule_id;
                     
                     arrayAllBusinessUsers.push(valueToPush);
                 });

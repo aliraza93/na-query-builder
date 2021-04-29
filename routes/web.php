@@ -20,6 +20,10 @@ use App\Http\Controllers\AD\NamedListController;
 use App\Http\Controllers\AD\RuleController;
 use App\Http\Controllers\AD\PolicyrulesController;
 use App\Http\Controllers\AD\TriggertypeController;
+use App\Http\Controllers\AD\TriggerOperatorsController;
+use App\Http\Controllers\AD\NamedListentryController;
+use App\Http\Controllers\AD\ObjectinpolicyController;
+use App\Http\Controllers\AD\IP_addressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,13 +101,14 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [Ad_userController::class, 'users'])->name('ad-data-users');
     Route::get('users-list', [Ad_userController::class,'user_list'])->name('user_list');
     Route::get('user/{user}', [Ad_userController::class,'showUser']);
+    Route::get('user/{user}/edit', [Ad_userController::class, 'edit']);
 
     Route::get('computers', [AD_ComputersController::class,'computers'])->name('ad-data-computers');
     Route::get('computers-list', [AD_ComputersController::class,'computer_list'])->name('computer_list');
     Route::get('computer/{user}', 'AdDataController@showComputer');
 
     Route::get('subnet', [AdDataController::class,'subnet'])->name('ad-data-subnet');
-    Route::get('subnet-list', [AdDataController::class,'subnet_list'])->name('computer_list');
+    Route::get('subnets-list', [IP_addressController::class,'subnet_list'])->name('computer_list');
     Route::get('subnet/{user}', [AdDataController::class,'showSubnet']);
 
     Route::get('tree-view', [AdDataController::class,'tree_view'])->name('ad-data-tree-view');
@@ -145,14 +150,39 @@ Route::middleware('auth')->group(function () {
     Route::get('rules', [RuleController::class,'rules'])->name('policy-rules');
     Route::get('rules-list', [RuleController::class,'rules_list'])->name('rules_list');
     Route::post('rule', [RuleController::class, 'store']);
+    
     Route::get('get-rules', [RuleController::class, 'index']);
     Route::post('add-policy-rule/{policy}', [PolicyrulesController::class, 'store']);
-    Route::get('policy-rules-list', [PolicyrulesController::class, 'policy_rules_list']);
+    Route::get('policy-rules-list/{policy}', [PolicyrulesController::class, 'policy_rules_list']);
     Route::post('change-policyrule-priority/{rule}/{action}', [PolicyrulesController::class, 'update']);
     Route::delete('delete-policy-rule/{rule}', [PolicyrulesController::class, 'destroy']);
+
+    Route::get('get-users', [Ad_userController::class, 'index']);
+    Route::post('add-policy-user/{policy}', [ObjectinpolicyController::class, 'store']);
+    Route::get('policy-data-list/{policy}', [ObjectinpolicyController::class, 'policy_users_list']);
+    Route::delete('delete-policy-data/{ts_id}/policy/{policy}', [ObjectinpolicyController::class, 'destroy']);
+
+    Route::get('get-computers', [AD_ComputersController::class, 'index']);
+    Route::post('add-policy-computer/{policy}', [ObjectinpolicyController::class, 'store']);
+
+    Route::get('get-groups', [AD_GroupsController::class, 'index']);
+    Route::post('add-policy-group/{policy}', [ObjectinpolicyController::class, 'store']);
+
+    Route::get('get-containers', [AD_ContainerController::class, 'index']);
+    Route::post('add-policy-container/{policy}', [ObjectinpolicyController::class, 'store']);
+
+    Route::get('get-ous', [AD_OusController::class, 'index']);
+    Route::post('add-policy-ou/{policy}', [ObjectinpolicyController::class, 'store']);
+
+    Route::get('get-subnets', [IP_addressController::class, 'index']);
+    Route::post('add-policy-subnet/{policy}', [ObjectinpolicyController::class, 'store']);
+
     Route::delete('rule/{rule}', [RuleController::class, 'destroy']);
     Route::get('rule-builder', [RuleController::class,'rule_builder']);
+    Route::get('rule-builder/{rule}', [RuleController::class,'edit']);
     Route::get('get-triggers', [TriggertypeController::class, 'index']);
+    Route::get('get-operators', [TriggerOperatorsController::class, 'index']);
+    Route::get('get-distinct-operators', [TriggerOperatorsController::class, 'getDistinctOperators']);
 
     Route::get('url-lists', [NamedListController::class,'url_list'])->name('policy-url-lists');
     Route::post('url-list', [NamedListController::class, 'store']);
@@ -161,6 +191,8 @@ Route::middleware('auth')->group(function () {
     Route::post('url-list/{url}/update', [NamedListController::class, 'update']);
     Route::delete('url-list/{url}', [NamedListController::class, 'destroy']);
     Route::get('list-details/{url}', [NamedListController::class, 'url_list_details']);
+    Route::get('named-list-entry/{url}', [NamedListentryController::class, 'named_entry_list']);
+    Route::post('add-list-entry/{url}', [NamedListentryController::class, 'store']);
 
     Route::get('block-pages', [NamedPageController::class,'block_pages'])->name('policy-block-pages');
     Route::get('block-pages-list', [NamedPageController::class,'block_pages_list'])->name('block-pages_list');
@@ -169,6 +201,7 @@ Route::middleware('auth')->group(function () {
     Route::get('block-page/{page}/edit', [NamedPageController::class, 'edit']);
     Route::post('block-page/{page}/update', [NamedPageController::class, 'update']);
     Route::get('get-block-pages', [NamedPageController::class, 'index']);
+    Route::get('blockpage/{page}', [NamedPageController::class, 'show']);
 
     Route::get('settings', [PolicyController::class,'settings'])->name('policy-settings');
 

@@ -36,7 +36,7 @@
         </validation-provider>
 
         <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button class="ml-2" @click="resetForm()">Reset</b-button>
+        <b-button @click="resetForm()">Reset</b-button>
       </b-form>
     </validation-observer>
   </div>

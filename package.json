@@ -29,9 +29,10 @@
     },
     "dependencies": {
         "@wormslab/vuetify-query-builder": "^1.0.18",
-        "query-builder-vue": "^1.0.6",
-        "bootstrap-vue": "^2.14.0",
         "bootstrap": "^4.4.0",
+        "bootstrap-vue": "^2.14.0",
+        "query-builder-vue": "^1.0.6",
+        "sql-parser-mistic": "^1.2.3",
         "vee-validate": "^3.2.0",
         "vue-izitoast": "^1.2.1",
         "vue-material-design-icons": "^4.11.0",

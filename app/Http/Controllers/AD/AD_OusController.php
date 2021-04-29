@@ -11,10 +11,10 @@ class AD_OusController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store','mstore', 'multipleAdd']]);
-        $this->middleware('role:update', ['only' => ['update']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store','mstore', 'multipleAdd']]);
+        // $this->middleware('role:update', ['only' => ['update']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
 
     private $m = AD_Ous::class;
@@ -22,9 +22,7 @@ class AD_OusController extends Controller
 
     public function index()
     {
-        return AD_Ous
-            ::orderBy('common_name', 'asc')
-            ->get();
+        return AD_Ous::orderBy('common_name', 'asc')->get();
     }
 
     public function show($id)

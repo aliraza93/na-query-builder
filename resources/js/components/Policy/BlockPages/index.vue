@@ -74,6 +74,9 @@
                                         <button type="button" @click="sendInfo(value.block_page_id)" data-toggle="modal" data-target="#delete-page" class="btn">
                                             <i style="margin-top: 1px; color: red;" class="fa fa-trash"></i>
                                         </button>
+                                        <a :href="`blockpage/` + value.block_page_id" data-toggle="tooltip" title="Go To Page" class="btn">
+                                            <i style="margin-top: 1px;" class="fa fa-arrow-right"></i>
+                                        </a>
                                         <!-- Delete Page Modal -->
                                         <div class="modal custom-modal fade" id="delete-page" role="dialog">
                                             <div class="modal-dialog modal-dialog-centered">

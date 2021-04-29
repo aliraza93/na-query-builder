@@ -67,7 +67,7 @@
                                 <button data-toggle="tooltip" @click="changePriority(value.rule_id, 'down')" title="Priority Down" class="btn">
                                     <i style="margin-top: 1px;" class="fa fa-arrow-down"></i>
                                 </button>
-                                <a :href="`rule-details/` + value.rule_id" data-toggle="tooltip" title="Go To Rule" class="btn">
+                                <a :href="`/policy/rule-builder/` + value.rule_id" data-toggle="tooltip" title="Go To Rule" class="btn">
                                     <i style="margin-top: 1px;" class="fa fa-arrow-right"></i>
                                 </a>
                                 <!-- Delete Rule Modal -->
@@ -126,13 +126,10 @@ export default {
             block_page: true,
             when_changed: true,
 
-            allSelected: false,
-            selected: [],
             selected_rule_id: '',
             rulename: '',
             rulepriority: '',
             isLoading: false,
-            policies_ids: [],
             errors: null,
             notificationSystem: {
             options: {
@@ -176,26 +173,12 @@ export default {
     
     methods: {
 
-        //Select all checkboxes
-        selectAll() {
-            this.policies_ids = [];
-            if (!this.allSelected) {
-                for (var user in this.policies.data) {
-                    this.policies_ids.push(this.policies.data[user].id);
-                }
-            }
-        },
-        select: function() {
-            this.allSelected = false;
-        },
-
-        
         get_policy_rules(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "policy/policy-rules-list?page="+
+                    "policy/policy-rules-list/" +this.policy.policy_id + "?page="+
                     page+
                     "&rule_name=" +
                     this.rulename +

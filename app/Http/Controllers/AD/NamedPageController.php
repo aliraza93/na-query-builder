@@ -28,14 +28,12 @@ class NamedPageController extends Controller
 
     public function show($id)
     {
-        $NamedPageInfo = NamedPage
-            ::where('block_page_id', $id)
-                ->first();
-        if ($NamedPageInfo == null) {
+        $page = NamedPage::where('block_page_id', $id)->first();
+        if ($page == null) {
             return [];
         }
-
-        return $NamedPageInfo;
+        $pageConfigs = ['pageHeader' => false];
+        return view('content.policy.block-pages.show', ['pageConfigs' => $pageConfigs], compact('page'));
     }
     public function update(Request $request, NamedPage $page)
     {
@@ -159,7 +157,7 @@ class NamedPageController extends Controller
     public function block_pages()
     {
         $pageConfigs = ['pageHeader' => false];
-        return view('/content/policy/block-pages/index', ['pageConfigs' => $pageConfigs]);
+        return view('content.policy.block-pages.index', ['pageConfigs' => $pageConfigs]);
     }
 
     // Block pages List

@@ -66,7 +66,7 @@
                                             <i data-feather="calendar" class="mr-1"></i>
                                             <span class="card-text user-info-title font-weight-bold mb-0">When Changed</span>
                                         </div>
-                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.when_updated }}</p>
+                                        <p style="margin-left: auto;" class="card-text mb-0">{{ user.when_changed }}</p>
                                     </div>
                                 </div>
                             </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AD;
 use App\Http\Controllers\Controller;
 use App\Models\Libraries\ModelTreatment;
 use App\Models\AD\Rules;
+use App\Models\AD\Trigger_type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -148,6 +149,17 @@ class RuleController extends Controller
         return view('/content/policy/rules/index', ['pageConfigs' => $pageConfigs]);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function edit(Rules $rule)
+    {
+        $pageConfigs = ['pageHeader' => false];
+        return view('content.policy.rules.edit', ['pageConfigs' => $pageConfigs], compact('rule'));
+    }
+
     // Rules List
     public function rules_list(Request $request)
     {
@@ -172,6 +184,7 @@ class RuleController extends Controller
     public function rule_builder()
     {
         $pageConfigs = ['pageHeader' => false];
-        return view('content.policy.rules.rule-builder', ['pageConfigs' => $pageConfigs]);
+        $triggers = Trigger_type::all();
+        return view('content.policy.rules.rule-builder', ['pageConfigs' => $pageConfigs], compact('triggers'));
     }
 }

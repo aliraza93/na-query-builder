@@ -130,14 +130,14 @@ export default {
        
         EventBus.$on('show-user-info',function(id){
             _this.user.id = id;
-            // _this.getEditData(id);
+            _this.getEditData(id);
             $('#user-details').modal('show');
         });
     },
 
     methods: {
         getEditData(id){
-            axios.get(base_url+'booking/'+id+'/edit')
+            axios.get(base_url + 'ad-data/user/' + id + '/edit')
             .then(response => {
                 this.user = {
                     id : response.data.id,
@@ -155,7 +155,7 @@ export default {
                     user_prinicpal_name: 'Principal ' + response.data.user_name,
                     active: true,
                     when_created: response.data.when_created,
-                    when_changed: response.data.when_updated
+                    when_changed: response.data.when_changed
                 };
             })
         },

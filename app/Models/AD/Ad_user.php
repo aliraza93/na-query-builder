@@ -9,7 +9,9 @@ class Ad_user extends Model
 {
 
     protected $connection = 'pgsql';
-    public $timestamps = false;
+    public $timestamps = true;
+    const CREATED_AT = 'when_created';
+    const UPDATED_AT = 'when_changed';
     protected $fillable = [
         'object_guid',
         'common_name',

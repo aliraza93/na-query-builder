@@ -139,7 +139,7 @@ export default {
                     user_prinicpal_name: 'Principal ' + response.data.user_name,
                     active: true,
                     when_created: response.data.when_created,
-                    when_changed: response.data.when_updated
+                    when_changed: response.data.when_changed
                 };
             })
         },

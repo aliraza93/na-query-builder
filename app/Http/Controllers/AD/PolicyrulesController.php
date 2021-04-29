@@ -182,11 +182,11 @@ class PolicyrulesController extends Controller
     }
 
     // Policy Rules List
-    public function policy_rules_list(Request $request)
+    public function policy_rules_list(Request $request, Policies $policy)
     {
         $rule_name      = $request->rule_name;
         $priority       = $request->priority;
-        $policy_rules   = Policy_rules::with('rulename')->orderBy('priority');
+        $policy_rules   = Policy_rules::with('rulename')->where('policy_id', $policy->policy_id)->orderBy('priority');
         if ($priority != '') {
             $policy_rules->where('priority', 'LIKE', '%' . $priority . '%');
         }

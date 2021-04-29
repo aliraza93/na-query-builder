@@ -27,8 +27,8 @@ class ObjectinPolicy extends Model
 
     ];
     public static $validator = [
-        'policy_id' => 'required|string',
-        'ts_id' => 'required|string',
+        'policy_id' => 'required',
+        'ts_id' => 'required',
         'enforced_flag' => 'required',
         'priority_policy' => 'required',
      //   'rules_enforced' => 'string',

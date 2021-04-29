@@ -46,7 +46,7 @@
                         </div>
                         <div class="modal-footer">
                             <b-button  :disabled="disableSubmitButton" type="submit" variant="primary" value="Submit">{{saving ? "Submitting..." : "Submit"}}</b-button>    
-                            <b-button class="ml-2" @click="resetForm()">Reset</b-button>
+                            <b-button @click="resetForm()">Reset</b-button>
                         </div>
                     </b-form>
                 </validation-observer>

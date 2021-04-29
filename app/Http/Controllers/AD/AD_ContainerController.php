@@ -22,9 +22,7 @@ class AD_ContainerController extends Controller
 
     public function index()
     {
-        return AD_Container
-            ::orderBy('common_name', 'asc')
-            ->get();
+        return AD_Container::orderBy('common_name', 'asc')->get();
     }
 
     public function show($id)

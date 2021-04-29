@@ -22,7 +22,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="dataTables_filter">
                                     <label style="float: left;">Search:
-                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_users()" aria-controls="DataTables_Table_0">
+                                        <input type="search" class="form-control" placeholder="" v-model="name" v-on:keyup="get_subnets()" aria-controls="DataTables_Table_0">
                                     </label>
                                 </div>
                             </div>
@@ -96,8 +96,8 @@
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in ad_data_subnet.data" v-bind:key="index">
-                                    <td class="text-center" v-if="enable">True</td>
-                                    <td class="text-center" v-if="subnet_name">{{ value.user_name }}</td>
+                                    <td class="text-center" v-if="enable">{{ value.is_enabled }}</td>
+                                    <td class="text-center" v-if="subnet_name">{{ value.name }}</td>
                                     <td class="text-center" v-if="description"></td>
                                     <td class="text-center" v-if="ip_address_from">192.155.15.1</td>
                                     <td class="text-center" v-if="ip_address_to">192.155.451.1</td>
@@ -189,9 +189,9 @@ export default {
     },
     created() {
         var _this = this;
-        this.get_users();
-        EventBus.$on("ad-data-users", function() {
-            _this.get_users();
+        this.get_subnets();
+        EventBus.$on("ad-data-subnets", function() {
+            _this.get_subnets();
         });
     },
 
@@ -215,12 +215,12 @@ export default {
         },
 
         
-        get_users(page = 1) {
+        get_subnets(page = 1) {
             this.isLoading = true;
             axios
                 .get(
                 base_url +
-                    "ad-data/users-list?page="+
+                    "ad-data/subnets-list?page="+
                     page+
                     "&name=" +
                     this.name
@@ -243,7 +243,7 @@ export default {
 
         pageClicked(pageNo) {
             var vm = this;
-            vm.get_users(pageNo);
+            vm.get_subnets(pageNo);
         },
         
         showMessage(data) {

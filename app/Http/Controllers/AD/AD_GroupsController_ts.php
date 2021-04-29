@@ -12,10 +12,10 @@ class AD_GroupsController_ts extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store','mstore']]);
-        $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store','mstore']]);
+        // $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
 
     private $m = AD_Groups::class;
@@ -23,10 +23,7 @@ class AD_GroupsController_ts extends Controller
 
     public function index()
     {
-        return AD_Groups
-            ::orderBy('common_name', 'asc')
-            ->with('memberof', 'memberof.parentdetail')
-            ->get();
+        return AD_Groups::orderBy('common_name', 'asc')->with('memberof', 'memberof.parentdetail')->get();
     }
 
     public function show($id)

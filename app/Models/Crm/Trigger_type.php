@@ -19,7 +19,7 @@ class Trigger_type extends Model
 
     public function getTextAttribute()
     {
-        return $this->trigger_label ;
+        return $this->trigger_label;
     }
     public function getValueAttribute()
     {

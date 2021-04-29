@@ -110,12 +110,12 @@
                                     <td class="text-center" v-if="given_name">{{ value.given_name }}</td>
                                     <td class="text-center" v-if="email">{{ value.email_addresses }}</td>
                                     <td class="text-center" v-if="when_created">{{ value.when_created }}</td>
-                                    <td class="text-center" v-if="when_changed">{{ value.when_updated }}</td>
+                                    <td class="text-center" v-if="when_changed">{{ value.when_changed }}</td>
                                     <td class="text-center">
-                                        <a :href="`user/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.id)" title="Go To User" class="btn">
+                                        <a :href="`user/` + value.id" data-toggle="tooltip" type="button" @click="showUser(value.object_guid)" title="Go To User" class="btn">
                                             <i style="margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>
-                                        <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.id)">
+                                        <button title="View Info" data-toggle="tooltip" class="btn" @click="view(value.object_guid)">
                                             <i class="fa fa-info-circle"></i>
                                         </button>
                                     </td>
@@ -137,7 +137,7 @@ import Pagination  from '../../pagination/pagination.vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
 import Close from 'vue-material-design-icons/Close.vue';
 import { EventBus } from "../../../vue-asset";
-import AdDataUserInfo from './AdDataUserInfo.vue';
+import AdDataUserInfo from './UserInfo.vue';
 
 export default {
     components: {
@@ -246,11 +246,6 @@ export default {
             });
         },
 
-        //Show User Page
-        // showUser(id) {
-        //     axios.get(base_url + 'ad-data/user/' + id).then(response => {})
-        // },
-
         pageClicked(pageNo) {
             var vm = this;
             vm.get_users(pageNo);
@@ -274,17 +269,6 @@ export default {
     computed: {
         show() {
             return this.ad_data_users.data ? (this.ad_data_users.data.length >= 1 ? true: false) : null
-        },
-
-        showMenu() {
-            if ($(".ropdown").hasClass("show")) {
-                console.log('has class')
-                return false
-            }
-            else{
-                console.log('has no class')
-                return true
-            }
         }
     }
 }

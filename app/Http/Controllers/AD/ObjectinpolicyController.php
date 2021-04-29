@@ -13,10 +13,10 @@ class ObjectinpolicyController  extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show','search', 'custget']]);
-        $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
-        $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
-        $this->middleware('role:delete', ['only' => ['destroy','multipleDelete', 'custdestroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show','search', 'custget']]);
+        // $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
+        // $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
+        // $this->middleware('role:delete', ['only' => ['destroy','multipleDelete', 'custdestroy']]);
     }
 
     private $m = ObjectinPolicy::class;
@@ -25,8 +25,7 @@ class ObjectinpolicyController  extends Controller
     public function index()
     {
         //Container
-        return  ObjectType
-            ::orderBy('ts_id', 'asc')
+        return  ObjectType::orderBy('ts_id', 'asc')
             ->where("subtype", "Container")
             ->get();
    
@@ -72,12 +71,9 @@ class ObjectinpolicyController  extends Controller
             $prefix
         );
     }
-    public function destroy(Request $request, ObjectinPolicy $model)
+    public function destroy($ts_id, Policies $policy)
     {
-
-        $model->where('ts_id', '=', $request->get('ts_id'))
-        ->where('policy_id', '=', $request->get('policy_id'))->delete();
-     
+        ObjectinPolicy::where('ts_id', $ts_id)->where('policy_id', $policy->policy_id)->delete();
         return ['status' => 0]; 
     }
     public function custdestroy(Request $request, ObjectinPolicy $model)
@@ -115,16 +111,25 @@ class ObjectinpolicyController  extends Controller
 
         return ['status' => 0];
     }
-    public function store(Request $request)
+    public function store(Request $request, Policies $policy)
     {
-        if ($request->get('enforced_flag') == null || $request->get('enforced_flag') == '') {
-            $request->request->set('enforced_flag', false);
+        $request->validate([
+            'enforced_flag' => 'nullable',
+            'data' => 'required'
+        ]);
+        try {
+            if ($request->get('enforced_flag') == null || $request->get('enforced_flag') == '') {
+                $request->request->set('enforced_flag', false);
+            }
+            $request->request->add(['policy_id' => $policy->policy_id]);
+            $request->request->set('ts_id', $request->data['code']);
+            $request->request->set('priority_policy', $policy['priority']);
+            return $this->rStore($this->m, $request, 'policy_id'); 
+            return response()->json(['status' => 'success', 'message' => 'Policy User Added Successfully !']);
+        } catch (\Exception $e) {
 
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
-
-        $policy = Policies::where('policy_id', $request->get('policy_id'))->first();
-        $request->request->add(['priority_policy' =>$policy['priority']]);
-        return $this->rStore($this->m, $request, 'policy_id');
     }
     public function search(Request $request)
     {
@@ -150,5 +155,11 @@ class ObjectinpolicyController  extends Controller
             $traffic_source_contains = $traffic_source_contains->where(DB::raw("CONCAT(grp_name, ' ', domin)"), 'like', '%' . $search . '%');
         }
         return $traffic_source_contains->take(100)->get();
+    }
+
+    public function policy_users_list(Request $request, Policies $policy) {
+        $items   = ObjectinPolicy::with(['username', 'computername', 'grpname', 'contname', 'ousname', 'subname'])->where('policy_id', $policy->policy_id)->orderBy('ts_id');
+        $items = $items->paginate(10);
+        return $items;
     }
 }

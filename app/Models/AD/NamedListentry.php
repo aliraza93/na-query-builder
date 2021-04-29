@@ -19,9 +19,7 @@ class NamedListentry extends Model
     public static $validator = [
         'match_string' => 'required|string',
         'list_id' => 'required',
-        'operator_code'=>'string',
-
-        
+        'operator_code'=>'string',    
     ];
   
    

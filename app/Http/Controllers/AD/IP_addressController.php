@@ -11,10 +11,10 @@ class IP_addressController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
-        $this->middleware('role:update', ['only' => ['update']]);
-        $this->middleware('role:delete', ['only' => ['destroy', 'multipleDelete']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
+        // $this->middleware('role:update', ['only' => ['update']]);
+        // $this->middleware('role:delete', ['only' => ['destroy', 'multipleDelete']]);
     }
 
     private $m = IP_address::class;
@@ -22,9 +22,7 @@ class IP_addressController extends Controller
 
     public function index()
     {
-        return IP_address
-            ::orderBy('name', 'asc')
-            ->get();
+        return IP_address::orderBy('name', 'asc')->get();
     }
 
     public function show($id)
@@ -220,5 +218,16 @@ class IP_addressController extends Controller
             $IP_address = $IP_address->where(DB::raw("CONCAT(name, ' ', ip_address_points)"), 'like', '%' . $search . '%');
         }
         return $IP_address->take(100)->get();
+    }
+
+    public function subnet_list(Request $request)
+    {
+        $name              = $request->name;
+        $subnets        = IP_address::orderBy('name');
+        if($name != ''){
+            $subnets->where('name','LIKE','%'.$name.'%');
+        }
+        $subnets = $subnets->paginate(10);
+        return $subnets;
     }
 }

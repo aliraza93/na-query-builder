@@ -14,10 +14,10 @@ class Ad_userController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
-        $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
-        $this->middleware('role:delete', ['only' => ['destroy']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
+        // $this->middleware('role:update', ['only' => ['update', 'multipleUpdate']]);
+        // $this->middleware('role:delete', ['only' => ['destroy']]);
     }
 
     private $m = Ad_user::class;
@@ -26,8 +26,11 @@ class Ad_userController extends Controller
 
     public function index()
     {
-        return Ad_user::orderBy('object_guid', 'asc')
-               ->get();
+        return Ad_user::orderBy('object_guid', 'asc')->get();
+    }
+
+    public function edit(Ad_user $user) {
+        dd($user);
     }
 
     public function show($object_guid)

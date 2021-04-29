@@ -53,13 +53,13 @@
                             <thead>
                                 <tr role="row">
                                     <th v-if="container_name">Container Name</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody v-if="show">
                                 <tr v-for="(value,index) in containers.data" v-bind:key="index">
                                     <td v-if="container_name">{{ value.common_name }}</td>
-                                    <td class="d-flex">
+                                    <td class="text-center">
                                         <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showContainer(value.id)" title="Go To Computer" class="btn">
                                             <i style="margin-top: 1px;" class="fa fa-eye"></i>
                                         </a>

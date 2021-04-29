@@ -12,10 +12,10 @@ class AD_ComputersController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
-        $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
-        $this->middleware('role:update', ['only' => ['store']]);
-        $this->middleware('role:delete', ['only' => ['destroy','multipleDelete']]);
+        // $this->middleware('role:read', ['only' => ['index', 'show', 'search']]);
+        // $this->middleware('role:insert', ['only' => ['store', 'multipleAdd']]);
+        // $this->middleware('role:update', ['only' => ['store']]);
+        // $this->middleware('role:delete', ['only' => ['destroy','multipleDelete']]);
     }
     private $m = AD_Computer::class;
     private $pk = 'object_guid';
@@ -28,9 +28,7 @@ class AD_ComputersController extends Controller
 
     public function index()
     {
-        return AD_Computer::orderBy('common_name', 'asc')
-            ->with('memberof', 'memberof.grpdetail')
-            ->get();
+        return AD_Computer::orderBy('common_name', 'asc')->with('memberof', 'memberof.grpdetail')->get();
     }
 
     public function show($id)

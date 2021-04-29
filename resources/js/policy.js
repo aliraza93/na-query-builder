@@ -36,6 +36,7 @@ Vue.component('reports-query', require('./components/Policy/Reports/index.vue').
 //Rules Components
 Vue.component('rules-list', require('./components/Policy/Rules/index.vue').default)
 Vue.component('rule-builder', require('./components/Policy/Rules/RuleBuilder').default)
+Vue.component('edit-rule-builder', require('./components/Policy/Rules/EditRuleBuilder').default)
 
 //Url List Components
 Vue.component('url-list', require('./components/Policy/UrlList/index.vue').default)

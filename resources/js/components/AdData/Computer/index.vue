@@ -82,7 +82,7 @@
                                     <td class="text-center" v-if="common_name">{{ value.common_name }}</td>
                                     <td class="text-center" v-if="sam_account_name">{{ value.sam_account_name }}</td>
                                     <td class="text-center" v-if="when_created">{{ value.when_created }}</td>
-                                    <td class="text-center" v-if="when_changed">{{ value.when_updated }}</td>
+                                    <td class="text-center" v-if="when_changed">{{ value.when_changed }}</td>
                                     <td class="text-center">
                                         <a :href="`computer/` + value.id" data-toggle="tooltip" type="button" @click="showComputer(value.id)" title="Go To Computer" class="btn">
                                             <i style="margin-top: 1px;" class="fa fa-eye"></i>

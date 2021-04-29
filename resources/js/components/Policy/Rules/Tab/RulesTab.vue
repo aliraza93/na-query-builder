@@ -60,9 +60,9 @@
                             <td class="text-center" v-if="action">{{ value.match_action }}</td>
                             <td class="text-center" v-if="immediate_flag">{{ value.immediate_flag }}</td>
                             <td class="text-center">
-                                <button data-toggle="tooltip" @click="editRule(value.id)" title="Go To Computer" class="btn">
+                                <a :href="`rule-builder/` + value.rule_id" data-toggle="tooltip" title="Go To Rule" class="btn">
                                     <i style="margin-top: 1px;" class="fa fa-edit"></i>
-                                </button>
+                                </a>
                                 <button type="button" @click="sendInfo(value.rule_id)" data-toggle="modal" data-target="#delete-page" class="btn">
                                     <i style="margin-top: 1px; color: red;" class="fa fa-trash"></i>
                                 </button>
@@ -118,9 +118,7 @@ export default {
             rule_name: true,
             immediate_flag: true,
             action: true,
-
-            allSelected: false,
-            selected: [],
+            
             rulename: '',
             matchaction: '',
             selected_rule_id: '',
@@ -168,21 +166,6 @@ export default {
     },
     
     methods: {
-
-        //Select all checkboxes
-        selectAll() {
-            this.rules_ids = [];
-            if (!this.allSelected) {
-                for (var user in this.rules.data) {
-                    this.rules_ids.push(this.rules.data[user].id);
-                }
-            }
-        },
-        select: function() {
-            this.allSelected = false;
-        },
-
-        
         get_rules(page = 1) {
             this.isLoading = true;
             axios

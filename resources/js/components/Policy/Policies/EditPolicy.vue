@@ -53,7 +53,7 @@
                                 {{saving ? "Submitting..." : "Submit"}}
                                 <b-spinner v-if="saving" small type="grow"></b-spinner>
                             </b-button>
-                            <b-button class="ml-2" @click="resetForm()">Reset</b-button>
+                            <b-button @click="resetForm()">Reset</b-button>
                         </div>
                     </b-form>
                 </validation-observer>

@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <h1 class="mb-1 text-white">Congratulations {{ Auth::user()->name }},</h1>
+                        <h1 class="mb-1 text-white">Congratulations {{ Auth::user()->user_name }},</h1>
                         <p class="card-text m-auto w-75">
                             You have successfully logged in to <strong>NA Query Builder</strong>
                         </p>
@@ -183,48 +183,6 @@
         <!-- Avg Sessions Chart Card ends -->
 
         <!-- CPU Usage Chart Card starts -->
-        <div class="col-lg-6 col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between pb-0">
-                    <h4 class="card-title">CPU Usage</h4>
-                    <div class="dropdown chart-dropdown">
-                        <button class="btn btn-sm border-0 dropdown-toggle p-50" type="button" id="dropdownItem4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Last 7 Days
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownItem4">
-                            <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-2 col-12 d-flex flex-column flex-wrap text-center">
-                            <h1 class="font-large-2 font-weight-bolder mt-2 mb-0">163</h1>
-                            <p class="card-text">Tickets</p>
-                        </div>
-                        <div class="col-sm-10 col-12 d-flex justify-content-center">
-                            <div id="support-trackers-chart"></div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between mt-1">
-                        <div class="text-center">
-                            <p class="card-text mb-50">New Tickets</p>
-                            <span class="font-large-1 font-weight-bold">29</span>
-                        </div>
-                        <div class="text-center">
-                            <p class="card-text mb-50">Open Tickets</p>
-                            <span class="font-large-1 font-weight-bold">63</span>
-                        </div>
-                        <div class="text-center">
-                            <p class="card-text mb-50">Response Time</p>
-                            <span class="font-large-1 font-weight-bold">1d</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- CPU Usage Chart Card ends -->
     </div>
 

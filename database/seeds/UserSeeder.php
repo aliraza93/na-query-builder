@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'User',
-                'read' => true,
+                'read' => true, 
                 'insert' => true,
                 'update' => true,
                 'delete' => true,

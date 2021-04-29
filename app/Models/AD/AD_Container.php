@@ -10,9 +10,7 @@ class AD_Container extends Model
 {
   
     protected $connection = 'pgsql';
-    public $timestamps = true;
-    const CREATED_AT = 'when_created';
-    const UPDATED_AT = 'when_changed';
+    public $timestamps = false;
     protected $fillable = [
         'container_uid',
         'common_name',

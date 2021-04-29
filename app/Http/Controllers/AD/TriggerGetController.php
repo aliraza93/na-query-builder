@@ -19,7 +19,6 @@ class TriggerGetController extends Controller
     }
 
    
-
     public function index()
     {
         $collection = Trigger_define
